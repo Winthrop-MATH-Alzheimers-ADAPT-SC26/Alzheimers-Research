@@ -35,7 +35,7 @@ The other difference comes from whether or not we include a logistic growth term
 The Equations including the Holling-Type III term is given by 
 \begin{eqnarray}
     \frac{dA _{\beta}}{dt}&=&\lambda _{A _{\beta}}A _{\beta}(K _{A _{\beta}}-A _{\beta})+\lambda _{A _{\beta Ca}}\frac{Ca ^{2}}{Ca ^{2}+\sigma ^{2}}-(1-\alpha _{A _{\beta}})\delta _{A _{\beta}}A _{\beta}\\
-    \frac{dCa}{dt}&=& \lambda _{Ca}Ca (K _{Ca}-Ca)+\lambda _{CaA _{\beta}}-(1-\alpha _{Ca})\delta Ca\\
+    \frac{dCa}{dt}&=& \lambda _{Ca}Ca (K _{Ca}-Ca)+\lambda _{CaA _{\beta}}-(1-\alpha _{Ca})\delta _{Ca} Ca\\
     \frac{d \tau}{dt}&=&\lambda _{\tau}\tau (K _{\tau}-\tau)+\lambda _{\tau A _{\beta}}A _{\beta}+\lambda _{\tau Ca}-(1-\alpha _{\tau})\delta _{\tau}\tau\\
     \frac{dN}{dt}&=&\lambda _{N}N (K _{N}-N) + \lambda _{N\tau} \tau\\
     \frac{dC}{dt}&=&\lambda _{C}C (K _{C}-C)+\lambda _{CN}NR+\lambda _{C\epsilon}\epsilon.
@@ -44,10 +44,10 @@ The Equations including the Holling-Type III term is given by
 A simpler model can be defined, excluding the Holling-Type III term within $dA _{\beta}/dt$.
 \begin{eqnarray}
     \frac{dA _{\beta}}{dt}&=&a _{1}-k _{1}A _{\beta}+\lambda _{A _{\beta}Ca}-(1-\alpha _{A _{\beta}})\delta _{A _{\beta}}A _{\beta}\\
-    \frac{dCa}{dt}&=&a _{2} -k _{2}Ca+\lambda _{CaA _{\beta}}-(1-\alpha _{Ca})\delta Ca\\
-    \frac{d \tau}{dt}&=&a _{3}-k _{3}\tau+\lambda _{\tau A _{\beta}}A _{\beta}+\lambda _{\tau Ca}-(1-\alpha _{\tau})\delta _{\tau}\tau\\
+    \frac{dCa}{dt}&=&a _{2} -k _{2}Ca+\lambda _{CaA _{\beta}}-(1-\alpha _{Ca})\delta _{Ca} Ca\\
+\frac{d \tau}{dt}&=&a _{3}-k _{3}\tau+\lambda _{\tau A _{\beta}}A _{\beta}+\lambda _{\tau Ca}-\underbrace{(1-\alpha _{\tau})\delta _{\tau}\tau}_{\text{off the dome}}\\
     \frac{dN}{dt}&=&a _{4}-k _{4}N+ \lambda _{N\tau} \tau\\
-    \frac{dC}{dt}&=&a _{5}-k _{5}+\lambda _{CN}NR+\lambda _{C\epsilon}\epsilon.
+    \frac{dC}{dt}&=&\underbrace{a _{5}-k _{5}C}_{\text{Pal}}+\underbrace{\lambda _{CN}NR+\lambda _{C\epsilon}\epsilon}_{\text{Petrella}}.
 \end{eqnarray}
 
 In each system, $a _{n},k _{n}$ is the growth and wash out, $\lambda _{ab}$ is the growth rate for $a$ with respect to $b$. 
