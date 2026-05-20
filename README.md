@@ -1,4 +1,6 @@
-# SC-ADAPT-Research-2026
+<h1 align='center'>
+  ADAPT in SC Research 2026
+</h1>
 
 ## Abstract
 
