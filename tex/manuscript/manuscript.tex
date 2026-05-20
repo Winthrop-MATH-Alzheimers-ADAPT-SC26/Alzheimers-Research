@@ -8,6 +8,8 @@
 \usepackage{amssymb}
 \usepackage{amsthm} % for theorem style environments for question and answers for readablity
 \usepackage{titlesec}
+\usepackage[backend=biber, style=numeric]{biblatex}
+\addbibresource{biblio.bib}
 % Customize section font size
 \titleformat*{\section}{\fontsize{14pt}{16pt}\bfseries\selectfont}
 % Customize subsection font size
@@ -25,9 +27,33 @@
 \maketitle
 \vspace{-2em}  % Remove space after title block
 \section{Introduction}
-This serves as an outline for equations of our system of equations for research. Eventually the paper outline may be formed from this document...
+This serves as an outline for equations of our system of equations for research. 
+Eventually the paper outline may be formed from this document...
 \section{Equations}
+Potential systems consist of various mechanisms, but the main differences come from whether or not we contain a Holling-Type III term in our $A_ \beta$ compartment. 
+The other difference comes from whether or not we include a logistic growth term in each compartment \cite{petrella2019computational}, \cite{pal2025nonequilibrium}.
+The Equations including the Holling-Type III term is given by 
+\begin{eqnarray}
+    \frac{dA _{\beta}}{dt}&=&\lambda _{A _{\beta}}A _{\beta}(K _{A _{\beta}}-A _{\beta})+\lambda _{A _{\beta Ca}}\frac{Ca ^{2}}{Ca ^{2}+\sigma ^{2}}-(1-\alpha _{A _{\beta}})\delta _{A _{\beta}}A _{\beta}\\
+    \frac{dCa}{dt}&=& \lambda _{Ca}Ca (K _{Ca}-Ca)+\lambda _{CaA _{\beta}}-(1-\alpha _{Ca})\delta Ca\\
+    \frac{d \tau}{dt}&=&\lambda _{\tau}\tau (K _{\tau}-\tau)+\lambda _{\tau A _{\beta}}A _{\beta}+\lambda _{\tau Ca}-(1-\alpha _{\tau})\delta _{\tau}\tau\\
+    \frac{dN}{dt}&=&\lambda _{N}N (K _{N}-N) + \lambda _{N\tau} \tau\\
+    \frac{dC}{dt}&=&\lambda _{C}C (K _{C}-C)+\lambda _{CN}NR+\lambda _{C\epsilon}\epsilon.
+\end{eqnarray}
 
+A simpler model can be defined, excluding the Holling-Type III term within $dA _{\beta}/dt$.
+\begin{eqnarray*}
+    \frac{dA _{\beta}}{dt}&=&a _{1}-k _{1}A _{\beta}+\lambda _{A _{\beta}Ca}-(1-\alpha _{A _{\beta}})\delta _{A _{\beta}}A _{\beta}\\
+    \frac{dCa}{dt}&=&a _{2} -k _{2}Ca+\lambda _{CaA _{\beta}}-(1-\alpha _{Ca})\delta Ca\\
+    \frac{d \tau}{dt}&=&a _{3}-k _{3}\tau+\lambda _{\tau A _{\beta}}A _{\beta}+\lambda _{\tau Ca}-(1-\alpha _{\tau})\delta _{\tau}\tau\\
+    \frac{dN}{dt}&=&a _{4}-k _{4}N+ \lambda _{N\tau} \tau\\
+    \frac{dC}{dt}&=&a _{5}-k _{5}+\lambda _{CN}NR+\lambda _{C\epsilon}\epsilon.
+\end{eqnarray*}
 
+In each system, $a _{n},k _{n}$ is the growth and wash out, $\lambda _{ab}$ is the growth rate for $a$ with respect to $b$. 
+$\alpha _{n}$ is the inefficiency of some drug for $n$, $0<\alpha _{n}<1$.
+$\delta _{n}$ is the strength of some drug, $0<\delta _{n}<1$.
+
+\printbibliography
 
 \end{document}
