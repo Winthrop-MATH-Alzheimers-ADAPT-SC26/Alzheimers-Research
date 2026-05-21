@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
 
 class ODEModel:
     def __init__(self, a1, a2, b1, b2, k1, k2, alph1, alph2, delt1, delt2, sigma):
@@ -16,6 +17,7 @@ class ODEModel:
         dABeta = self.a1 - self.r1 * ABeta + self.a2 * Ca**2 / (Ca**2 + self.sigma**2)
         dCa    = self.b1 - self.r2 * Ca + self.b2 * ABeta
         return [dABeta, dCa]
+
 
 
 # given arbitrary parameters
@@ -35,4 +37,11 @@ sol.y[1] #→ Ca over time
 print(sol.y[0])
 print(sol.y[1])
 
+# create a grid with 2 rows and 2 columns
+fig, axs = plt.subplots(2, 2)
+
+# access a specific subplot using 2D indexing [row, col]
+axs[0, 0].plot(t_eval, sol.y[0])
+axs[0, 1].plot(t_eval, sol.y[1])
+plt.show()
 
