@@ -50,9 +50,22 @@ A simpler model can be defined, excluding the Holling-Type III term within $dA _
     \frac{dC}{dt}&=&\underbrace{a _{5}-k _{5}C}_{\text{Pal}}+\underbrace{\lambda _{CN}NR+\lambda _{C\epsilon}\epsilon}_{\text{Petrella}}.
 \end{eqnarray}
 
-In each system, $a _{n},k _{n}$ is the growth and wash out, $\lambda _{ab}$ is the growth rate for $a$ with respect to $b$. 
+In each system, $a _{n},k _{n}$ is the growth and wash out, $\lambda _{ab}$ is the growth rate for $a$ with respect to $b$, $ab \neq 0$. 
 $\alpha _{n}$ is the inefficiency of some drug for $n$, $0<\alpha _{n}<1$.
 $\delta _{n}$ is the strength of some drug, $0<\delta _{n}<1$.
+
+The proposed \textbf{MODEL TO END ALL MODELS}:
+\begin{eqnarray}
+    \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca ^{2}}{Ca ^{2}+\sigma ^{2}}\\
+    \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}\\
+    \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+c _{2}A _{\beta}+c _{3}Ca\\
+    \frac{dN}{dt}&=&d _{1}-k _{4}N+d _{2}\tau\\
+    \frac{dC}{dt}&=&e _{1}-k _{5}C+e _{2}NR.
+\end{eqnarray}
+
+where $r _{n}= k _{n}+(1-\alpha _{n})\delta _{n}$. 
+
+
 
 \printbibliography
 
