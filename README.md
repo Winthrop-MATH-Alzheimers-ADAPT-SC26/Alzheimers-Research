@@ -12,7 +12,7 @@
 | Garrett Nix | | [Link ↗](https://github.com/gnix22) |
 | Landon Loveless | | [Link ↗](https://github.com/lloveless005) |
 | Dr. Kristen Abernathy | [Link ↗](https://www.winthrop.edu/cas/faculty/abernathy-kristen.aspx) | [Link ↗](https://github.com/kabernathy) |
-| Dr. Zach Abernathy | [Link ↗](https://www.winthrop.edu/cas/faculty/abernathy-zachary.aspx) | |
+| Dr. Zach Abernathy | [Link ↗](https://www.winthrop.edu/cas/faculty/abernathy-zachary.aspx) | [Link ↗](https://github.com/zabernathy) |
 
 ## References
 
