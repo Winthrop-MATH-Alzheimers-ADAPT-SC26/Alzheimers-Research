@@ -64,40 +64,59 @@ The proposed \textbf{MODEL TO END ALL MODELS}:
 \end{eqnarray}
 
 where $r _{n}= k _{n}+(1-\alpha _{n})\delta _{n}$. 
+\subsection{Week 3 Equations Currently in work}
+\begin{eqnarray}
+    \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca ^{2}}{Ca ^{2}+\sigma ^{2}}\\
+    \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}\\
+    \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+c _{2}A _{\beta}+c _{3}Ca\\
+    \frac{dN}{dt} &=& d _{1}\tau \left(1 - \frac{N}{K _{N}}\right)\\
+    \frac{dC}{dt} &=& (e _{1}N+e _{2}\tau)\left(1 - \frac{C}{K _{C}}\right)
+\end{eqnarray}
+and
+\begin{eqnarray}
+    \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca ^{2}}{Ca ^{2}+\sigma ^{2}}\\
+    \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}\\
+    \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+c _{2}A _{\beta}+c _{3}Ca\\
+    \frac{dN}{dt}&=&d _{1}-k _{4}N+d _{2}\tau\\
+    \frac{dC}{dt}&=&e _{1}-k _{5}C+e _{2}NR + e _{3}\tau.
+\end{eqnarray}
 \section{Parameters}
 \begin{table}
     \begin{tabular}{l|l|l|l}
         Var & Value & Unit & Source \\
         \hline
-        $A _{\beta}$ & & &\\
-        $Ca$ & & &\\
-        $\tau$ & & & \\
-        $N$ & & &\\
-        $C$ & & &\\
-        $a _{1}$ & $0.01$ & $nMs ^{-1}$& \cite{zhang2020mathematical} \\
-        $a _{2}$ & & &\\
-        $b _{1}$ & $1000$ & $nMs ^{-1}$ & \cite{zhang2020mathematical}\\
-        $b _{2}$ & $20$ & $s ^{-1}$ & \cite{zhang2020mathematical}\\
+        $A _{\beta}$ & $\sim 0.01$ & &\\
+        $Ca$ & $0$& &\\
+        $\tau$ & $0$& & \\
+        $N$ & $0$ & &\\
+        $C$ & $0$ & &\\
+        $a _{1}$ & $0.25$ & $c/yr$& \cite{zhang2020mathematical} \\
+        $a _{2}$ & $2.89$ & $c/yr$&\\
+        $b _{1}$ & $11$ & $c/yr$ & \cite{zhang2020mathematical}\\
+        $b _{2}$ & $1000$ & $yr ^{-1}$ & \cite{zhang2020mathematical}\\
         $c _{1}$ & & &\\
-        $c _{2}$ & & &\\
+        $c _{2}$ & $0.15$ & $yr ^{-1}$&\\
         $c _{3}$ & & &\\
         $d _{1}$ & & &\\
         $d _{2}$ & & &\\
-        $e _{1}$ & & &\\
-        $e _{2}$ & & &\\
-        $k _{1}$ & $0.000002617$ & $5 ^{-1}$ & \cite{zhang2020mathematical}\\
-        $k _{2}$ & $10$ & $5 ^{-1}$ & \cite{zhang2020mathematical}\\
+        $e _{1}$ & $1.67$ & $yr _{-1}$ &\\
+        $e _{2}$ & $3.83$ &$yr _{1}$ &\\
+        $k _{1}$ & $0.35$ & $yr ^{-1}$ & \cite{zhang2020mathematical}\\
+        $k _{2}$ & $500$ & $yr ^{-1}$ & \cite{zhang2020mathematical}\\
         $k _{3}$ & & &\\
-        $k _{4}$ & & &\\
-        $k _{5}$ & & &\\
+        $k _{N}$ & $1.00$ & $C$ &\\
+        $k _{C}$ & $169.48$ & $C$ &\\
         $\alpha _{A _{\beta}}$ & & &\\
         $\alpha _{Ca}$ & & &\\
         $\alpha _{\tau}$ & & &\\
         $\delta _{A _{\beta}}$ & & &\\
         $\delta _{Ca}$ & & &\\
         $\delta _{\tau}$ & & &\\
+        $\sigma$ & $0.00027$& $C$ & \cite{zhang2020mathematical}
     \end{tabular}
 \end{table}
+
+
 
 
 \printbibliography
