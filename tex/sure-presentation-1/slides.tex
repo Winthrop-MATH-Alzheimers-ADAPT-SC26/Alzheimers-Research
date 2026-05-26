@@ -73,7 +73,7 @@
 
 \title[AD Dynamics]{Modeling the Dynamics of Alzheimer's Disease} %still need a better title
 \subtitle{Winthrop University}
-\author[Nix]{Garrett Nix}
+\author[Loveless, Nix, Stokes]{Landon Loveless \and Garrett Nix \and Steven Stokes}
 
 
 \useoutertheme[footline=empty,subsection=false]{miniframes}
@@ -87,18 +87,53 @@
 \section{Introduction} %Section start
 \subsection{A Brief Synopsis of Alzheimer's Disease}
 
-\begin{frame}{What is Alzheimer's Disease}
-    Alzheimer's Disease (AD) is a neurodegenerative disease characterized by many complex interactions.
+\begin{frame}{What Alzheimer's Disease Is}
+    Alzheimer's Disease (AD) is a neurodegenerative disease characterized by many complex interactions that affect over 50 million people worldwide.
     Many different aspects of the disease are anticipated, but it is not yet known how these factors interact \cite{maji2025mathematical}.
 
     \begin{figure}
         \centering
         \includegraphics[width=0.6\textwidth]{img/ad_diagram_of_factors.png}
-        \caption{caption}
-        \label{fig:label}
+        \caption{Various factors of AD from the literature}
+        \label{fig:1}
     \end{figure}
 \end{frame}
 
+\begin{frame}{Hypotheses Galore}
+    Various hypotheses have been proposed in order to understand the underlying mechanisms of AD; where the leading hypothesis for many years has been the \textit{Amyloid Cascade Hypothesis}. However, there has been increasing support in the notion that it is insufficient in giving an effective description and treatment towards AD \cite{kepp2023amyloid}.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.4\textwidth]{img/wheel_of_hypotheses.pdf}
+        \caption{A visualization of the various hypotheses relating to the mechanisms of AD}
+        \label{fig:f2}
+    \end{figure}
+    
+\end{frame}
+\section{Formation of Proposed Model}
+
+\begin{frame}{Formation of a Newly Proposed Model}
+    In order to understand these factors and subsequently the behavior of AD, many systems of ordinary differential equations (ODEs) have been proposed related to these hypotheses; but, a few are highlighted in regard to creating a newly proposed dynamical system:
+    \begin{itemize}
+        \item Observing the dynamics between A$\beta$ and $Ca ^{2+}$ \cite{pal2025nonequilibrium}.
+        \item Using causal models observing factors of genetic, non-amyloid dependent, and biomarker cascades \cite{petrella2019computational}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{The Proposed Model}
+    Due to the feedback loop created by A$\beta$ and $Ca ^{2+}$, along with the interaction between the hyperphosphorylation of $\tau$-protein caused by A$\beta$, a proposed causal model is described by the following system of ODEs:
+    \begin{eqnarray}
+        \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca}{Ca+\sigma}\\
+        \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}\\
+        \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+c _{2}A _{\beta}+c _{3}Ca\\
+        \frac{dN}{dt}&=&d _{1}-k _{4}N+d _{2}\tau\\
+        \frac{dC}{dt}&=&e _{1}-k _{5}C+e _{2}NR + e _{3}\tau.
+    \end{eqnarray}
+\end{frame}
+
+\begin{frame}{Discussion of Proposed Model}
+    
+\end{frame}
 
 \begin{frame}{References}
 \printbibliography
