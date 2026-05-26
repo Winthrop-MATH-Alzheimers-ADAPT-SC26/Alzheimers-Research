@@ -1,4 +1,8 @@
 # latex related ignore extensions
+*.snm
+*.nav
+*.out
+*.toc
 *.aux
 *.bbl
 *.bcf
