@@ -11,7 +11,6 @@
 \usepackage[backend=biber, style=numeric]{biblatex}
 
 
-\addbibresource{biblio.bib}
 % Customize section font size
 \titleformat*{\section}{\fontsize{14pt}{16pt}\bfseries\selectfont}
 % Customize subsection font size
@@ -49,11 +48,11 @@ Consider the system of ODEs
 
 \[a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta} \leq a_1 + a_2 - r_1 A_{\beta}\]
 
-since $\frac{Ca}{Ca + \sigma} \in [0,1)$ for our chosen values of $Ca$. It follows that $a_1 + a_2 - r_1 A_{\beta} < 0$ when $A_{\beta} > \frac{a_1 + a_2}{r_1}$. So, $A_{\beta}$ is bounded. Now consider $\frac{dCa}{dt}$. Since $A_{\beta}$ is bounded, we have 
+since $\frac{Ca}{Ca + \sigma} \in [0,1)$ for our chosen values of $Ca$. It follows that $a_1 + a_2 - r_1 A_{\beta} < 0$ when $A_{\beta} > \frac{a_1 + a_2}{r_1}$. So, $A_{\beta}$ is bounded. Then, choose some value $M$ such that $M > A_{\beta} (t) \, \forall \, t \geq 0$. Now consider $\frac{dCa}{dt}$. Since $A_{\beta}$ is bounded, we have 
 
 \[\frac{dCa}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca \leq b_1 + b_2 M - r_2 Ca\]
 
-for some $M \geq A_{\beta}$. Then, $b_1 + b_2 M - r_2 Ca < 0$ when $Ca > \frac{b_1 + b_2 M}{r_2}$. Thus $Ca$ is also bounded. \bigskip
+So, $b_1 + b_2 M - r_2 Ca < 0$ when $Ca > \frac{b_1 + b_2 M}{r_2}$. Thus $Ca$ is also bounded. \bigskip
 
 \textit{Equilibria.} By solving $\frac{d A_{\beta}}{dt} = a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}$ for $A_{\beta}$ we get
 
@@ -67,7 +66,7 @@ Setting this expression equal to 0 and doing further simplification yields the q
 
 \[-(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma)Ca + a_1 b_2 \sigma + b_1 r_1 \sigma = 0.\]
 
-We observe that the first term is negative and all other terms are positive, so by Descartes' Rule of Signs, there is one positive real root to this quadratic, so our system has one positive equilibrium point. \bigskip
+Notice that the quadratic term is always negative and the constant term is always positive. The linear term can either be positive or negative depending on the choice of parameters. Regardless of the parity of the linear term, there is only one sign change in the expression, so by Descartes' Rule of Signs, there is one positive real root to this quadratic. Thus our system has one positive equilibrium point. \bigskip
 
 \textit{Non-existence of limit cycles.} Let $\mathbf{F} (A_{\beta}, Ca) = \left\langle a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}, b_1 + b_2 A_{\beta} - r_2 Ca \right\rangle$. Then, $\nabla \cdot \mathbf{F} = -r_1 - r_2$. Choose the function $\alpha (A_{\beta}, Ca) = 1$. So, $\nabla \cdot (\alpha (\cdot) \mathbf{F} (\cdot)) < 0$, therefore by the Bendixson-Dulac Theorem, there is no limit cycle in the system of ODEs. So, the equilibrium point must be globally stable in the non-negative orthant.
 
