@@ -123,16 +123,46 @@
 \begin{frame}{The Proposed Model}
     Due to the feedback loop created by A$\beta$ and $Ca ^{2+}$, along with the interaction between the hyperphosphorylation of $\tau$-protein caused by A$\beta$, a proposed causal model is described by the following system of ODEs:
     \begin{eqnarray}
-        \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca}{Ca+\sigma}\\
+        \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+\underbrace{a _{2}\frac{Ca}{Ca+\sigma}}_{\text{Holling Type III}}\\
         \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}\\
-        \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+c _{2}A _{\beta}+c _{3}Ca\\
+        \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+\underbrace{c _{2}A _{\beta}+c _{3}Ca}_{\text{A$\beta$, Ca $^{2+}$ interaction}}\\
         \frac{dN}{dt}&=&d _{1}-k _{4}N+d _{2}\tau\\
-        \frac{dC}{dt}&=&e _{1}-k _{5}C+e _{2}NR + e _{3}\tau.
+        \frac{dC}{dt}&=&e _{1}-k _{5}C+e _{2}NR + e _{3}\tau,
     \end{eqnarray}
+    where $r _{n} = k _{n}(1 - \alpha _{n})\delta _{n}$.
 \end{frame}
 
 \begin{frame}{Discussion of Proposed Model}
+    \only<1>{When analyzing the model, while equilibria are intractable, global asymptotic stability has been determined for the model. To show this, consider the first two uncoupled compartments of the proposed model:
+    \begin{eqnarray*}
+        \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca}{Ca+\sigma}\\
+        \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}
+    \end{eqnarray*}}
+
+    \only<2>{These compartments can be shown to be \textit{bounded} by
+    \begin{eqnarray*}
+        a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca}{Ca+\sigma}&\leq&a _{1}+a _{2}-r _{1}A _{\beta}<0 \text{ if } A _{\beta} > \frac{a _{1}+ a _{2}}{r _{1}}\\
+        b _{1}-r _{2}Ca + b _{2}A _{\beta}&\leq&b _{1}-r _{2}Ca + b _{2}M < 0 \text{ if } Ca > \frac{b _{1}+b _{2}M}{r _{2}}
+    \end{eqnarray*}
+    The compartments are also \textit{positively invariant}. This is shown by 
+    \begin{equation*}
+        \left.\frac{dA _{\beta}}{dt}\right]_{A _{\beta}=0}\quad \text{ and } \left.\frac{dCa}{dt}\right]_{Ca=0}
+    \end{equation*}
+    where each compartment is positive if $Ca>0,A _{\beta}>0$, respectively.}
     
+    \only<3>{For showing equilibrium, solve $dA _{\beta}/dt=0$ in terms of $A _{\beta}$. Substituting this into $dCa/dt$, a quadratic is obtained. Using \textit{Descartes' Rule of Signs}, one positive root is determined, and hence a unique positive real equilibrium. 
+
+    Then to show the non-existence of limit cycles, consider $\alpha(A _{\beta},Ca)=1$. It can be shown that
+    \begin{equation*}
+        \text{div}f=-r _{1}-r _{2}<0.
+    \end{equation*}
+    Since $\text{div}f<0$, by Bendixson-Dulac there exists no limit cycles.
+
+    Thus, it has been shown that the proposed model has a unique positively invariant global asymptotically stable equilibrium.}
+\end{frame}
+\section{Discussion}
+\begin{frame}{Potential Limitations/Future Directions}
+    While global stability has been shown
 \end{frame}
 
 \begin{frame}{References}
