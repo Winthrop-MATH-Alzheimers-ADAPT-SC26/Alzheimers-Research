@@ -1,85 +1,17 @@
-\documentclass[9pt, dvipsnames,compress]{beamer}
-\usepackage{forest}
-\usepackage{pgfplots}
-\pgfplotsset{width=10cm,compat=1.9}
-\usepackage{graphicx} % Required for inserting images
-\usepackage{times}
-\usepackage{amsmath, nccmath}
-\usepackage{amsthm}
-\usepackage{anyfontsize}
-\usepackage{graphicx}
-\usepackage[export]{adjustbox}
-\usepackage[multidot]{grffile}
-\usepackage{tabularx}
-\usepackage{wasysym}
-\usepackage{caption}
-\usepackage{subcaption}
-\usefonttheme{professionalfonts}
-\usefonttheme{serif}
-\usepackage{bm}
-
-
-\usepackage[backend=biber, style=numeric]{biblatex}
+\documentclass[9pt, dvipsnames,compress,aspectratio=169]{beamer}
+\usepackage{winthrop-slides}
 \addbibresource{biblio.bib}
-\AtBeginBibliography{\scriptsize}
-\theoremstyle{definition}
-
-\definecolor{WUred}{RGB}{240,179,35}
-\definecolor{WUgold}{RGB}{102, 0, 0}
-\definecolor{Gpar}{RGB}{189,101,16}
-\definecolor{Par}{RGB}{208,126,20}
-
-% Declare themes
-\DeclareMathOperator{\erf}{erf}
-\usetheme{Boadilla}
-%\usetheme{Boadilla}
-\usecolortheme{crane}
-
-% Mainly Red
-%\setbeamercolor{palette primary}{bg=WUred,fg=white}
-%\setbeamercolor{palette secondary}{bg=WUred,fg=white}
-%\setbeamercolor{palette tertiary}{bg=WUred,fg=white}
-%\setbeamercolor{palette quaternary}{bg=WUred,fg=white}
-%\setbeamercolor{structure}{fg=WUgold} % itemize, enumerate, etc
-%\setbeamercolor{section in toc}{fg=WUred} % TOC sections
-%\setbeamercolor{block title}{use=structure, fg=black,bg=WUgold}
-%\setbeamercolor{block body}{use=structure,fg=black,bg=WUgold}
-
-% Override palette coloring with secondary
-%\setbeamercolor{subsection in head/foot}{bg=WUgold,fg=white}
-
-% Mainly gold
-\setbeamercolor{palette primary}{bg=WUgold,fg=WUred}
-\setbeamercolor{palette secondary}{bg=WUred,fg=white}
-\setbeamercolor{palette tertiary}{bg=WUred,fg=white}
-\setbeamercolor{palette quaternary}{bg=WUgold,fg=white}
-\setbeamercolor{structure}{fg=WUred} % itemize, enumerate, etc
-\setbeamercolor{section in toc}{fg=WUred} % TOC sections
-\setbeamercolor{block title}{use=structure, fg=WUgold,bg=WUred}
-\setbeamercolor{block body}{use=structure,fg=WUgold,bg=WUred}
-
-% Override palette coloring with secondary
-\setbeamercolor{subsection in head/foot}{bg=WUred,fg=white}
-
-
-\setbeamertemplate{sections/subsections in toc}[square]
-\setbeamertemplate{itemize items}[square]
-\setbeamertemplate{enumerate items}[square]
-\setbeamertemplate{caption}{default}
-\setbeamertemplate{page number in head/foot}{}
-\setbeamertemplate{date in head/foot}{}
-\setbeamertemplate{date}{}
-\date{}
+\date{\today}
 
 \title[AD Dynamics]{Modeling the Dynamics of Alzheimer's Disease} %still need a better title
 \subtitle{Winthrop University}
 \author[Loveless, Nix, Stokes]{Landon Loveless \and Garrett Nix \and Steven Stokes}
-
-
-\useoutertheme[footline=empty,subsection=false]{miniframes}
+\institute[]{\includegraphics[height=1cm]{img/WU-Logo2.pdf}}
 
 \begin{document}
-\maketitle
+\begin{frame}[plain]
+    \titlepage
+\end{frame}
 \begin{frame}{Table of Contents}
     \tableofcontents
 \end{frame}
@@ -93,7 +25,7 @@
 
     \begin{figure}
         \centering
-        \includegraphics[width=0.6\textwidth]{img/ad_diagram_of_factors.png}
+        \includegraphics[width=0.4\textwidth]{img/ad_diagram_of_factors.png}
         \caption{Various factors of AD from the literature}
         \label{fig:1}
     \end{figure}
@@ -104,7 +36,7 @@
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=0.4\textwidth]{img/wheel_of_hypotheses.pdf}
+        \includegraphics[width=0.3\textwidth]{img/wheel_of_hypotheses.pdf}
         \caption{A visualization of the various hypotheses relating to the mechanisms of AD}
         \label{fig:f2}
     \end{figure}
@@ -123,7 +55,7 @@
 \begin{frame}{The Proposed Model}
     Due to the feedback loop created by A$\beta$ and $Ca ^{2+}$, along with the interaction between the hyperphosphorylation of $\tau$-protein caused by A$\beta$, a proposed causal model is described by the following system of ODEs:
     \begin{eqnarray}
-        \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+\underbrace{a _{2}\frac{Ca}{Ca+\sigma}}_{\text{Holling Type III}}\\
+        \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+\underbrace{a _{2}\frac{Ca}{Ca+\sigma}}_{\text{Holling Type II}}\\
         \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}\\
         \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+\underbrace{c _{2}A _{\beta}+c _{3}Ca}_{\text{A$\beta$, Ca $^{2+}$ interaction}}\\
         \frac{dN}{dt}&=&d _{1}-k _{4}N+d _{2}\tau\\
@@ -161,8 +93,22 @@
     Thus, it has been shown that the proposed model has a unique positively invariant global asymptotically stable equilibrium.}
 \end{frame}
 \section{Discussion}
-\begin{frame}{Potential Limitations/Future Directions}
-    While global stability has been shown
+\begin{frame}{Potential Limitations}
+    While global stability has been shown, there are a few drawbacks that have been noticed in regard to the model.
+    \begin{itemize}
+        \item The treatment terms do not seem to provide an accurate representation of the mechanisms of treatment/provide any new insights to literature.
+        \item Fairly simplistic; would like to add more biologically descriptive interactions to model.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Future Directions}
+    In order to provide a more interesting description of the mechanisms of AD, future directions include:
+    \begin{itemize}
+        \item Potential mass action terms added to the model.
+        \item Sensitivity analysis of model.
+        \item Optimal control for treatment terms.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{References}
