@@ -15,4 +15,4 @@
 
 # julia/nix dot files
 *.direnv
-*.env
+*.envrc
