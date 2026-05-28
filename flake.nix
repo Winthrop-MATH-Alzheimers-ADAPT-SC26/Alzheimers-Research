@@ -1,5 +1,5 @@
 {
-  description = "Basic R, Python, and Julia Flake";
+  description = "Basic Julia Flake";
   inputs = {
     system-flake.url = "path:/etc/nixos";
     nixpkgs.follows = "system-flake/nixpkgs";
@@ -15,14 +15,13 @@
         };
     in
     {
-      devShells.${system}.default = pkgs.mkShellNoCC {
+      devShells.${system}.default = pkgs.mkShell {
         name = "Julia Flake";
 
         buildInputs = with pkgs; [
           (julia-bin.withPackages [
             "DifferentialEquations"
             "ModelingToolkit"
-            "Plots"
           ])
         ];
 
