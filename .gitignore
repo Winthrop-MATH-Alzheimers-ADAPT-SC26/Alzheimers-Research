@@ -12,3 +12,7 @@
 *.log
 *.run.xml
 *.synctex.gz
+
+# julia/nix dot files
+*.direnv
+*.env
