@@ -40,7 +40,6 @@
         \caption{A visualization of the various hypotheses relating to the mechanisms of AD}
         \label{fig:f2}
     \end{figure}
-    
 \end{frame}
 \section{Formation of Proposed Model}
 
@@ -65,35 +64,51 @@
 \end{frame}
 
 \subsection{Stability Analysis}
+\begin{frame}{On Invariance and Boundedness}
+
+    \only<1>{The system can be shown to be \textit{positively invariant}. This is shown by 
+    \begin{equation*}
+        \left.\frac{dA _{\beta}}{dt}\right]_{A _{\beta}=0}, \left.\frac{dCa}{dt}\right]_{Ca=0}, \left.\frac{d\tau}{dt}\right]_{\tau=0},\left.\frac{dN}{dt}\right]_{N=0},\left.\frac{dC}{dt}\right]_{C=0}.
+    \end{equation*}
+    Since the model follows biological scenarios, non-negative parameter choices mean that each compartment is non-negative, and thus the non-negative orthant is invariant}
+
+    \only<2>{The system can also be shown to be \textit{bounded} by
+    \begin{eqnarray*}
+        a _{1}+a _{2}\frac{Ca}{Ca+\sigma} -r _{1}A _{\beta} &\leq&a _{1}+a _{2}-r _{1}A _{\beta}<0 \text{ if } A _{\beta} > \frac{a _{1}+ a _{2}}{r _{1}}\\
+        b _{1} + b _{2}A _{\beta} -r _{2}Ca &\leq&b _{1} + b _{2}M -r _{2}Ca< 0 \text{ if } Ca > \frac{b _{1}+b _{2}M}{r _{2}}.
+    \end{eqnarray*}
+    since $A _{\beta},Ca$ feed into the other compartments it follows that each subsequent compartment is also bounded (Though due to time constraints this did not make it into the slides).}
+    
+\end{frame}
 \begin{frame}{Discussion of Proposed Model}
-    \only<1>{When analyzing the model, while equilibria are intractable, global asymptotic stability has been determined for the model. To show this, consider the first two uncoupled compartments of the proposed model:
+    \only<1>{When analyzing the model, while equilibria are intractable, global asymptotic stability has been determined for the model. To show this, consider the first two compartments that are uncoupled from the rest of the proposed model:
     \begin{eqnarray*}
         \frac{dA _{\beta}}{dt}&=&a _{1}+a _{2}\frac{Ca}{Ca+\sigma}-r _{1}A _{\beta}\\
         \frac{dCa}{dt}&=& b _{1}+b _{2}A _{\beta}-r _{2}Ca
     \end{eqnarray*}}
 
-    \only<2>{These compartments can be shown to be \textit{bounded} by
-    \begin{eqnarray*}
-        a _{1}+a _{2}\frac{Ca}{Ca+\sigma} -r _{1}A _{\beta} &\leq&a _{1}+a _{2}-r _{1}A _{\beta}<0 \text{ if } A _{\beta} > \frac{a _{1}+ a _{2}}{r _{1}}\\
-        b _{1} + b _{2}A _{\beta} -r _{2}Ca &\leq&b _{1} + b _{2}M -r _{2}Ca< 0 \text{ if } Ca > \frac{b _{1}+b _{2}M}{r _{2}}
-    \end{eqnarray*}
-    The compartments are also \textit{positively invariant}. This is shown by 
-    \begin{equation*}
-        \left.\frac{dA _{\beta}}{dt}\right]_{A _{\beta}=0}\quad \text{ and } \left.\frac{dCa}{dt}\right]_{Ca=0}
-    \end{equation*}
-    where each differential equation is found to be positive when $A_{\beta} = 0$ and $Ca = 0$ respectively.}
-    
-    \only<3>{For showing equilibrium, solve $dA _{\beta}/dt=0$ in terms of $A _{\beta}$. Substituting this into $dCa/dt$, a quadratic is obtained. Using \textit{Descartes' Rule of Signs}, one positive root is determined, and hence a unique positive real equilibrium. 
+    \only<2>{For showing equilibrium, solve $dA _{\beta}/dt=0$ in terms of $A _{\beta}$. Substituting this into $dCa/dt$ and simplifying (using CAS), a quadratic is obtained in the form 
 
-    Then to show the non-existence of limit cycles, consider $\alpha(A _{\beta},Ca)=1$. It can be shown that
+        \[-(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma)Ca + a_1 b_2 \sigma + b_1 r_1 \sigma = 0.\]
+
+        Using \textit{Descartes' Rule of Signs}, one positive root is determined, and hence a unique positive real equilibrium ($A _{\beta}^{*},Ca ^{*}$). 
+    }
+
+    \only<3>{Then to show the non-existence of limit cycles, consider $\alpha(A _{\beta},Ca)=1$. It can be shown that
     \begin{equation*}
         \text{div}f=-r _{1}-r _{2}<0 \implies \text{div} \, \alpha f = -r_1 - r_2 < 0.
     \end{equation*}
-    Since $\text{div} \, \alpha f<0$, by the Bendixson-Dulac Theorem there exists no limit cycles.
-
-    Thus, it has been shown that the proposed model has a unique positively invariant global asymptotically stable equilibrium.}
+    Since $\text{div} \, \alpha f<0$, by the Bendixson-Dulac Theorem there exists no limit cycles. This shows that the unique equilibrium for the uncoupled system is globally asymptotically stable.}
+    
+    \only<4>{Now, using $(A _{\beta}^{*},Ca ^{*})$, notice that 
+    \begin{eqnarray*}
+        0&=&c _{1}+c _{2}A _{\beta}+c _{3}Ca-r _{3}\tau\\
+        \tau&=&\frac{c _{1}+c _{2}A _{\beta}^{*}+c _{3}Ca ^{*}}{r _{3}}.
+    \end{eqnarray*}
+    since a globally stable equilibrium has been determined for the uncoupled system, it follows that $\tau$ will also tend toward some equilibrium that is globally stable.
+    This provides a similar cascade to $N,C$, and thus there exists a unique globally asymptotically stable equilibrium for the proposed model.}
 \end{frame}
-\section{Discussion}
+\section{Concluding Remarks}
 \subsection{Model Limitations \& Future Directions}
 \begin{frame}{Potential Limitations}
     While global stability has been shown, there are a few drawbacks that have been noticed in regard to the model.
