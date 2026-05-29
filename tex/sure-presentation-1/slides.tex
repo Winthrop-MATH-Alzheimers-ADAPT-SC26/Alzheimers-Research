@@ -85,22 +85,22 @@
     \begin{eqnarray*}
         \frac{dA _{\beta}}{dt}&=&a _{1}+a _{2}\frac{Ca}{Ca+\sigma}-r _{1}A _{\beta}\\
         \frac{dCa}{dt}&=& b _{1}+b _{2}A _{\beta}-r _{2}Ca
-    \end{eqnarray*}}
+    \end{eqnarray*}
 
-    \only<2>{For showing equilibrium, solve $dA _{\beta}/dt=0$ in terms of $A _{\beta}$. Substituting this into $dCa/dt$ and simplifying (using CAS), a quadratic is obtained in the form 
+    For showing the number of equilibria, solve $dA _{\beta}/dt=0$ in terms of $A _{\beta}$. Substituting this into $dCa/dt$ and simplifying (using CAS), a quadratic is obtained in the form 
 
         \[-(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma)Ca + a_1 b_2 \sigma + b_1 r_1 \sigma = 0.\]
 
         Using \textit{Descartes' Rule of Signs}, one positive root is determined, and hence a unique positive real equilibrium ($A _{\beta}^{*},Ca ^{*}$). 
     }
 
-    \only<3>{Then to show the non-existence of limit cycles, consider $\alpha(A _{\beta},Ca)=1$. It can be shown that
+    \only<2>{Then to show the non-existence of limit cycles, consider $\alpha(A _{\beta},Ca)=1$. It can be shown that
     \begin{equation*}
         \text{div}f=-r _{1}-r _{2}<0 \implies \text{div} \, \alpha f = -r_1 - r_2 < 0.
     \end{equation*}
     Since $\text{div} \, \alpha f<0$, by the Bendixson-Dulac Theorem there exists no limit cycles. This shows that the unique equilibrium for the uncoupled system is globally asymptotically stable.}
     
-    \only<4>{Now, using $(A _{\beta}^{*},Ca ^{*})$, notice that 
+    \only<3>{Now, using $(A _{\beta}^{*},Ca ^{*})$, notice that 
     \begin{eqnarray*}
         0&=&c _{1}+c _{2}A _{\beta}+c _{3}Ca-r _{3}\tau\\
         \tau ^{*}&=&\frac{c _{1}+c _{2}A _{\beta}^{*}+c _{3}Ca ^{*}}{r _{3}}.
@@ -114,6 +114,7 @@
     While global stability has been shown, there are a few drawbacks that have been noticed in regard to the model.
     \begin{itemize}
         \item The treatment terms do not seem to provide an accurate representation of the mechanisms of treatment/provide any new insights to literature.
+        \item Parameter values in the literature are sparse.
         \item Fairly simplistic; would like to add more biologically descriptive interactions to model.
     \end{itemize}
 \end{frame}
