@@ -17,11 +17,13 @@ import ModelingToolkit: t_nounits as t, D_nounits as D, @variables, @parameters,
 @parameters σ=0.00027 R=1
 
 # Define differential equations
-eqs = [D(Aβ) ~ a1 + (a2 * (Ca / (Ca + σ))) - (k1 * Aβ) - (u1 * Aβ)
-D(Ca) ~ b1 + (b2 * Aβ) - (k3 * Ca) - (u2 * Ca)
-D(τ) ~ c1 + (c2 * Aβ) + (c3 * Ca) - (k3 * τ) - (u3 * τ)
-D(N) ~ d1 + (d2 * τ) - (k4 * N)
-D(C) ~ e1 + (e2 * N * R) + (e3 * τ) - (k5 * C)]
+eqs = [
+    D(Aβ) ~ a1 + (a2 * (Ca / (Ca + σ))) - (k1 * Aβ) - (u1 * Aβ)
+    D(Ca) ~ b1 + (b2 * Aβ) - (k3 * Ca) - (u2 * Ca)
+    D(τ) ~ c1 + (c2 * Aβ) + (c3 * Ca) - (k3 * τ) - (u3 * τ)
+    D(N) ~ d1 + (d2 * τ) - (k4 * N)
+    D(C) ~ e1 + (e2 * N * R) + (e3 * τ) - (k5 * C)
+]
 
 # Create ODESystem
 @mtkcompile sys = MTK.ODESystem(eqs, t)

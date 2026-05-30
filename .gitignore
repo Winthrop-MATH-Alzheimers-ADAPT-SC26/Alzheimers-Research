@@ -13,6 +13,6 @@
 *.run.xml
 *.synctex.gz
 
-# julia/nix dot files
+# julia/nix/direnv
 *.direnv
 *.envrc

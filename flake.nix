@@ -9,7 +9,7 @@
   { nixpkgs, ... }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { 
+      pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
@@ -18,14 +18,12 @@
       devShells.${system}.default = pkgs.mkShell {
         name = "Julia Flake";
 
-        buildInputs = with pkgs; [
-          (julia-bin.withPackages [
-            "DifferentialEquations"
-            "ModelingToolkit"
-          ])
+        packages = with pkgs; [
+            julia-bin
         ];
 
         shellHook = ''
+            export JULIA_PROJECT=$PWD
         '';
       };
     };
