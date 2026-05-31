@@ -1,0 +1,92 @@
+module AlzheimerModel
+
+using ModelingToolkit
+using ModelingToolkit: t_nounits as t, D_nounits as D
+using DifferentialEquations
+using Plots
+
+# --- System (sys -> all symbolic) --- #
+
+function build_system()
+    @variables begin
+        Aβ(t) = 0.01
+        Ca(t) = 0.0
+        τ(t) = 0.0
+        N(t) = 0.0
+        C(t) = 0.0
+    end
+
+    @parameters begin
+        a₁
+        a₂
+        b₁
+        b₂
+        c₁
+        c₂
+        c₃
+        d₁
+        d₂
+        e₁
+        e₂
+        e₃
+        k₁
+        k₂
+        k₃
+        k₄
+        k₅
+        u₁ = 0.0
+        u₂ = 0.0
+        u₃ = 0.0
+        σ = 0.00027
+        R = 1.0
+    end
+
+    eqs = [
+        D(Aβ) ~ a₁ + (a₂ * (Ca / (Ca + σ))) - (k₁ * Aβ) - (u₁ * Aβ),
+        D(Ca) ~ b₁ + (b₂ * Aβ) - (k₃ * τ) - (u₂ * τ),
+        D(τ) ~ c₁ + (c₂ * Aβ) + (c₃ * Ca) - (k₃ * τ) - (u₃ * τ),
+        D(N) ~ d₁ + (d₂ * τ) - (k₄ * N),
+        D(C) ~ e₁ + (e₂ * N * R) + (e₃ * τ) - (k₅ * C)
+    ]
+
+    @mtkcompile sys = ODESystem(eqs, t)
+    return sys
+end
+
+# --- Problem (prob -> concrete numbers plugged in, ready to solve) --- #
+
+function make_problem(sys; tspan=(0.0, 100.0), u₀=[], p=[])
+    return ODEProblem(sys, u₀, tspan, p)
+end
+
+# --- Solve (sol -> final result, queryable across time) --- #
+
+function solve_model(prob; solver=nothing, abstol=1e-8, reltol=1e-6)
+    if solver === nothing
+        return solve(prob, abstol=abstol, reltol=reltol)
+    else
+        return solve(prob, solver, abstol=abstol, reltol=reltol)
+    end
+end
+
+# --- Output --- #
+
+function plot_solution(sol, sys)
+    p1 = plot(sol, idxs=[sys.Aβ], title="Aβ")
+    p2 = plot(sol, idxs=[sys.Ca], title="Ca")
+    p3 = plot(sol, idxs=[sys.τ], title="τ")
+    p4 = plot(sol, idxs=[sys.N], title="N")
+    p5 = plot(sol, idxs=[sys.C], title="C")
+    return plot(p1, p2, p3, p4, p5, layout=(2, 3))
+end
+
+function print_final(sol, sys)
+    println("Fianl values at t = ", sol.t[end])
+    println("  Aβ = ", sol[sys.Aβ][end])
+    println("  Ca = ", sol[sys.Ca][end])
+    println("  τ  = ", sol[sys.τ][end])
+    println("  N  = ", sol[sys.N][end])
+    println("  C  = ", sol[sys.C][end])
+end
+
+end
