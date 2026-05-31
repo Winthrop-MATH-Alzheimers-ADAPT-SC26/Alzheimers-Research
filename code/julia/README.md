@@ -5,6 +5,7 @@
 ```julia-repl
 julia> include("AD_ODE.jl")
 julia> using .AlzheimerModel
+julia> ModelingToolkit, DifferentialEquations
 ```
 
 ## Basic Workflow

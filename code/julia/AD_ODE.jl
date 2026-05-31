@@ -1,5 +1,7 @@
 module AlzheimerModel
 
+export build_system, make_problem, solve_model, plot_solution, print_final
+
 using ModelingToolkit
 using ModelingToolkit: t_nounits as t, D_nounits as D
 using DifferentialEquations
