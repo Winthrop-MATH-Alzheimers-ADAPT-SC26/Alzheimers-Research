@@ -1,53 +1,68 @@
 import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
-
+# define the class for system of equations
 class ODEModel:
-    def __init__(self, a1, a2, b1, b2, c1, c2, c3, d1, e1,e2, k1, k2, k3, alph1, alph2, alph3, delt1, delt2, delt3, sigma, kn, kc):
-        self.a1 = a1
-        self.a2 = a2
-        self.b1 = b1
-        self.b2 = b2
-        self.c1 = c1
-        self.c2 = c2
-        self.c3 = c3
-        self.d1 = d1
-        self.e1 = e1
-        self.e2 = e2
-        self.sigma = sigma
-        self.kn = kn
-        self.kc = kc
-        self.r1 = k1 + (1 - alph1) * delt1
-        self.r2 = k2 + (1 - alph2) * delt2
-        self.r3 = k3 + (1 - alph3) * delt3
-
+    def __init__(self, params): # params list is ordered: 
+                                # a1, a2, b1, b2, c1, c2, c3,
+                                # d1, d2, e1, e2, e3, u1, u2,
+                                # e3, u1, u2, u3, k1, k2, k3,
+                                # k4, k5, sigma, r.
+        self.a1 = params[0]
+        self.a2 = params[1]
+        self.b1 = params[2]
+        self.b2 = params[3]
+        self.c1 = params[4]
+        self.c2 = params[5]
+        self.c3 = params[6]
+        self.d1 = params[7]
+        self.d2 = params[8]
+        self.e1 = params[9]
+        self.e2 = params[10]
+        self.e3 = params[11]
+        self.u1 = params[12]
+        self.u2 = params[13]
+        self.u3 = params[14]
+        self.k1 = params[15]
+        self.k2 = params[16]
+        self.k3 = params[17]
+        self.k4 = params[18]
+        self.k5 = params[19]
+        self.sigma = params[20]
+        self.r = params[21]
+        print("...parameters loaded...")
+    # use call to allow for solutions to be computed later
     def __call__(self, t, y):
-        ABeta, Ca, Tau, N, C = y
-        dABeta = self.a1 - self.r1 * ABeta + self.a2 * Ca**2 / (Ca**2 + self.sigma**2)
-        dCa = self.b1 - self.r2 * Ca + self.b2 * ABeta
-        dTau = self.c1 - self.r3 * Tau + self.c2 * ABeta + self.c3 * Ca
-        dN = self.d1 * Tau * (1 - (N/self.kn))
-        dC = (self.e1 * N + self.e2 * Tau) * (1 - (C / self.kc))
-        return [dABeta, dCa, dTau, dN, dC]
+        ABeta, Ca, Tau, N, C = y # 
+        dABeta = self.a1 + self.a2 * (Ca**2 / (Ca**2 + self.sigma**2)) - self.k1 * ABeta - self.u1 * ABeta
+        dCa = self.b1 + self.b2 * ABeta - self.k2 * Ca - self.u2 * Ca
+        dTau = self.c1 + self.c2 * ABeta + self.c3 * Ca - self.k3 * Tau - self.u3 * Tau
+        dN = self.d1 + self.d2 * Tau - self.k4 * N
+        dC = self.e1 + self.e2 * N * self.r + self.e3 * Tau - self.k5 * C
+        return [dABeta, dCa, dTau, dN, dC] #
 
 
 
 # given arbitrary parameters
-#model_eff_50 = ODEModel(a1=0.01, a2=0.05, b1=1000, b2=20,
-#                 k1=0.00002617, k2=0.1, alph1=0.5, alph2=0.5,
-#                 delt1=0.4, delt2=0.4, sigma=0.00027)
+params = [65641, 15778.463, 315569260, 6311385.2, 52.2958, 1.78467,
+          3.62493, 0.07176, 0.0195, 146.308032, 86.84, 199.16, 0.5, 0.5, 0.5,
+          3035.98, 21874000, 10.9999, 0.003588, 0.8684, 0.00027, 1]
+model_no_treatment = ODEModel(params)
 
-y0 = [0.0, 0.0] # initial conditions [ABeta_0, Ca_0]
+initial_conditions = [0.0, 0.0, 0.0, 0.0, 0.0] # initial conditions [ABeta_0, Ca_0], 0.0, 0.0, 0.0
 t_span = (0, 100)
-t_eval = np.linspace(*t_span, 1000)
+t_eval = np.linspace(*t_span, 100)
 
-#sol = solve_ivp(model_eff_50, t_span, y0, t_eval=t_eval, method='RK45')
-
-#sol.y[0] #→ ABeta over time
-#sol.y[1] #→ Ca over time
-
-#print(sol.y[0])
-#print(sol.y[1])
+print("...starting solver...")
+sol = solve_ivp(model_no_treatment, t_span, initial_conditions, t_eval=t_eval, method='LSODA')
+print("...calculated solutions...")
+#sol.y[0] -> ABeta over time
+#sol.y[1] -> Ca over time
+print(sol.y[0])
+print(sol.y[1])
+print(sol.y[2])
+print(sol.y[3])
+print(sol.y[4])
 
 # create a grid with 2 rows and 2 columns
 #fig, axs = plt.subplots(2, 2)
