@@ -29,7 +29,7 @@ julia> sol2  = solve_model(prob2)
 ## Tweak Parameters Without Rebuilding
 
 ```julia-repl
-julia> prob3 = remake(prob, p=[sys.k1 => 0.5])
+julia> prob3 = remake(prob, p=[sys.k₁ => 0.5])
 julia> sol3  = solve_model(prob3)
 ```
 ## Try Different Solvers
