@@ -41,8 +41,6 @@ class ODEModel:
         dC = self.e1 + self.e2 * N * self.r + self.e3 * Tau - self.k5 * C
         return [dABeta, dCa, dTau, dN, dC] #
 
-
-
 # given arbitrary parameters
 params = [65641, 15778.463, 315569260, 6311385.2, 52.2958, 1.78467,
           3.62493, 0.07176, 0.0195, 146.308032, 86.84, 199.16, 0.5, 0.5, 0.5,
