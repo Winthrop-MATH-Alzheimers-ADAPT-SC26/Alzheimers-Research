@@ -39,9 +39,9 @@ With this, there are a few main hypotheses that are generally considered to be f
 The so-called \textit{Amyloid Cascade Hypothesis} is among the most extensively studied in the literature, where it is proposed that a misfolding of $\beta$-amyloid (A$\beta$) protein form
 senile plaques. These plaques are hypothezied to be the main driving force in the intracellular deposition of misfolded tau proteins in neurofibrillary tangles (NFTs) and memory loss in the 
 progression of Alzheimer's Disease \cite{hardy1992alzheimer}. Growing evidence however, shows that this hypothesis is suggested to be but a small factor in the larger picture of the underlying 
-operative mechanisms of the disease \cite{kepp2023amyloid}. This has led researchers to branch into other pathways concerning AD, looking at the interactions between A $\beta$ and tau in an attempt
+operative mechanisms of the disease \cite{kepp2023amyloid}. This has led researchers to branch into other pathways concerning AD, looking at the interactions between A$\beta$ and tau in an attempt
 to further understand the pathogensis of these two factors \cite{zhang2021interaction}. Some studies have also observed the role of Calcium in this process, further suggesting a more complex process
-that is occuring biologically. This occurs through a feedback interaction between an upregulation of Ca$^{2+}$ and the amyloidogenic pathway, remodeling the Ca $^{2+}$ signaling pathway \cite{berridge2010calcium}.
+that is occuring biologically. This occurs through a feedback interaction between an upregulation of Ca$^{2+}$ and the amyloidogenic pathway, remodeling the Ca$^{2+}$ signaling pathway \cite{berridge2010calcium}.
 
 The various complex interactions in AD have shown to be an obstacle to yet overcome when modeling the behavior of the disease. 
 Numerous different studies have in turn given an attempt at creating mathematical models
@@ -56,88 +56,81 @@ Evidence suggests that focusing solely on anti-amyloid beta treatments or tau pr
 This provides difficulty in understanding exactly the importance of which component of the disease should be the focus of further study in order to provide evidence for treatments having higher efficacy. 
 In this study, a mechanistic model is proposed, analyzing the interaction between A$\beta$, Ca$^{2+}$, and tau proteins; observing the effects of this multifaceted interaction on neurodegeneration, and cognitive decline.
 ``Sensitivity analysis is performed in order to better understand the importance of each aspect of the model, and optimal control is used in order to determine the suggested avenues of effective treatment.''
+\section{Proposed Model}
+To understand the role calcium may have in the interaction of AD, a model is proposed using five biomarkers found to have interactions within the disease: hallmark biomarkers through amyloid beta and tau, an interactional biomarker through calcium, suggested to have a role in amyloid beta and tau protein accumulation. 
+Also observed are neuronal loss biomarkers, and cognitive decline. 
+The pathology of AD is suggested to start through a feedback loop between amyloid beta and calcium through a dysregulation of calcium; this excacerbates the aggregation of amyloid beta, forming plaques. 
+These plaques then promotes the hyperphosphorylation of tau proteins, leading to neurodegeneration and subsequently cognitive decline.
+\subsection{Amyloid Beta and Calcium Equations}
+Because amyloid beta and calcium are suggested to interact in such a way that a dysregulation of calcium causes an acceleration of amyloid beta accumulation \cite{pal2025nonequilibrium}, this is modeled mathematically as 
+\begin{equation}
+    \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\quad \text{with} \quad A _{\beta}(T _{0})=A _{0},
+\end{equation}
+where $A _{0}$ is the initial condition of amyloid beta at age $T _{0}$, and can vary on a per patient basis \cite{hao2022optimal}. 
+Here, $a(Ca/[Ca+\sigma])$ acts as the interaction of calcium on $A _{\beta}$ using a Holling-Type II function.
+
+Similarly, an amyloid beta interaction is observed to have a role in the further dysregulation of calcium, and the equation for calcium is defined as 
+\begin{equation}
+    \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\quad \text{with} \quad Ca(T _{0})=Ca _{0}.
+\end{equation}
+Here, the accumulation of amyloid beta is positive at a rate $b _{2}$, with a natural removal rate of calcium, $k _{2}$.
+
+\subsection{Tau Equation}
+Many studies have suggested that the pathology of tau is initiated by amyloid beta accumulation, and have modeled this process mathematically \cite{zheng2002amyloid, hao2022optimal}. 
+However, it has also been suggested that calcium also has an effect inducing the production of tau proteins \cite{guan2021elevating}. 
+This leads to a definition of the tau equation to be given by 
+\begin{equation}
+    \frac{d \tau}{dt}=c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\quad \text{with} \quad \tau(T _{0})=\tau _{0}.
+\end{equation}
+It is noted here that only pathological tau is observed, where other studies have used compartments relating to non-amyloid dependent tau accumulation, or suspected non-Alzheimer pathology (SNAP) \cite{petrella2019computational, hao2022optimal}.
+
+\subsection{Neurodegeneration Equation}
+When tau is in a pathological state, it no longer binds to microtubules as intended; instead, the formation of NFTs occur in the neurons, leading to neurodegeneration \cite{ballatore2007tau}. Hence, this equation is defined as 
+\begin{equation}
+    \frac{dN}{dt}=d _{1}+d _{2}\tau-k _{4}N.
+\end{equation}
+
+\subsection{Cognitive Decline Equation}
+Both tau and neurodegeneration are evidenced to directly affect cognitive decline \cite{bejanin2017tau, hao2022optimal}. Because of this, the equation for cognitive decline is defined as 
+\begin{equation}
+    \frac{dC}{dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C.
+\end{equation}
+The parameter $R$ represents a patient having the APOE $\epsilon 4$ gene, which has been shown to be a risk factor in Alzheimer's disease (need to find citation of this).
+
+This model is summarized as a system of ordinary system of differential equations with 
 
 
 
 
+\begin{equation}
+\begin{cases}
+    \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
+
+    \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\\
+
+    \frac{d \tau}{dt}=c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\\
+
+    \frac{dN}{dt}=d _{1}+d _{2}\tau-k _{4}N\\
+
+    \frac{dC}{dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C
+\end{cases}
+\quad
+\text{with}
+\quad
+\begin{cases}
+    A _{\beta}(T _{0})=A _{0}\\
+    Ca(T _{0})=Ca _{0}\\
+    \tau(T _{0})=\tau _{0}\\
+    N(T _{0})=N _{0}\\
+    C(T _{0})=C _{0}.
+\end{cases}
+\end{equation}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-\section{Equations}
-Potential systems consist of various mechanisms, but the main differences come from whether or not we contain a Holling-Type III term in our $A_ \beta$ compartment. 
-The other difference comes from whether or not we include a logistic growth term in each compartment \cite{petrella2019computational}, \cite{pal2025nonequilibrium}.
-The Equations including the Holling-Type III term is given by 
-\begin{eqnarray}
-    \frac{dA _{\beta}}{dt}&=&\lambda _{A _{\beta}}A _{\beta}(K _{A _{\beta}}-A _{\beta})+\lambda _{A _{\beta Ca}}\frac{Ca ^{2}}{Ca ^{2}+\sigma ^{2}}-(1-\alpha _{A _{\beta}})\delta _{A _{\beta}}A _{\beta}\\
-    \frac{dCa}{dt}&=& \lambda _{Ca}Ca (K _{Ca}-Ca)+\lambda _{CaA _{\beta}}-(1-\alpha _{Ca})\delta _{Ca} Ca\\
-    \frac{d \tau}{dt}&=&\lambda _{\tau}\tau (K _{\tau}-\tau)+\lambda _{\tau A _{\beta}}A _{\beta}+\lambda _{\tau Ca}-(1-\alpha _{\tau})\delta _{\tau}\tau\\
-    \frac{dN}{dt}&=&\lambda _{N}N (K _{N}-N) + \lambda _{N\tau} \tau\\
-    \frac{dC}{dt}&=&\lambda _{C}C (K _{C}-C)+\lambda _{CN}NR+\lambda _{C\epsilon}\epsilon.
-\end{eqnarray}
-
-A simpler model can be defined, excluding the Holling-Type III term within $dA _{\beta}/dt$.
-\begin{eqnarray}
-    \frac{dA _{\beta}}{dt}&=&a _{1}-k _{1}A _{\beta}+\lambda _{A _{\beta}Ca}-(1-\alpha _{A _{\beta}})\delta _{A _{\beta}}A _{\beta}\\
-    \frac{dCa}{dt}&=&a _{2} -k _{2}Ca+\lambda _{CaA _{\beta}}-(1-\alpha _{Ca})\delta _{Ca} Ca\\
-\frac{d \tau}{dt}&=&a _{3}-k _{3}\tau+\lambda _{\tau A _{\beta}}A _{\beta}+\lambda _{\tau Ca}-\underbrace{(1-\alpha _{\tau})\delta _{\tau}\tau}_{\text{off the dome}}\\
-    \frac{dN}{dt}&=&a _{4}-k _{4}N+ \lambda _{N\tau} \tau\\
-    \frac{dC}{dt}&=&\underbrace{a _{5}-k _{5}C}_{\text{Pal}}+\underbrace{\lambda _{CN}NR+\lambda _{C\epsilon}\epsilon}_{\text{Petrella}}.
-\end{eqnarray}
-
-In each system, $a _{n},k _{n}$ is the growth and wash out, $\lambda _{ab}$ is the growth rate for $a$ with respect to $b$, $ab \neq 0$. 
-$\alpha _{n}$ is the inefficiency of some drug for $n$, $0<\alpha _{n}<1$.
-$\delta _{n}$ is the strength of some drug, $0<\delta _{n}<1$.
-
-The proposed \textbf{MODEL TO END ALL MODELS}:
-\begin{eqnarray}
-    \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca ^{2}}{Ca ^{2}+\sigma ^{2}}\\
-    \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}\\
-    \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+c _{2}A _{\beta}+c _{3}Ca\\
-    \frac{dN}{dt}&=&d _{1}-k _{4}N+d _{2}\tau\\
-    \frac{dC}{dt}&=&e _{1}-k _{5}C+e _{2}NR.
-\end{eqnarray}
-
-where $r _{n}= k _{n}+(1-\alpha _{n})\delta _{n}$. 
-\subsection{Week 3 Equations Currently in work}
-\begin{eqnarray}
-    \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca ^{2}}{Ca ^{2}+\sigma ^{2}}\\
-    \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}\\
-    \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+c _{2}A _{\beta}+c _{3}Ca\\
-    \frac{dN}{dt} &=& d _{1}\tau \left(1 - \frac{N}{K _{N}}\right)\\
-    \frac{dC}{dt} &=& (e _{1}N+e _{2}\tau)\left(1 - \frac{C}{K _{C}}\right)
-\end{eqnarray}
-and
-\begin{eqnarray}
-    \frac{dA _{\beta}}{dt}&=&a _{1}-r _{1}A _{\beta}+a _{2}\frac{Ca }{Ca+\sigma}\\
-    \frac{dCa}{dt}&=& b _{1}-r _{2}Ca+b _{2}A _{\beta}\\
-    \frac{d \tau}{dt}&=&c _{1}-r _{3}\tau+c _{2}A _{\beta}+c _{3}Ca\\
-    \frac{dN}{dt}&=&d _{1}-k _{4}N+d _{2}\tau\\
-    \frac{dC}{dt}&=&e _{1}-k _{5}C+e _{2}NR + e _{3}\tau.
-\end{eqnarray}
-
-
-\subsection{Mass Action Terms Model}
-\begin{eqnarray}
-    \frac{dA _{\beta}}{dt}&=&a _{1}-c _{1}A _{\beta}-k _{1}A _{\beta}\tau - \alpha _{1}A _{\beta}\\
-    \frac{dCa}{dt}&=& b _{1}+ k _{2} A _{\beta}\tau - c _{2}\tau - \alpha _{2} \tau\\
-    \frac{d \tau}{dt}&=&k _{3}A _{\beta}+k _{4}\tau - c _{3}C _{a}- \alpha _{3}C _{a}\\
-    \frac{dN}{dt}&=&rN \left(1 - \frac{N}{K}\right)- k _{5}C _{a}N- k _{6}\tau N.
-\end{eqnarray}
 
 \section{Parameters}
-\begin{table}
+\begin{table}[h]
     \begin{tabular}{l|l|l|l}
         Var & Value & Unit & Source \\
         \hline
