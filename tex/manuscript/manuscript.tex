@@ -16,7 +16,8 @@
 \titleformat*{\subsection}{\fontsize{12pt}{14pt}\bfseries\selectfont}
 \titlespacing*{\section}{0pt}{1ex}{0.5ex}
 \titlespacing*{\subsection}{0pt}{0.8ex}{0.4ex}
-\newtheorem*{thm}{Theorem}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
 \theoremstyle{definition}
 \newtheorem*{q}{Question}
 \newtheorem*{ans}{Answer}
@@ -102,7 +103,7 @@ This model is summarized as a system of ordinary system of differential equation
 
 
 
-\begin{equation}
+\begin{equation}\label{eq6}
 \begin{cases}
     \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
 
@@ -126,6 +127,74 @@ This model is summarized as a system of ordinary system of differential equation
 \end{cases}
 \end{equation}
 
+\section{Analysis}
+\subsection{Preliminary Results}
+Assuming Equation \ref{eq6} is subject to initial conditions that are non-negative, it is noted that the system is invariant in the non-negative orthant. 
+Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt,dCa/dt$ can be shown to be bounded. 
+This is done by first noticing $a_1 + a_2\frac{Ca}{Ca + \sigma} - r_1 A_{\beta} \leq a_1 + a_2 - r_1 A_{\beta}$, since $Ca/(Ca+\sigma)\in [0,1)$. 
+So, $a_1 + a_2 - r_1 A_{\beta} < 0$ when $A_{\beta} > \frac{a_1 + a_2}{r_1}$. 
+Similarly, using that $A _{\beta}$ is bounded, it follows that $\frac{dCa}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca \leq b_1 + b_2 M - r_2 Ca$ for $M > A_{\beta} (t) \, \forall \, t \geq 0$. 
+So, $b_1 + b_2 M - r_2 Ca < 0$ when $Ca > \frac{b_1 + b_2 M}{r_2}$. Thus $Ca$ is also bounded. 
+This process, when coupled, results in the rest of the system being bounded. 
+\begin{lem}[Establishment of Unique Equilibria of Uncoupled System]\label{lem1}
+    There exists a unique equilibria ($A _{\beta}^{*}, Ca ^{*}$) for the system
+    \begin{equation}\label{eq7}
+        \begin{cases}
+            \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
+            \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\\
+        \end{cases}
+    \end{equation}
+\end{lem}
+\begin{proof}
+    To establish the existence of equilibria for Equation \ref{eq7}, a solution to the following must be obtained:
+    \begin{eqnarray}
+        \label{eq8}
+        0&=&a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
+        \label{eq9}
+        0&=&b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca.
+    \end{eqnarray}
+    By solving $\frac{d A_{\beta}}{dt} = a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}$ for $A_{\beta}$, we get
+    \begin{equation}\label{eq10}
+        A_{\beta} = \frac{a_1 Ca + a_2 Ca + a_1 \sigma}{r_1 (Ca + \sigma)}.
+    \end{equation}
+    We then substitute this value into $\frac{d Ca}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca$. 
+    The resulting expression is,
+    \begin{equation}\label{eq11}
+        b_1 - r_2 Ca + \frac{b_2 (a_1 Ca + a_2 Ca + a_1 \sigma)}{r_1 (Ca + \sigma)}.
+    \end{equation}
+    Setting this expression equal to 0 and doing further simplification yields the quadratic,
+    \begin{equation}\label{eq12}
+        -(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma)Ca + a_1 b_2 \sigma + b_1 r_1 \sigma = 0.
+    \end{equation}
+
+    Notice that in Equation \ref{eq12}, the quadratic term is always negative and the constant term is always positive. 
+    The linear term can either be positive or negative depending on the choice of parameters. 
+    Regardless of the parity of the linear term, there is only one sign change in the expression, so by Descartes' Rule of Signs, there is one positive real root to this quadratic. 
+    Thus, there exists a unique positive equilibrium ($A _{\beta}^{*},Ca ^{*}$) for the system in Equation \ref{eq7}.
+\end{proof}
+
+\begin{lem}[Global Stability of Equilibrium]\label{lem2}
+    The equilibrium ($A _{\beta}^{*},Ca ^{*}$) is globally asymptotically stable.
+\end{lem}
+\begin{proof}
+    Let $\mathbf{F} (A_{\beta}, Ca) = \left\langle a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}, b_1 + b_2 A_{\beta} - r_2 Ca \right\rangle$. 
+    Then, $\nabla \cdot \mathbf{F} = -r_1 - r_2$. 
+    Choose the function $\alpha (A_{\beta}, Ca) = 1$. 
+    So, $\nabla \cdot (\alpha (\cdot) \mathbf{F} (\cdot)) < 0$, therefore by the Bendixson-Dulac Theorem, there is no limit cycle in the system of ODEs. 
+    So, the equilibrium point must be globally stable in the non-negative orthant.
+\end{proof}
+
+\begin{thm}[Global Stability of Equilibrium of System]
+    There exists a unique globally asymptotically stable equilibrium ($A _{\beta}^{*},Ca ^{*}, \tau ^{*}, N ^{*},C ^{*}$).
+\end{thm}
+
+\begin{proof}
+    Using Lemma \ref{lem2}, there exists a unique globally asymptotic stable equilibrium ($A _{\beta}^{*},Ca ^{*}$). Since 
+    \begin{equation}
+        \tau ^{*}=\frac{c _{1}+c _{2}A _{\beta}^{*}+c _{3}Ca ^{*}}{k _{3}+u _{3}},
+    \end{equation}
+    it follows that as $A _{\beta}^{*},Ca ^{*}$ tend towards equilibrium, $\tau$ will also tend towards some equilibrium $\tau ^{*}$. It follows that this cascades down to $N,C$. Thus, a unique globally asymptotic stable equilibrium for Equation \ref{eq6}.
+\end{proof}
 
 
 
