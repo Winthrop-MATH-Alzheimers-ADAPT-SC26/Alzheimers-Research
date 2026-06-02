@@ -1,10 +1,11 @@
 module AlzheimerModel
 
-export build_system, make_problem, solve_model, plot_solution, print_final
+export build_system, make_problem, solve_model, plot_solution, plot_solution2, print_final
 
 using ModelingToolkit
 using ModelingToolkit: t_nounits as t, D_nounits as D
 using DifferentialEquations
+using CairoMakie
 using Plots
 
 # --- System (sys -> all symbolic) --- #
@@ -82,6 +83,25 @@ function plot_solution(sol, sys)
     return plot(p1, p2, p3, p4, p5, layout=(2, 3))
 end
 
+function plot_solution2(sol, sys)
+    vars = [sys.Aβ, sys.Ca, sys.τ, sys.N, sys.C]
+    titles = ["Aβ", "Ca", "τ", "N", "C"]
+
+    fig = Figure(size=(900, 600))
+
+    t = sol.t
+
+    for (i, (var, title)) in enumerate(zip(vars, titles))
+        row = (i - 1) ÷ 3 + 1
+        col = (i - 1) % 3 + 1
+
+        ax = Axis(fig[row, col], title=title, xlabel="t")
+        lines!(ax, t, sol[var])
+    end
+
+    return fig
+end
+
 function print_final(sol, sys)
     println("Fianl values at t = ", sol.t[end])
     println("  Aβ = ", sol[sys.Aβ][end])
@@ -92,3 +112,11 @@ function print_final(sol, sys)
 end
 
 end
+
+#=
+
+prob = make_problem(sys, tspan=(0.0, 1000),u₀=[sys.Aβ=>0.0],p=[sys.a₁=>2,sys.a₂=>3,sys.b₁=>1,
+sys.b₂=>0.5,sys.c₁=>1.65,sys.c₂=>0.8,sys.c₃=>1.2,sys.e₁=>0.05,sys.e₂=>12,sys.e₃=>18,sys.k₁=>5,sys.k₂
+=>3,sys.k₃=>12,sys.k₅=>4])
+
+=#
