@@ -14,23 +14,32 @@ def ODEsystem(t, z, a1, a2, sigma, k1, u1, b1, b2, k2, u2, c1, c2, c3, k3, u3, d
 
     return [dAbdt, dCadt, dtaudt, dNdt, dCdt]
 
+# A beta parameters
 a1 = 65641 / 10000
 a2 = 15778.463 / 10000
 sigma = 0.00027
 k1 = 3035.98 / 10000
 u1 = 0
+
+# Ca parameters
 b1 = 315569260
 b2 = 6311385.2
 k2 = 3155692.6
 u2 = 0
+
+# Tau parameters
 c1 = 52.2958
 c2 = 1.78367
 c3 = 0.1
 k3 = 10.9999 / 6
 u3 = 0
+
+# N parameters
 d1 = 0.07176
 d2 = 0.398406
 k4 = 0.3588
+
+# C parameters
 e1 = 146.308032 / 10000
 e2 = 86.84 / 10000
 R = 1
@@ -39,6 +48,7 @@ k5 = 0.8684 / 10
 
 params = (a1, a2, sigma, k1, u1, b1, b2, k2, u2, c1, c2, c3, k3, u3, d1, d2, k4, e1, e2, R, e3, k5)
 
+# initial values for Ab, Ca, tau, N, C
 initials = [0, 100, 0, 0, 0]
 
 t_span = (0, 50)
@@ -67,12 +77,12 @@ solN = sol.y[3]
 solC = sol.y[4]
 
 plt.figure(figsize = (10, 5))
-plt.plot(time_points, solAb, label = "A beta plaques (μM)", color = 'blue', lw = 2)
-plt.plot(time_points, solCa, label = "Calcium (nM)", color = 'red', lw = 2)
-plt.plot(time_points, soltau, label = "Tau-p (μM)", color = 'green', lw = 2)
-plt.plot(time_points, solN, label = "Neurons Lost (Billions)", color = 'orange', lw = 2)
-plt.plot(time_points, solC, label = "Cognitive Loss (MMSE score)", color = 'purple', lw = 2)
-plt.xlabel('Time (years)')
+plt.plot(time_points, solAb, label = "A beta plaques (μM)", color = '#21D2FF', lw = 2)
+plt.plot(time_points, solCa, label = "Calcium (nM)", color = '#FF2164', lw = 2)
+plt.plot(time_points, soltau, label = "Tau-p (μM)", color = '#FFBC21', lw = 2)
+plt.plot(time_points, solN, label = "Neurons Lost (Billions)", color = '#3FFF21', lw = 2)
+plt.plot(time_points, solC, label = "Cognitive Loss (MMSE score decrease)", color = '#7221FF', lw = 2)
+plt.xlabel('Time (Years)')
 plt.ylabel('Population')
 plt.title('Alzheimer\'s ODE Simulation')
 plt.legend()
@@ -116,23 +126,23 @@ for u in u3_range:
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
 # final C vs u1
-axes[0].plot(u1_range, C_end_u1, color='blue', lw=2)
+axes[0].plot(u1_range, C_end_u1, color='#21D2FF', lw=2)
 axes[0].set_xlabel('u1 (A beta treatment rate)')
-axes[0].set_ylabel('Final Cognitive Loss (MMSE score)')
+axes[0].set_ylabel('Final Cognitive Loss (MMSE score decrease)')
 axes[0].set_title('Impact of u1 on C at t=50')
 axes[0].grid(True)
 
 # final C vs u2
-axes[1].plot(u2_range, C_end_u2, color='red', lw=2)
+axes[1].plot(u2_range, C_end_u2, color='#FF2164', lw=2)
 axes[1].set_xlabel('u2 (Calcium treatment rate)')
-axes[1].set_ylabel('Final Cognitive Loss (MMSE score)')
+axes[1].set_ylabel('Final Cognitive Loss (MMSE score decrease)')
 axes[1].set_title('Impact of u2 on C at t=50')
 axes[1].grid(True)
 
 # final C vs u3
-axes[2].plot(u3_range, C_end_u3, color='green', lw=2)
+axes[2].plot(u3_range, C_end_u3, color='#FFBC21', lw=2)
 axes[2].set_xlabel('u3 (Tau treatment rate)')
-axes[2].set_ylabel('Final Cognitive Loss (MMSE score)')
+axes[2].set_ylabel('Final Cognitive Loss (MMSE score decrease)')
 axes[2].set_title('Impact of u3 on C at t=50')
 axes[2].grid(True)
 
