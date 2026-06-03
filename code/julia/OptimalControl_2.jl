@@ -1,6 +1,7 @@
 using ModelingToolkit
 using ModelingToolkit: t_nounits as t, D_nounits as D
 using Symbolics
+include("FBS.jl")
 
 # State variables
 @variables Aβ(t) Ca(t) τ(t) N(t) C(t)
@@ -45,3 +46,43 @@ adjoint_eqs = [
     D(λ[i]) ~ -expand_derivatives(Symbolics.derivative(H, states[i]))
     for i in 1:5
 ]
+
+function costate_rhs!(dλ, λ, p, t)
+
+    Ca = p.state_sol(t; idxs=2)
+
+    u1 = p.u1(t)
+    u2 = p.u2(t)
+    u3 = p.u3(t)
+
+    λ1, λ2, λ3, λ4, λ5 = λ
+
+    dλ[1] =
+        -b₂ * λ2 -
+        c₂ * λ3 +
+        (k₁ + u1) * λ1
+
+    dλ[2] =
+        -c₃ * λ3 +
+        (k₂ + u2) * λ2 -
+        λ1 * (
+            a₂ / (Ca + σ)
+            -
+            a₂ * Ca / (Ca + σ)^2
+        )
+
+    dλ[3] =
+        -d₂ * λ4 -
+        e₃ * λ5 +
+        (k₃ + u3) * λ3
+
+    dλ[4] =
+        -w₂ +
+        k₄ * λ4 -
+        R * e₂ * λ5
+
+    dλ[5] =
+        -w₁ +
+        k₅ * λ5
+end
+

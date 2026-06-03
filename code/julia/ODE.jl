@@ -12,11 +12,11 @@ using Plots
 
 function build_system()
     @variables begin
-        Aβ(t) = 0.0
-        Ca(t) = 100
-        τ(t) = 0.0
-        N(t) = 0.0
-        C(t) = 0.0
+        Aβ(..) = 0.0
+        Ca(..) = 100
+        τ(..) = 0.0
+        N(..) = 0.0
+        C(..) = 0.0
     end
 
     @parameters begin
@@ -45,11 +45,11 @@ function build_system()
     end
 
     eqs = [
-        D(Aβ) ~ a₁ + (a₂ * (Ca / (Ca + σ))) - (k₁ * Aβ) - (u₁ * Aβ),
-        D(Ca) ~ b₁ + (b₂ * Aβ) - (k₂ * Ca) - (u₂ * Ca),
-        D(τ) ~ c₁ + (c₂ * Aβ) + (c₃ * Ca) - (k₃ * τ) - (u₃ * τ),
-        D(N) ~ d₁ + (d₂ * τ) - (k₄ * N),
-        D(C) ~ e₁ + (e₂ * N * R) + (e₃ * τ) - (k₅ * C)
+        D(Aβ(t)) ~ a₁ + (a₂ * (Ca(t) / (Ca(t) + σ))) - (k₁ * Aβ(t)) - (u₁ * Aβ(t)),
+        D(Ca(t)) ~ b₁ + (b₂ * Aβ(t)) - (k₂ * Ca(t)) - (u₂ * Ca(t)),
+        D(τ(t)) ~ c₁ + (c₂ * Aβ(t)) + (c₃ * Ca(t)) - (k₃ * τ(t)) - (u₃ * τ(t)),
+        D(N(t)) ~ d₁ + (d₂ * τ(t)) - (k₄ * N(t)),
+        D(C(t)) ~ e₁ + (e₂ * N(t) * R) + (e₃ * τ(t)) - (k₅ * C(t))
     ]
 
     @mtkcompile sys = ODESystem(eqs, t)
