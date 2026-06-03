@@ -1,6 +1,6 @@
 module AlzheimerModel
 
-export build_system, make_problem, solve_model, plot_solution, plot_solution2, print_final
+export build_system, make_problem, solve_model, plot_solution, plot_solution2, plot_solution_combined, print_final
 
 using ModelingToolkit
 using ModelingToolkit: t_nounits as t, D_nounits as D
@@ -12,31 +12,31 @@ using Plots
 
 function build_system()
     @variables begin
-        Aβ(t) = 0.01
-        Ca(t) = 0.0
+        Aβ(t) = 0.0
+        Ca(t) = 100
         τ(t) = 0.0
         N(t) = 0.0
         C(t) = 0.0
     end
 
     @parameters begin
-        a₁ = 65641
-        a₂ = 15778.463
+        a₁ = 4.380
+        a₂ = 1.578
         b₁ = 315569260.0
-        b₂ = 6311385.2
+        b₂ = 6311390000.0
         c₁ = 52.2958
         c₂ = 7.8
-        c₃ = 0.0
+        c₃ = 0.1
         d₁ = 0.07176
         d₂ = 0.3588
-        e₁ = 0.0
-        e₂ = 86.84
-        e₃ = 199.16
-        k₁ = 3035.98
+        e₁ = 0.0146308032
+        e₂ = 0.008684
+        e₃ = 0.019916
+        k₁ = 4.38
         k₂ = 3155692.6
-        k₃ = 10.9
-        k₄ = 0.003588
-        k₅ = 0.0
+        k₃ = 1.833316667
+        k₄ = 0.3588
+        k₅ = 0.08684
         u₁ = 0.0
         u₂ = 0.0
         u₃ = 0.0
@@ -46,7 +46,7 @@ function build_system()
 
     eqs = [
         D(Aβ) ~ a₁ + (a₂ * (Ca / (Ca + σ))) - (k₁ * Aβ) - (u₁ * Aβ),
-        D(Ca) ~ b₁ + (b₂ * Aβ) - (k₂ * τ) - (u₂ * τ),
+        D(Ca) ~ b₁ + (b₂ * Aβ) - (k₂ * Ca) - (u₂ * Ca),
         D(τ) ~ c₁ + (c₂ * Aβ) + (c₃ * Ca) - (k₃ * τ) - (u₃ * τ),
         D(N) ~ d₁ + (d₂ * τ) - (k₄ * N),
         D(C) ~ e₁ + (e₂ * N * R) + (e₃ * τ) - (k₅ * C)
@@ -58,8 +58,8 @@ end
 
 # --- Problem (prob -> concrete numbers plugged in, ready to solve) --- #
 
-function make_problem(sys; tspan=(0.0, 100.0), u₀=[], p=[])
-    return ODEProblem(sys, u₀, tspan, p)
+function make_problem(sys; tspan=(0.0, 50.0), op=[])
+    return ODEProblem(sys, op, tspan)
 end
 
 # --- Solve (sol -> final result, queryable across time) --- #
@@ -87,7 +87,7 @@ function plot_solution2(sol, sys)
     vars = [sys.Aβ, sys.Ca, sys.τ, sys.N, sys.C]
     titles = ["Aβ", "Ca", "τ", "N", "C"]
 
-    fig = Figure(size=(900, 600))
+    fig = Figure(size=(1920, 1080), px_per_unit=2)
 
     t = sol.t
 
@@ -98,6 +98,22 @@ function plot_solution2(sol, sys)
         ax = Axis(fig[row, col], title=title, xlabel="t")
         lines!(ax, t, sol[var])
     end
+
+    return fig
+end
+
+function plot_solution_combined(sol, sys)
+    vars = [sys.Aβ, sys.Ca, sys.τ, sys.N, sys.C]
+    labels = ["Aβ", "Ca", "τ", "N", "C"]
+
+    fig = Figure(size=(1920, 1080), px_per_unit=2)
+    ax = Axis(fig[1, 1], xlabel="t", title="All Variables")
+    t = sol.t
+    for (var, label) in zip(vars, labels)
+        lines!(ax, t, sol[var], label=label)
+    end
+
+    Legend(fig[1, 2], ax)
 
     return fig
 end

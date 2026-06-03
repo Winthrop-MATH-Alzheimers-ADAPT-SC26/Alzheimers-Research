@@ -9,52 +9,49 @@ using Plots
 
 ModelingToolkit.@variables begin
     Aβ(..) = 0.0
-    Ca(..) = 0.0
+    Ca(..) = 100.0
     τ(..) = 0.0
     N(..) = 0.0
-    Cog(..) = 0.0
-    u₁(..), [input = true, bounds = (0.0, 2.0)]
-    u₂(..), [input = true, bounds = (0.0, 2.0)]
-    u₃(..), [input = true, bounds = (0.0, 2.0)]
+    C(..) = 0.0
+    u₁(..), [input = true, bounds = (0.0, 1.0)]
+    u₂(..), [input = true, bounds = (0.0, 1.0)]
+    u₃(..), [input = true, bounds = (0.0, 1.0)]
 end
 
 ModelingToolkit.@parameters begin
-    a₁ = 65641.0
-    a₂ = 15778.463
+    a₁ = 4.380
+    a₂ = 1.578
     b₁ = 315569260.0
-    b₂ = 6311385.2
+    b₂ = 631139.0
     c₁ = 52.2958
     c₂ = 7.8
-    c₃ = 0.0
+    c₃ = 0.1
     d₁ = 0.07176
     d₂ = 0.3588
-    e₁ = 0.0
-    e₂ = 86.84
-    e₃ = 199.16
-    k₁ = 3035.98
+    e₁ = 0.0146308032
+    e₂ = 0.008684
+    e₃ = 0.019916
+    k₁ = 4.38
     k₂ = 3155692.6
-    k₃ = 10.9
-    k₄ = 0.003588
-    k₅ = 0.0
+    k₃ = 1.833316667
+    k₄ = 0.3588
+    k₅ = 0.08684
     σ = 0.00027
     R = 1.0
-    w₁ = 1.0
-    w₂ = 1.0
-    w₃ = 1.0
 end
 
-(ts, te) = (0.0, 100000.0)
+(ts, te) = (0.0, 50.0)
 
 eqs = [
     D(Aβ(t)) ~ a₁ + (a₂ * (Ca(t) / (Ca(t) + σ))) - (k₁ * Aβ(t)) - (u₁(t) * Aβ(t)),
-    D(Ca(t)) ~ b₁ + (b₂ * Aβ(t)) - (k₂ * τ(t)) - (u₂(t) * τ(t)),
+    D(Ca(t)) ~ b₁ + (b₂ * Aβ(t)) - (k₂ * Ca(t)) - (u₂(t) * Ca(t)),
     D(τ(t)) ~ c₁ + (c₂ * Aβ(t)) + (c₃ * Ca(t)) - (k₃ * τ(t)) - (u₃(t) * τ(t)),
     D(N(t)) ~ d₁ + (d₂ * τ(t)) - (k₄ * N(t)),
-    D(Cog(t)) ~ e₁ + (e₂ * N(t) * R) + (e₃ * τ(t)) - (k₅ * Cog(t))
+    D(C(t)) ~ e₁ + (e₂ * N(t) * R) + (e₃ * τ(t)) - (k₅ * C(t))
 ]
 
 # objective: minimize cognitive decline + treatment burden
-costs = [Cog(te) + w₁ * u₁(te)^2 + w₂ * u₂(te)^2 + w₃ * u₃(te)^2]
+costs = [C(te), N(te)]
 
 # terminal constraints — controls off at end
 cons = []
@@ -68,32 +65,30 @@ plain_sys = mtkcompile(plain_sys, inputs=[u₁(t), u₂(t), u₃(t)])
 
 # --- Initial conditions (states only, no controls) --- #
 op = [
-    Aβ(t) => 0.01,
-    Ca(t) => 0.0,
+    Aβ(t) => 0.00,
+    Ca(t) => 100.0,
     τ(t) => 0.0,
     N(t) => 0.0,
-    Cog(t) => 0.0
+    C(t) => 0.0
 ]
 
-no_treatment = solve(
-    ODEProblem(plain_sys, op, (ts, te), [u₁(t) => 0.0, u₂(t) => 0.0, u₃(t) => 0.0]),
-    Rodas5P(), saveat=1.0
-)
+no_treatment = solve(ODEProblem(plain_sys, op, (ts, te), [u₁(t) => 0.0, u₂(t) => 0.0, u₃(t) => 0.0]))
 
 # --- Build and solve optimal control problem --- #
 prob = InfiniteOptDynamicOptProblem(ad_sys, op, (ts, te),
-    dt=1.0,
+    dt=0.1,
     guesses=[
         Aβ(t) => mean(no_treatment[Aβ(t)]),
         Ca(t) => mean(no_treatment[Ca(t)]),
         τ(t) => mean(no_treatment[τ(t)]),
         N(t) => mean(no_treatment[N(t)]),
-        Cog(t) => mean(no_treatment[Cog(t)]),
+        C(t) => mean(no_treatment[C(t)]),
         u₁(t) => 0.1,
         u₂(t) => 0.1,
         u₃(t) => 0.1
     ]
 )
+
 sol = solve(prob, InfiniteOptCollocation(Ipopt.Optimizer, OrthogonalCollocation(4)),
     options=Dict(
         "nlp_scaling_method" => "gradient-based",
@@ -105,28 +100,23 @@ sol = solve(prob, InfiniteOptCollocation(Ipopt.Optimizer, OrthogonalCollocation(
         "print_level" => 5
     )
 )
-# --- No-treatment baseline --- #
-# Then set them to zero in the ODE problem
-no_treatment = solve(
-    ODEProblem(plain_sys, op, (ts, te), [u₁(t) => 0.0, u₂(t) => 0.0, u₃(t) => 0.0]),
-    Rodas5P(),
-    saveat=1.0
-)
 
 # --- Plot states --- #
 p1 = plot(sol.sol, idxs=[Aβ(t)], title="Aβ", xlabel="years")
 p2 = plot(sol.sol, idxs=[Ca(t)], title="Ca", xlabel="years")
 p3 = plot(sol.sol, idxs=[τ(t)], title="τ", xlabel="years")
 p4 = plot(sol.sol, idxs=[N(t)], title="N", xlabel="years")
-p5 = plot(sol.sol, idxs=[Cog(t)], title="Cognitive Decline", xlabel="years")
-plot!(p5, no_treatment, idxs=[Cog(t)], label="no treatment", linestyle=:dash)
-
+p5 = plot(sol.sol, idxs=[C(t)], title="C", xlabel="years")
+plot!(p5, no_treatment, idxs=[C(t)], label="no treatment", linestyle=:dash)
 # --- Plot optimal controls --- #
-p6 = plot(sol.input_sol, idxs=[u₁(t)], title="u₁ (treatment 1)", xlabel="years")
-p7 = plot(sol.input_sol, idxs=[u₂(t)], title="u₂ (treatment 2)", xlabel="years")
-p8 = plot(sol.input_sol, idxs=[u₃(t)], title="u₃ (treatment 3)", xlabel="years")
 
-display(plot(p1, p2, p3, p4, p5, p6, p7, p8, layout=(3, 3)))
+t_ctrl = sol.input_sol.t
+u1_vals = [u[1] for u in sol.input_sol.u]
+u2_vals = [u[2] for u in sol.input_sol.u]
+u3_vals = [u[3] for u in sol.input_sol.u]
 
-println("Optimal final Cog   = ", sol.sol[Cog(t)][end])
-println("Baseline final Cog  = ", no_treatment[Cog(t)][end])
+p6 = plot(t_ctrl, u1_vals, title="u₁ (treatment 1)", xlabel="years", ylim=(0, 1), label="u₁")
+p7 = plot(t_ctrl, u2_vals, title="u₂ (treatment 2)", xlabel="years", ylim=(0, 1), label="u₂")
+p8 = plot(t_ctrl, u3_vals, title="u₃ (treatment 3)", xlabel="years", ylim=(0, 1), label="u₃")
+
+display(plot(p1, p2, p3, p4, p5, p6, p7, p8, layout=(2, 4), size=(2496, 1664), dpi=150, plot_titlefontsize=14))
