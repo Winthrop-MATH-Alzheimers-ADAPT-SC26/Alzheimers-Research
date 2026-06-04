@@ -37,6 +37,7 @@ class ODEModel:
         self.t_span = t_span
         self.t_eval = t_eval
 
+    # used in sobol sensitivity analysis for problem dict
     def return_string_list(self):
         params_string = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2',
                          'c3', 'd1', 'd2', 'e1', 'e2', 'e3',
@@ -59,10 +60,12 @@ class ODEModel:
     def sensitivity_analysis(self):
         print(SensitivityAnalysis(self).run_sensitivity_analysis())
 
+    # numerically model solution to ODE
     def solution(self):
         solution = solve_ivp(self, self.t_span, self.init_cond, t_eval=self.t_eval, method='LSODA')
         return solution
 
+    # print results of solution
     def results(self):
         print("...calculated iterations...")
         print(*self.solution().y, sep=", ")
@@ -71,7 +74,7 @@ class ODEModel:
 params = [65641, 15778.463, 315569260, 6311385.2, 52.2958, 1.78467,
           3.62493, 0.07176, 0.0195, 146.308032, 86.84, 199.16,
           3035.98, 21874000, 10.9999, 0.003588, 0.8684, 0.00027, 1]
-initial_conditions = [0.0, 0.0, 0.0, 0.0, 0.0] # initial conditions [ABeta_0, Ca_0], 0.0, 0.0, 0.0
+initial_conditions = [0.0, 0.0, 0.0, 0.0, 0.0] # initial conditions [ABeta_0, Ca_0, Tau_0, N_0, C_0]
 t_span = (0, 100)
 t_eval = np.linspace(*t_span, 100)
 model_no_treatment = ODEModel(params, initial_conditions, t_span, t_eval)
