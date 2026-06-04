@@ -16,3 +16,6 @@
 # julia/nix/direnv
 *.direnv
 *.envrc
+
+# python ignores
+__pycache__/
