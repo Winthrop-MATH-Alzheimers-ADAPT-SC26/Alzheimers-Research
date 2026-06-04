@@ -4,6 +4,33 @@
 
 ## Abstract
 
+## Installation
+
+To run the Python code, you will need to install the necessary packages. Python 3.10 or higher is recommended.
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Winthrop-MATH-Alzheimers-ADAPT-SC26/Alzheimers-Research
+   cd Alzheimers-Research
+   ```
+
+2. **Create and activate a virtual environment:**
+   * **Mac/Linux:**
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+   * **Windows:**
+     ```bash
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+
+3. **Install the dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
 ## Contributors
 
 | Name                      | winthrop.edu                                                           | Github                                    |
