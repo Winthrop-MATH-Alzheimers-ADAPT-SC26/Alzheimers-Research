@@ -80,7 +80,7 @@ k5 = 0.8684 / 10
 params = (a1, a2, sigma, k1, u1, b1, b2, k2, u2, c1, c2, c3, k3, u3, d1, d2, k4, e1, e2, R, e3, k5)
 
 # initial values for Ab, Ca, tau, N, C
-initials = [10, 100, 0, 0, 0]
+initials = [0, 100, 0, 0, 0]
 
 Ab_eq, Ca_eq, tau_eq, N_eq, C_eq = fsolve(find_equilibrium_sys, [20, 150, 60, 70, 20])
 print(f"\nEquilibrium: \nA beta: {Ab_eq:.2f} \nCalcium: {Ca_eq:.2f} \nTau: {tau_eq:.2f} \nNeuron Loss: {N_eq:.2f} \nCognitive Decline: {C_eq:.2f}\n")
