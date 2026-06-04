@@ -1,88 +1,61 @@
-using ModelingToolkit
-using ModelingToolkit: t_nounits as t, D_nounits as D
-using Symbolics
+using Plots
+using Plots.PlotMeasures
+using PlotThemes
 include("FBS.jl")
+include("WeightCalculations.jl")
 
-# State variables
-@variables Aβ(t) Ca(t) τ(t) N(t) C(t)
+# Plot.jl Defaults
+theme(
+    :wong,                            # Colorblind-friendly, publication-ready colors
+    framestyle=:box,                # Boxed axes instead of floating T-axes
+    grid=true,                      # Faint background grid lines for readability
+    gridalpha=0.3,                  # Make grid lines subtle
+    linewidth=2,                    # Thicker, more visible lines
+    markersize=6,                   # Properly scaled scatter markers
+    margin=5mm,                     # Ensure axis labels aren't cut off
+    dpi=100                         # Crisp resolution for exports
+)
 
-@parameters a₁ a₂ σ k₁
-@parameters b₁ b₂ k₂
-@parameters c₁ c₂ c₃ k₃
-@parameters d₁ d₂ k₄
-@parameters e₁ e₂ e₃ k₅
-@parameters R
+# Set u₁, u₂, u₃ maxes
+const u1max = 0.12012
+const u2max = 0.12012
+const u3max = 0.12012
+# Set Timespan
+const ti = 0.0
+const te = 100.0
 
-@parameters w₁ w₂ w₃ w₄ w₅
+# Unpack
+tspan = (ti, te)
+umax = (u1max, u2max, u3max)
 
-# Control variables
-@variables u₁(t) u₂(t) u₃(t)
+# Calculate Weights
+weights = calculate_weights(umax=umax, tspan=tspan)
 
-# Costate variables
-@variables λ(t)[1:5]
+result = forward_backward_sweep(
+    x0=[0.0, 100.0, 0.0, 0.0, 0.0],
+    tspan=tspan,
+    umax=umax,
+    weights=weights,
+    max_iter=500,
+    tol=1e-6
+)
 
-eqs = [
-    D(Aβ) ~ a₁ + (a₂ * (Ca / (Ca + σ))) - (k₁ * Aβ) - (u₁ * Aβ),
-    D(Ca) ~ b₁ + (b₂ * Aβ) - (k₂ * Ca) - (u₂ * Ca),
-    D(τ) ~ c₁ + (c₂ * Aβ) + (c₃ * Ca) - (k₃ * τ) - (u₃ * τ),
-    D(N) ~ d₁ + (d₂ * τ) - (k₄ * N),
-    D(C) ~ e₁ + (e₂ * N * R) + (e₃ * τ) - (k₅ * C)
-]
+# Unpack
+ts = result.t;
+u1, u2, u3 = result.controls.u1, result.controls.u2, result.controls.u3;
+fwd_sol = result.states;
 
-# Defining states for costate equations
-states = [Aβ, Ca, τ, N, C]
+# Plot states
+p1 = plot(fwd_sol, idxs=1, xlabel="years", label="Aβ");
+p2 = plot!(fwd_sol, idxs=2, xlabel="years", label="Ca");
+p3 = plot!(fwd_sol, idxs=3, xlabel="years", label="τ");
+p4 = plot!(fwd_sol, idxs=4, title="Aβ, Ca, τ, N States", xlabel="years", label="N");
+p5 = plot(fwd_sol, idxs=5, title="C State", xlabel="years", label="C");
+# Plot controls
+p6 = plot(ts, u1, title="u₁, u₂, u₃ Treatments", xlabel="years", label="u₁");
+p7 = plot!(ts, u2, label="u₂");
+p8 = plot!(ts, u3, label="u₃");
+display(plot(p1, p5, p6, layout=(3, 1), size=(1200, 900)))
 
-# f(x,u)
-rhs = [eq.rhs for eq in eqs]
-
-# Running cost
-L = w₁ * C + w₂ * N + w₃ * u₁^2 + w₄ * u₂^2 + w₅ * u₃^2
-
-# Hamiltonian
-H = L + sum(λ[i] * rhs[i] for i in 1:5)
-
-# Costate equations
-adjoint_eqs = [
-    D(λ[i]) ~ -expand_derivatives(Symbolics.derivative(H, states[i]))
-    for i in 1:5
-]
-
-function costate_rhs!(dλ, λ, p, t)
-
-    Ca = p.state_sol(t; idxs=2)
-
-    u1 = p.u1(t)
-    u2 = p.u2(t)
-    u3 = p.u3(t)
-
-    λ1, λ2, λ3, λ4, λ5 = λ
-
-    dλ[1] =
-        -b₂ * λ2 -
-        c₂ * λ3 +
-        (k₁ + u1) * λ1
-
-    dλ[2] =
-        -c₃ * λ3 +
-        (k₂ + u2) * λ2 -
-        λ1 * (
-            a₂ / (Ca + σ)
-            -
-            a₂ * Ca / (Ca + σ)^2
-        )
-
-    dλ[3] =
-        -d₂ * λ4 -
-        e₃ * λ5 +
-        (k₃ + u3) * λ3
-
-    dλ[4] =
-        -w₂ +
-        k₄ * λ4 -
-        R * e₂ * λ5
-
-    dλ[5] =
-        -w₁ +
-        k₅ * λ5
-end
-
+println("Final C  = ", fwd_sol[5, end])
+println("Final N  = ", fwd_sol[4, end])
