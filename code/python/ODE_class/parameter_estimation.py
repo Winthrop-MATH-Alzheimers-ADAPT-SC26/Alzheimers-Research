@@ -2,17 +2,14 @@ import numpy as np
 import pandas as pd
 
 class ParameterEstimation:
-    def __init__(self, path):
-        self.df = pd.read_csv(path)
-
+    def __init__(self, params): # have path as arg when we get dataset
+        #self.df = pd.read_csv(path)
+        self.params = params
+    
+    # first test with -15%, +15% of our estimated params from the literature
     # using df, get estimated param ranges
     def get_param_ranges(self):
-        all_param_ranges = []
-        # for param estimates from literature, hard code param range
-        calcium = []
-
-        # calculate range for every column in the dataframe at once
-        all_df_ranges = self.df.apply(lambda x: x.max() - x.min())
-        all_param_ranges.append(all_df_ranges)
-        return all_param_ranges
-
+        lower_bound = [param * 0.85 for param in self.params] # multiply 0.85 to subtract 15%
+        upper_bound = [param * 1.15 for param in self.params]
+        total_bounds = list(zip(lower_bound, upper_bound))
+        return total_bounds

@@ -1,8 +1,10 @@
 import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
-from sensitivity_analysis import SensitivityAnalysis
-
+import pandas as pd
+from parameter_estimation import ParameterEstimation
+from SALib.sample import saltelli
+from SALib.analyze import sobol
 # define the class for system of equations
 class ODEModel:
     def __init__(self, params, initial_conditions, t_span, t_eval): 
@@ -37,6 +39,8 @@ class ODEModel:
         self.t_span = t_span
         self.t_eval = t_eval
 
+        self.param_ranges = ParameterEstimation(params).get_param_ranges()
+
     # used in sobol sensitivity analysis for problem dict
     def return_string_list(self):
         params_string = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2',
@@ -58,7 +62,40 @@ class ODEModel:
 
     # call sensitivity analysis using model in class to run SAlib sobol analysis
     def sensitivity_analysis(self):
-        print(SensitivityAnalysis(self).run_sensitivity_analysis())
+        self.problem = {
+            'num_vars': self.return_string_list()[1],
+            'names': self.return_string_list()[0],
+            'bounds': self.param_ranges}
+
+        param_values = saltelli.sample(self.problem, 1024)
+        num_eval = param_values.shape[0] 
+        model_out = np.zeros(num_eval)
+        # for params obtained from saltelli sampling, iterate
+        for i, current_params in enumerate(param_values):
+            # reate a temporary model instance with the SALib sampled parameters
+            temp_model = ODEModel(current_params, self.init_cond, self.t_span, t_eval=self.t_eval)
+            # solve IVP for this specific parameter set
+            sol = temp_model.solution()
+            model_out[i] = sol.y[4, -1]
+        sobol_analysis = sobol.analyze(self.problem, model_out, print_to_console=True)
+        return sobol_analysis
+
+    def sobol_dataframe_output(self, sobol_analysis):
+        param_string = self.return_string_list()[0]
+        df = pd.DataFrame({
+            'Params': param_string,
+            'Sobol First Order (S1)': sobol_analysis['S1'],
+            'Sobol Total (ST)': sobol_analysis['ST']
+            }).sort_values(by='Sobol Total (ST)', ascending=False)
+        print("\n ...Sobol Analysis Table...")
+        print(df.to_string(index=False))
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
+        ax.set_ylabel('Sensitivity Index Value')
+        ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
+        plt.tight_layout()
+        plt.show()
 
     # numerically model solution to ODE
     def solution(self):
@@ -68,7 +105,8 @@ class ODEModel:
     # print results of solution
     def results(self):
         print("...calculated iterations...")
-        print(*self.solution().y, sep=", ")
+        sol = self.solution()
+        print(*sol.y, sep=", ")
 
     def visualization(self):
         # create a grid with 2 rows and 3 columns
