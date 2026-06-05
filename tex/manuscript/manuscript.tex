@@ -56,12 +56,14 @@ It should be noted that in these models, while each has its own way of observing
 Evidence suggests that focusing solely on anti-amyloid beta treatments or tau protein treatments, rather attempting to determine treatments for many different aspects of the disease \cite{abdulkhaliq2026amyloid,zhang2021interaction}
 This provides difficulty in understanding exactly the importance of which component of the disease should be the focus of further study in order to provide evidence for treatments having higher efficacy. 
 In this study, a mechanistic model is proposed, analyzing the interaction between A$\beta$, Ca$^{2+}$, and tau proteins; observing the effects of this multifaceted interaction on neurodegeneration, and cognitive decline.
-``Sensitivity analysis is performed in order to better understand the importance of each aspect of the model, and optimal control is used in order to determine the suggested avenues of effective treatment.''
+``Sensitivity analysis is performed in order to better understand the importance of each aspect of the model, and optimal control is used in order to determine the suggested avenues of effective treatment.'' \bigskip
+
 \section{Proposed Model}
 To understand the role calcium may have in the interaction of AD, a model is proposed using five biomarkers found to have interactions within the disease: hallmark biomarkers through amyloid beta and tau, an interactional biomarker through calcium, suggested to have a role in amyloid beta and tau protein accumulation. 
 Also observed are neuronal loss biomarkers, and cognitive decline. 
 The pathology of AD is suggested to start through a feedback loop between amyloid beta and calcium through a dysregulation of calcium; this excacerbates the aggregation of amyloid beta, forming plaques. 
-These plaques then promotes the hyperphosphorylation of tau proteins, leading to neurodegeneration and subsequently cognitive decline.
+These plaques then promotes the hyperphosphorylation of tau proteins, leading to neurodegeneration and subsequently cognitive decline. \bigskip
+
 \subsection{Amyloid Beta and Calcium Equations}
 Because amyloid beta and calcium are suggested to interact in such a way that a dysregulation of calcium causes an acceleration of amyloid beta accumulation \cite{pal2025nonequilibrium}, this is modeled mathematically as 
 \begin{equation}
@@ -74,7 +76,7 @@ Similarly, an amyloid beta interaction is observed to have a role in the further
 \begin{equation}
     \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\quad \text{with} \quad Ca(T _{0})=Ca _{0}.
 \end{equation}
-Here, the accumulation of amyloid beta is positive at a rate $b _{2}$, with a natural removal rate of calcium, $k _{2}$.
+Here, the accumulation of amyloid beta is positive at a rate $b _{2}$, with a natural removal rate of calcium, $k _{2}$. \bigskip
 
 \subsection{Tau Equation}
 Many studies have suggested that the pathology of tau is initiated by amyloid beta accumulation, and have modeled this process mathematically \cite{zheng2002amyloid, hao2022optimal}. 
@@ -82,14 +84,15 @@ However, it has also been suggested that calcium also has an effect inducing the
 This leads to a definition of the tau equation to be given by 
 \begin{equation}
     \frac{d \tau}{dt}=c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\quad \text{with} \quad \tau(T _{0})=\tau _{0}.
+    \label{eq:tau}
 \end{equation}
-It is noted here that only pathological tau is observed, where other studies have used compartments relating to non-amyloid dependent tau accumulation, or suspected non-Alzheimer pathology (SNAP) \cite{petrella2019computational, hao2022optimal}.
+It is noted here that only pathological tau is observed, where other studies have used compartments relating to non-amyloid dependent tau accumulation, or suspected non-Alzheimer pathology (SNAP) \cite{petrella2019computational, hao2022optimal}. \bigskip
 
 \subsection{Neurodegeneration Equation}
 When tau is in a pathological state, it no longer binds to microtubules as intended; instead, the formation of NFTs occur in the neurons, leading to neurodegeneration \cite{ballatore2007tau}. Hence, this equation is defined as 
 \begin{equation}
     \frac{dN}{dt}=d _{1}+d _{2}\tau-k _{4}N.
-\end{equation}
+\end{equation} \bigskip
 
 \subsection{Cognitive Decline Equation}
 Both tau and neurodegeneration are evidenced to directly affect cognitive decline \cite{bejanin2017tau, hao2022optimal}. Because of this, the equation for cognitive decline is defined as 
@@ -125,7 +128,7 @@ This model is summarized as a system of ordinary system of differential equation
     N(T _{0})=N _{0}\\
     C(T _{0})=C _{0}.
 \end{cases}
-\end{equation}
+\end{equation} \bigskip
 
 \section{Analysis}
 \subsection{Preliminary Results}
@@ -135,7 +138,8 @@ This is done by first noticing $a_1 + a_2\frac{Ca}{Ca + \sigma} - r_1 A_{\beta} 
 So, $a_1 + a_2 - r_1 A_{\beta} < 0$ when $A_{\beta} > \frac{a_1 + a_2}{r_1}$. 
 Similarly, using that $A _{\beta}$ is bounded, it follows that $\frac{dCa}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca \leq b_1 + b_2 M - r_2 Ca$ for $M > A_{\beta} (t) \, \forall \, t \geq 0$. 
 So, $b_1 + b_2 M - r_2 Ca < 0$ when $Ca > \frac{b_1 + b_2 M}{r_2}$. Thus $Ca$ is also bounded. 
-This process, when coupled, results in the rest of the system being bounded. 
+This process, when coupled, results in the rest of the system being bounded. \bigskip
+
 \begin{lem}[Establishment of Unique Equilibria of Uncoupled System]\label{lem1}
     There exists a unique equilibria ($A _{\beta}^{*}, Ca ^{*}$) for the system
     \begin{equation}\label{eq7}
@@ -145,57 +149,70 @@ This process, when coupled, results in the rest of the system being bounded.
         \end{cases}
     \end{equation}
 \end{lem}
+
 \begin{proof}
     To establish the existence of equilibria for Equation \ref{eq7}, a solution to the following must be obtained:
-    \begin{eqnarray}
+    \begin{align}
         \label{eq8}
-        0&=&a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
+        a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta} &= 0\\
         \label{eq9}
-        0&=&b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca.
-    \end{eqnarray}
+        b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca &= 0.
+    \end{align}
     By solving $\frac{d A_{\beta}}{dt} = a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}$ for $A_{\beta}$, we get
     \begin{equation}\label{eq10}
         A_{\beta} = \frac{a_1 Ca + a_2 Ca + a_1 \sigma}{r_1 (Ca + \sigma)}.
     \end{equation}
     We then substitute this value into $\frac{d Ca}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca$. 
     The resulting expression is,
-    \begin{equation}\label{eq11}
+    \begin{equation}\label{eq:prequadratic}
         b_1 - r_2 Ca + \frac{b_2 (a_1 Ca + a_2 Ca + a_1 \sigma)}{r_1 (Ca + \sigma)}.
     \end{equation}
-    Setting this expression equal to 0 and doing further simplification yields the quadratic,
-    \begin{equation}\label{eq12}
+    Setting (\ref{eq:prequadratic}) equal to 0 and doing further simplification yields the quadratic,
+    \begin{equation}\label{eq:quadratic}
         -(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma)Ca + a_1 b_2 \sigma + b_1 r_1 \sigma = 0.
     \end{equation}
 
-    Notice that in Equation \ref{eq12}, the quadratic term is always negative and the constant term is always positive. 
+    Notice that in (\ref{eq:quadratic}), the quadratic term is always negative and the constant term is always positive. 
     The linear term can either be positive or negative depending on the choice of parameters. 
     Regardless of the parity of the linear term, there is only one sign change in the expression, so by Descartes' Rule of Signs, there is one positive real root to this quadratic. 
     Thus, there exists a unique positive equilibrium ($A _{\beta}^{*},Ca ^{*}$) for the system in Equation \ref{eq7}.
-\end{proof}
+\end{proof} \bigskip
 
 \begin{lem}[Global Stability of Equilibrium]\label{lem2}
     The equilibrium ($A _{\beta}^{*},Ca ^{*}$) is globally asymptotically stable.
 \end{lem}
+
 \begin{proof}
     Let $\mathbf{F} (A_{\beta}, Ca) = \left\langle a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}, b_1 + b_2 A_{\beta} - r_2 Ca \right\rangle$. 
     Then, $\nabla \cdot \mathbf{F} = -r_1 - r_2$. 
     Choose the function $\alpha (A_{\beta}, Ca) = 1$. 
     So, $\nabla \cdot (\alpha (\cdot) \mathbf{F} (\cdot)) < 0$, therefore by the Bendixson-Dulac Theorem, there is no limit cycle in the system of ODEs. 
     So, the equilibrium point must be globally stable in the non-negative orthant.
-\end{proof}
+\end{proof} \bigskip 
 
 \begin{thm}[Global Stability of Equilibrium of System]
     There exists a unique globally asymptotically stable equilibrium ($A _{\beta}^{*},Ca ^{*}, \tau ^{*}, N ^{*},C ^{*}$).
 \end{thm}
 
 \begin{proof}
-    Using Lemma \ref{lem2}, there exists a unique globally asymptotic stable equilibrium ($A _{\beta}^{*},Ca ^{*}$). Since 
+    By Lemma \ref{lem2}, there exists a unique globally asymptotic stable equilibrium ($A _{\beta}^{*},Ca ^{*}$). By solving (\ref{eq:tau}) for $\tau$ we get the following equilibrium value:
     \begin{equation}
-        \tau ^{*}=\frac{c _{1}+c _{2}A _{\beta}^{*}+c _{3}Ca ^{*}}{k _{3}+u _{3}},
+        \tau ^{*}=\frac{c _{1}+c _{2}A _{\beta}^{*}+c _{3}Ca ^{*}}{k _{3}+u _{3}}.
     \end{equation}
-    it follows that as $A _{\beta}^{*},Ca ^{*}$ tend towards equilibrium, $\tau$ will also tend towards some equilibrium $\tau ^{*}$. It follows that this cascades down to $N,C$. Thus, a unique globally asymptotic stable equilibrium for Equation \ref{eq6}.
-\end{proof}
 
+    By similar methods we find
+    \begin{equation}
+        N^* = \frac{d_1 + d_2 \tau^*}{k_4}
+    \end{equation}
+    and
+    \begin{equation}
+        C^* = \frac{e_1 + e_2 N^*R + e_3 \tau^*}{k_5}.
+    \end{equation}
+
+    Thus there is a unique globally asymptotic stable equilibrium solution for the system in (\ref{eq6}).
+\end{proof} \bigskip
+
+\subsection{Results and Discussion}
 
 
 \section{Parameters}
@@ -219,27 +236,79 @@ This process, when coupled, results in the rest of the system being bounded.
         $d _{2}$ & & &\\
         $e _{1}$ & $1.67$ & $yr _{-1}$ & \cite{hao2022optimal}\\
         $e _{2}$ & $3.83$ &$yr _{1}$ &\cite{hao2022optimal}\\
+        $e _{3}$ &  &  & \\
         $k _{1}$ & $0.35$ & $yr ^{-1}$ & \cite{pal2025nonequilibrium}\\
         $k _{2}$ & $500$ & $yr ^{-1}$ & \cite{pal2025nonequilibrium}\\
         $k _{3}$ & & &\\
-        $k _{N}$ & $1.00$ & $C$ &\\
-        $k _{C}$ & $169.48$ & $C$ &\\
-        $\alpha _{A _{\beta}}$ & & &\\
-        $\alpha _{Ca}$ & & &\\
-        $\alpha _{\tau}$ & & &\\
-        $\delta _{A _{\beta}}$ & & &\\
-        $\delta _{Ca}$ & & &\\
-        $\delta _{\tau}$ & & &\\
+        $k _{4}$ & $1.00$ & $C$ &\\
+        $k _{5}$ & $169.48$ & $C$ &\\
+        $u _{1}$ &  &  & \cite{pal2025nonequilibrium}\\
+        $u _{2}$ &  &  & \cite{pal2025nonequilibrium}\\
+        $u _{3}$ & & &\\
         $\sigma$ & $0.00027$& $C$ & \cite{zhang2020mathematical}
     \end{tabular}
-\end{table}
+\end{table} \bigskip
 
-Hamaltonian
+\section{Optimal Control}
+\subsection{Objective Function}
 
 \begin{equation}
-\mathtt{w_1} ~ C\left( t \right) + \mathtt{w_2} ~ N\left( t \right) + \left( \mathtt{b_1} + \mathtt{b_2} ~ \mathtt{A\beta}\left( t \right) - \mathtt{k_2} ~ \mathrm{\mathtt{Ca}}\left( t \right) - \mathrm{\mathtt{Ca}}\left( t \right) ~ \mathtt{u_2}\left( t \right) \right) ~ \lambda_{{2}}\left( t \right) + \left( \mathtt{c_1} + \mathtt{c_2} ~ \mathtt{A\beta}\left( t \right) + \mathtt{c_3} ~ \mathrm{\mathtt{Ca}}\left( t \right) - \mathtt{k_3} ~ \tau\left( t \right) - \tau\left( t \right) ~ \mathtt{u_3}\left( t \right) \right) ~ \lambda_{{3}}\left( t \right) + \left( \mathtt{d_1} + \mathtt{d_2} ~ \tau\left( t \right) - \mathtt{k_4} ~ N\left( t \right) \right) ~ \lambda_{{4}}\left( t \right) + \left( \mathtt{a_1} + \frac{\mathtt{a_2} ~ \mathrm{\mathtt{Ca}}\left( t \right)}{\mathrm{\mathtt{Ca}}\left( t \right) + \sigma} - \mathtt{k_1} ~ \mathtt{A\beta}\left( t \right) - \mathtt{A\beta}\left( t \right) ~ \mathtt{u_1}\left( t \right) \right) ~ \lambda_{{1}}\left( t \right) + \left( \mathtt{u_1}\left( t \right) \right)^{2} ~ \mathtt{w_3} + \left( \mathtt{u_2}\left( t \right) \right)^{2} ~ \mathtt{w_4} + \left( \mathtt{u_3}\left( t \right) \right)^{2} ~ \mathtt{w_5} + \left( \mathtt{e_1} + \mathtt{e_3} ~ \tau\left( t \right) - \mathtt{k_5} ~ C\left( t \right) + R ~ \mathtt{e_2} ~ N\left( t \right) \right) ~ \lambda_{{5}}\left( t \right)
+    \label{eq:objective}
+    J(u_1, u_2, u_3) = \int_0^K A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 \, \mathrm dt.
+\end{equation} \bigskip
+
+\subsection{Admissible Controls}
+
+\begin{equation}
+    \label{eq:admissible}
+    u = \left\{ (u_1, u_2, u_3) \in L^\infty (0, K)^3 \mid (u_1, u_2, u_3) \in \left[ 0, u_1^{\max} \right], \left[ 0, u_2^{\max} \right], \left[ 0, u_3^{\max} \right] \, \forall \, t \in [0, K] \right\}
+\end{equation} \bigskip
+
+\subsection{Hamiltonian}
+
+\begin{equation}
+\label{eq:hamiltonian}
+\begin{split}
+    \mathcal H &= A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 + \lambda_1 \left( a_1 + a_2 \frac{Ca}{Ca + \sigma} - k_1 A_\beta - u_1 A_\beta \right) \\
+    &\quad + \lambda_2 \left( b_1 + b_2 A_\beta - k_2 Ca - u_2 Ca \right) + \lambda_3 \left( c_1 + c_2 A_\beta + c_3 Ca - k_3 \tau - u_3 \tau \right) \\
+    &\quad + \lambda_4 \left( d_1 + d_2 \tau - k_4 N \right) + \lambda_5 \left( e_1 + e_2 NR + e_3 \tau - k_5 C \right) .
+\end{split}
+\end{equation} \bigskip
+
+\subsection{Adjoint Equations}
+
+\begin{equation}
+\label{eq:adjoints}
+\begin{cases}
+    \frac{\mathrm d\lambda_1}{\mathrm dt} = \frac{- \partial \mathcal H}{\partial A_\beta} =  k_1 \lambda_1 + u_1 \lambda_1 - b_2 \lambda_2 - c_2 \lambda_3 \\
+
+    \frac{\mathrm d\lambda_2}{\mathrm dt} = \frac{- \partial \mathcal H}{\partial Ca} = -\lambda_1 \frac{a_2 \sigma}{\left( Ca + \sigma \right)^2 } + k_2 \lambda_2 + u_2 \lambda_2 - c_3 \lambda_3 \\
+
+    \frac{\mathrm d\lambda_3}{\mathrm dt} = \frac{- \partial \mathcal H}{\partial \tau} = k_3 \lambda_3 + u_3 \lambda_3 - d_2 \lambda_4 - e_3 \lambda_5 \\
+
+    \frac{\mathrm d\lambda_4}{\mathrm dt} = \frac{- \partial \mathcal H}{\partial N} = -A_1 + k_4 \lambda_4 - e_2 R \lambda_5 \\
+
+    \frac{\mathrm d\lambda_5}{\mathrm dt} = \frac{- \partial \mathcal H}{\partial C} = -A_2 + k_5 \lambda_5
+\end{cases}
 \end{equation}
 
+with transversality conditions
+\begin{equation}
+    \label{eq:transversality}
+    \lambda_1 (K) = \lambda_2 (K) = \lambda_3 (K) = \lambda_4 (K) = \lambda_5(K) = 0.
+\end{equation}
+
+\subsection{Characterizations}
+\begin{equation}
+\label{eq:characterizations}
+\begin{cases}
+    \frac{\partial \mathcal H}{\partial u_1} = 2 A_3 u_1 - \lambda_1 A_\beta = 0, & u_1^* = \min \left\{ u_1^{\max}, \max \left\{ 0, \frac{\lambda_1 A_\beta}{2 A_3} \right\} \right\} \\
+
+    \frac{\partial \mathcal H}{\partial u_2} = 2 A_4 u_2 - \lambda_2 Ca = 0, & u_2^* = \min \left\{ u_2^{\max}, \max \left\{ 0, \frac{\lambda_2 Ca}{2 A_4} \right\} \right\} \\
+
+    \frac{\partial \mathcal H}{\partial u_3} = 2 A_5 u_3 - \lambda_3 \tau = 0, & u_3^* = \min \left\{ u_3^{\max}, \max \left\{ 0, \frac{\lambda_3 \tau}{2 A_5} \right\} \right\}.
+\end{cases}
+\end{equation} \bigskip
 
 \printbibliography
 
