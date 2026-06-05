@@ -67,6 +67,7 @@ These plaques then promotes the hyperphosphorylation of tau proteins, leading to
 \subsection{Amyloid Beta and Calcium Equations}
 Because amyloid beta and calcium are suggested to interact in such a way that a dysregulation of calcium causes an acceleration of amyloid beta accumulation \cite{pal2025nonequilibrium}, this is modeled mathematically as 
 \begin{equation}
+    \label{eq:abeta}
     \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\quad \text{with} \quad A _{\beta}(T _{0})=A _{0},
 \end{equation}
 where $A _{0}$ is the initial condition of amyloid beta at age $T _{0}$, and can vary on a per patient basis \cite{hao2022optimal}. 
@@ -74,6 +75,7 @@ Here, $a(Ca/[Ca+\sigma])$ acts as the interaction of calcium on $A _{\beta}$ usi
 
 Similarly, an amyloid beta interaction is observed to have a role in the further dysregulation of calcium, and the equation for calcium is defined as 
 \begin{equation}
+    \label{eq:calcium}
     \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\quad \text{with} \quad Ca(T _{0})=Ca _{0}.
 \end{equation}
 Here, the accumulation of amyloid beta is positive at a rate $b _{2}$, with a natural removal rate of calcium, $k _{2}$. \bigskip
@@ -91,12 +93,14 @@ It is noted here that only pathological tau is observed, where other studies hav
 \subsection{Neurodegeneration Equation}
 When tau is in a pathological state, it no longer binds to microtubules as intended; instead, the formation of NFTs occur in the neurons, leading to neurodegeneration \cite{ballatore2007tau}. Hence, this equation is defined as 
 \begin{equation}
+    \label{eq:nloss}
     \frac{dN}{dt}=d _{1}+d _{2}\tau-k _{4}N.
 \end{equation} \bigskip
 
 \subsection{Cognitive Decline Equation}
 Both tau and neurodegeneration are evidenced to directly affect cognitive decline \cite{bejanin2017tau, hao2022optimal}. Because of this, the equation for cognitive decline is defined as 
 \begin{equation}
+    \label{eq:cdecline}
     \frac{dC}{dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C.
 \end{equation}
 The parameter $R$ represents a patient having the APOE $\epsilon 4$ gene, which has been shown to be a risk factor in Alzheimer's disease (need to find citation of this).
@@ -106,7 +110,7 @@ This model is summarized as a system of ordinary system of differential equation
 
 
 
-\begin{equation}\label{eq6}
+\begin{equation}\label{odesystem}
 \begin{cases}
     \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
 
@@ -132,13 +136,21 @@ This model is summarized as a system of ordinary system of differential equation
 
 \section{Analysis}
 \subsection{Preliminary Results}
-Assuming Equation \ref{eq6} is subject to initial conditions that are non-negative, it is noted that the system is invariant in the non-negative orthant. 
-Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt,dCa/dt$ can be shown to be bounded. 
-This is done by first noticing $a_1 + a_2\frac{Ca}{Ca + \sigma} - r_1 A_{\beta} \leq a_1 + a_2 - r_1 A_{\beta}$, since $Ca/(Ca+\sigma)\in [0,1)$. 
-So, $a_1 + a_2 - r_1 A_{\beta} < 0$ when $A_{\beta} > \frac{a_1 + a_2}{r_1}$. 
-Similarly, using that $A _{\beta}$ is bounded, it follows that $\frac{dCa}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca \leq b_1 + b_2 M - r_2 Ca$ for $M > A_{\beta} (t) \, \forall \, t \geq 0$. 
-So, $b_1 + b_2 M - r_2 Ca < 0$ when $Ca > \frac{b_1 + b_2 M}{r_2}$. Thus $Ca$ is also bounded. 
-This process, when coupled, results in the rest of the system being bounded. \bigskip
+Assuming (\ref{odesystem}) is subject to initial conditions that are non-negative, it is noted that the system is invariant in the non-negative orthant. Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt,dCa/dt$ can be shown to be bounded. 
+This is done by first noticing
+
+\begin{equation}
+    a_1 + a_2\frac{Ca}{Ca + \sigma} - r_1 A_{\beta} \leq a_1 + a_2 - r_1 A_{\beta}
+\end{equation}
+
+since $Ca/(Ca+\sigma)\in [0,1)$. 
+So, $a_1 + a_2 - r_1 A_{\beta} < 0$ when $A_{\beta} > \frac{a_1 + a_2}{r_1}$. Similarly, using that $A _{\beta}$ is bounded, it follows that 
+
+\begin{equation}
+    \frac{dCa}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca \leq b_1 + b_2 M - r_2 Ca
+\end{equation}
+
+for $M > A_{\beta} (t) \, \forall \, t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $Ca > \frac{b_1 + b_2 M}{r_2}$. Thus $Ca$ is also bounded. This process, when coupled, results in the rest of the system being bounded. \bigskip
 
 \begin{lem}[Establishment of Unique Equilibria of Uncoupled System]\label{lem1}
     There exists a unique equilibria ($A _{\beta}^{*}, Ca ^{*}$) for the system
@@ -158,23 +170,23 @@ This process, when coupled, results in the rest of the system being bounded. \bi
         \label{eq9}
         b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca &= 0.
     \end{align}
+
     By solving $\frac{d A_{\beta}}{dt} = a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}$ for $A_{\beta}$, we get
-    \begin{equation}\label{eq10}
+    \begin{equation}
         A_{\beta} = \frac{a_1 Ca + a_2 Ca + a_1 \sigma}{r_1 (Ca + \sigma)}.
     \end{equation}
-    We then substitute this value into $\frac{d Ca}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca$. 
-    The resulting expression is,
+
+    We then substitute this value into $\frac{d Ca}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca$. The resulting expression is,
     \begin{equation}\label{eq:prequadratic}
         b_1 - r_2 Ca + \frac{b_2 (a_1 Ca + a_2 Ca + a_1 \sigma)}{r_1 (Ca + \sigma)}.
     \end{equation}
+
     Setting (\ref{eq:prequadratic}) equal to 0 and doing further simplification yields the quadratic,
     \begin{equation}\label{eq:quadratic}
         -(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma)Ca + a_1 b_2 \sigma + b_1 r_1 \sigma = 0.
     \end{equation}
 
-    Notice that in (\ref{eq:quadratic}), the quadratic term is always negative and the constant term is always positive. 
-    The linear term can either be positive or negative depending on the choice of parameters. 
-    Regardless of the parity of the linear term, there is only one sign change in the expression, so by Descartes' Rule of Signs, there is one positive real root to this quadratic. 
+    Notice that in (\ref{eq:quadratic}), the quadratic term is always negative and the constant term is always positive. The linear term can either be positive or negative depending on the choice of parameters. Regardless of the parity of the linear term, there is only one sign change in the expression, so by Descartes' Rule of Signs, there is one positive real root to this quadratic. 
     Thus, there exists a unique positive equilibrium ($A _{\beta}^{*},Ca ^{*}$) for the system in Equation \ref{eq7}.
 \end{proof} \bigskip
 
@@ -183,11 +195,7 @@ This process, when coupled, results in the rest of the system being bounded. \bi
 \end{lem}
 
 \begin{proof}
-    Let $\mathbf{F} (A_{\beta}, Ca) = \left\langle a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}, b_1 + b_2 A_{\beta} - r_2 Ca \right\rangle$. 
-    Then, $\nabla \cdot \mathbf{F} = -r_1 - r_2$. 
-    Choose the function $\alpha (A_{\beta}, Ca) = 1$. 
-    So, $\nabla \cdot (\alpha (\cdot) \mathbf{F} (\cdot)) < 0$, therefore by the Bendixson-Dulac Theorem, there is no limit cycle in the system of ODEs. 
-    So, the equilibrium point must be globally stable in the non-negative orthant.
+    Let $\mathbf{F} (A_{\beta}, Ca) = \left\langle a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}, \, b_1 + b_2 A_{\beta} - r_2 Ca \right\rangle$. Then, $\nabla \cdot \mathbf{F} = -r_1 - r_2$. Choose the function $\alpha (A_{\beta}, Ca) = 1$. So, $\nabla \cdot (\alpha \mathbf{F}) < 0$, therefore by the Bendixson-Dulac Theorem, there is no limit cycle in the system of ODEs. So, the equilibrium point must be globally stable in the non-negative orthant.
 \end{proof} \bigskip 
 
 \begin{thm}[Global Stability of Equilibrium of System]
@@ -209,14 +217,36 @@ This process, when coupled, results in the rest of the system being bounded. \bi
         C^* = \frac{e_1 + e_2 N^*R + e_3 \tau^*}{k_5}.
     \end{equation}
 
-    Thus there is a unique globally asymptotic stable equilibrium solution for the system in (\ref{eq6}).
+    Thus there is a unique globally asymptotic stable equilibrium solution for the system in (\ref{odesystem}).
 \end{proof} \bigskip
 
 \subsection{Results and Discussion}
 
+\begin{figure}
+    \label{fig:general}
+    \centering
+    \fbox{\includegraphics[scale=0.5]{alzgraph1.png}}
+    \caption{ode simulation}
+\end{figure}
+
+\begin{figure}
+    \label{fig:treatment}
+    \centering
+    \fbox{\includegraphics[scale=0.4]{alzgraph2.png}}
+    \caption{treatment outcomes}
+\end{figure}
+
+\begin{figure}
+    \label{fig:phaseportrait}
+    \centering
+    \fbox{\includegraphics[scale=0.5]{alzgraph3.png}}
+    \caption{phase portrait}
+\end{figure}
 
 \section{Parameters}
 \begin{table}[h]
+    \footnotesize
+    \centering
     \begin{tabular}{l|l|l|l}
         Var & Value & Unit & Source \\
         \hline
