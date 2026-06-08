@@ -2,7 +2,7 @@ module PlottingTools
 
 export ControlsPlot,
     SolPlotCombined,
-    SolPlot,
+    SolPlotHorizontal,
     make_plot
 
 using CairoMakie
@@ -11,20 +11,20 @@ abstract type PlotType end
 
 struct ControlsPlot <: PlotType end
 struct SolPlotCombined <: PlotType end
-struct SolPlot <: PlotType end
+struct SolPlotHorizontal <: PlotType end
 
 
 # Makie theme
-set_theme!(Theme(
-    fontsize=14,
-    linewidth=2,
-    Axis=(
-        xgridvisible=true,
-        ygridvisible=true,
-        titlesize=16,
-        xlabelsize=13,
-    )
-))
+set_theme!(merge(Theme(
+        fontsize=14,
+        linewidth=2,
+        Axis=(
+            xgridvisible=true,
+            ygridvisible=true,
+            titlesize=16,
+            xlabelsize=13,
+        )
+    ), theme_latexfonts()))
 
 # Plot controls alongside solution
 function make_plot(::ControlsPlot, result)
@@ -93,7 +93,7 @@ function make_plot(::SolPlotCombined, result)
 end
 
 # Individual state plots
-function make_plot(::SolPlot, result)
+function make_plot(::SolPlotHorizontal, result)
 
     t = result.t
     sol = result.sol

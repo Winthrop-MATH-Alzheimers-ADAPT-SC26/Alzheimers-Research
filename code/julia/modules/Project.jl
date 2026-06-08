@@ -14,11 +14,11 @@ using .Parameters: build_param_vector
 using .ODE: print_final
 using .FBS: forward_backward_sweep
 using .Weight: calculate_weights
-using .PlottingTools: ControlsPlot, SolPlotCombined, SolPlot, make_plot
+using .PlottingTools: ControlsPlot, SolPlotCombined, SolPlotHorizontal, make_plot
 
 export sys, print_final,
     build_param_vector, forward_backward_sweep,
     calculate_weights,
-    ControlsPlot, SolPlotCombined, SolPlot, make_plot
+    ControlsPlot, SolPlotCombined, SolPlotHorizontal, make_plot
 
 end
