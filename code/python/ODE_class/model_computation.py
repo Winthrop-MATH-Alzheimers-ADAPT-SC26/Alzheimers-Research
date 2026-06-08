@@ -8,10 +8,23 @@ from SALib.analyze import sobol
 # define the class for system of equations
 class ODEModel:
     def __init__(self, params, initial_conditions, t_span, t_eval): 
+        """initialization.
+
+        Args:
+            params: use list of parameter values obtained from literature. Ordered 
+            [a1, a2, b1, b2, c1, c2, c3, d1, d2, e1, e2, e3, k1, k2, k3, k4, k5, sigma, r].
+
+            initial_conditions: list of intial condition for state variables.
+
+            t_span: linspace for sequence of time.
+
+            t_eval: use t_span with subdivisions for evaluation.
+        ---
+        Returns:
+            None.
+        """
         # params list is ordered: # a1, a2, b1, b2, c1, c2, c3,
-        # d1, d2, e1, e2, e3, u1, u2,
-        # e3, u1, u2, u3, k1, k2, k3,
-        # k4, k5, sigma, r.
+        # d1, d2, e1, e2, e3, k1, k2, k3, k4, k5, sigma, r.
         self.a1 = params[0]
         self.a2 = params[1]
         self.b1 = params[2]
@@ -43,6 +56,7 @@ class ODEModel:
 
     # used in sobol sensitivity analysis for problem dict
     def return_string_list(self):
+        """Using parameter strings, return list of parameter names and length of list."""
         params_string = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2',
                          'c3', 'd1', 'd2', 'e1', 'e2', 'e3',
                          'k1', 'k2', 'k3', 'k4', 'k5', 'sig',
@@ -52,6 +66,7 @@ class ODEModel:
 
     # use call to allow for solutions to be computed later
     def __call__(self, t, y):
+        """Use this throughout to call ODE model; useful for using self keyword within class methods."""
         ABeta, Ca, Tau, N, C = y
         dABeta = self.a1 + self.a2 * (Ca**2 / (Ca**2 + self.sigma**2)) - self.k1 * ABeta #- self.u1 * ABeta
         dCa = self.b1 + self.b2 * ABeta - self.k2 * Ca # - self.u2 * Ca
@@ -62,25 +77,37 @@ class ODEModel:
 
     # call sensitivity analysis using model in class to run SAlib sobol analysis
     def sensitivity_analysis(self):
+        """Using the self variables, the sobol sensitivity analysis is used from SALib.
+
+        These parameters are used to create the saltelli sampling problem that is then used
+        in order to create a new instance of ODEModel and provides a solution.
+        """
         self.problem = {
             'num_vars': self.return_string_list()[1],
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
-
+        # call saltelli sampling values to feed into a new model instance
         param_values = saltelli.sample(self.problem, 1024)
         num_eval = param_values.shape[0] 
         model_out = np.zeros(num_eval)
         # for params obtained from saltelli sampling, iterate
         for i, current_params in enumerate(param_values):
-            # reate a temporary model instance with the SALib sampled parameters
+            # create a temporary model instance with the SALib sampled parameters
             temp_model = ODEModel(current_params, self.init_cond, self.t_span, t_eval=self.t_eval)
-            # solve IVP for this specific parameter set
+            # solve ivp for this specific parameter set
             sol = temp_model.solution()
             model_out[i] = sol.y[4, -1]
         sobol_analysis = sobol.analyze(self.problem, model_out, print_to_console=True)
         return sobol_analysis
 
+    # using values from sensitivity analysis, print out dataframe of first and total order sobol
     def sobol_dataframe_output(self, sobol_analysis):
+        """Use sensitivity analysis result to give a dataframe and visualization.
+        Args:
+            sobol_analysis: uses sensitivity_analysis() to provide results to be used.
+        Returns:
+            None.
+        """
         param_string = self.return_string_list()[0]
         df = pd.DataFrame({
             'Params': param_string,
