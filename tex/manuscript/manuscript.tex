@@ -107,9 +107,6 @@ The parameter $R$ represents a patient having the APOE $\epsilon 4$ gene, which 
 
 This model is summarized as a system of ordinary system of differential equations with 
 
-
-
-
 \begin{equation}\label{odesystem}
 \begin{cases}
     \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
@@ -154,7 +151,7 @@ for $M > A_{\beta} (t) \, \forall \, t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ w
 
 \begin{lem}[Establishment of Unique Equilibria of Uncoupled System]\label{lem1}
     There exists a unique equilibria ($A _{\beta}^{*}, Ca ^{*}$) for the system
-    \begin{equation}\label{eq7}
+    \begin{equation}\label{eq:submodel}
         \begin{cases}
             \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
             \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\\
@@ -163,11 +160,11 @@ for $M > A_{\beta} (t) \, \forall \, t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ w
 \end{lem}
 
 \begin{proof}
-    To establish the existence of equilibria for Equation \ref{eq7}, a solution to the following must be obtained:
+    To establish the existence of equilibria for Equation \ref{eq:submodel}, a solution to the following must be obtained:
     \begin{align}
-        \label{eq8}
+        \label{eq:abetazero}
         a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta} &= 0\\
-        \label{eq9}
+        \label{eq:calciumzero}
         b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca &= 0.
     \end{align}
 
@@ -187,7 +184,7 @@ for $M > A_{\beta} (t) \, \forall \, t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ w
     \end{equation}
 
     Notice that in (\ref{eq:quadratic}), the quadratic term is always negative and the constant term is always positive. The linear term can either be positive or negative depending on the choice of parameters. Regardless of the parity of the linear term, there is only one sign change in the expression, so by Descartes' Rule of Signs, there is one positive real root to this quadratic. 
-    Thus, there exists a unique positive equilibrium ($A _{\beta}^{*},Ca ^{*}$) for the system in Equation \ref{eq7}.
+    Thus, there exists a unique positive equilibrium ($A _{\beta}^{*},Ca ^{*}$) for the system in Equation \ref{eq:submodel}.
 \end{proof} \bigskip
 
 \begin{lem}[Global Stability of Equilibrium]\label{lem2}
@@ -220,64 +217,56 @@ for $M > A_{\beta} (t) \, \forall \, t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ w
     Thus there is a unique globally asymptotic stable equilibrium solution for the system in (\ref{odesystem}).
 \end{proof} \bigskip
 
-\subsection{Results and Discussion}
-
-\begin{figure}
-    \label{fig:general}
-    \centering
-    \fbox{\includegraphics[scale=0.5]{alzgraph1.png}}
-    \caption{ode simulation}
-\end{figure}
-
-\begin{figure}
-    \label{fig:treatment}
-    \centering
-    \fbox{\includegraphics[scale=0.4]{alzgraph2.png}}
-    \caption{treatment outcomes}
-\end{figure}
-
-\begin{figure}
-    \label{fig:phaseportrait}
-    \centering
-    \fbox{\includegraphics[scale=0.5]{alzgraph3.png}}
-    \caption{phase portrait}
-\end{figure}
-
 \section{Parameters}
 \begin{table}[h]
-    \footnotesize
     \centering
-    \begin{tabular}{l|l|l|l}
-        Var & Value & Unit & Source \\
+    \footnotesize
+    \begin{tabular}{|l|l|l|l||l|l|l|l|}
         \hline
-        $A _{\beta}$ & $\sim 0.01$ & $C$& \cite{petrella2019computational}\\
-        $Ca$ & $0$& &\\
-        $\tau$ & $0$& $C$ & \cite{petrella2019computational} \\
-        $N$ & $0$ & &\\
-        $C$ & $0$ & &\\
-        $a _{1}$ & $0.25$ & $c/yr$& \cite{pal2025nonequilibrium} \\
-        $a _{2}$ & $2.89$ & $c/yr$& \cite{pal2025nonequilibrium}\\
-        $b _{1}$ & $11$ & $c/yr$ & \cite{pal2025nonequilibrium}\\
-        $b _{2}$ & $1000$ & $yr ^{-1}$ & \cite{pal2025nonequilibrium}\\
-        $c _{1}$ & & &\\
-        $c _{2}$ & $0.15$ & $yr ^{-1}$& \cite{hao2022optimal}\\
-        $c _{3}$ & & &\\
-        $d _{1}$ & & &\\
-        $d _{2}$ & & &\\
-        $e _{1}$ & $1.67$ & $yr _{-1}$ & \cite{hao2022optimal}\\
-        $e _{2}$ & $3.83$ &$yr _{1}$ &\cite{hao2022optimal}\\
-        $e _{3}$ &  &  & \\
-        $k _{1}$ & $0.35$ & $yr ^{-1}$ & \cite{pal2025nonequilibrium}\\
-        $k _{2}$ & $500$ & $yr ^{-1}$ & \cite{pal2025nonequilibrium}\\
-        $k _{3}$ & & &\\
-        $k _{4}$ & $1.00$ & $C$ &\\
-        $k _{5}$ & $169.48$ & $C$ &\\
-        $u _{1}$ &  &  & \cite{pal2025nonequilibrium}\\
-        $u _{2}$ &  &  & \cite{pal2025nonequilibrium}\\
-        $u _{3}$ & & &\\
-        $\sigma$ & $0.00027$& $C$ & \cite{zhang2020mathematical}
+        Var & Value & Unit & Source & Var & Value & Unit & Source \\
+        \hline
+        $A _{\beta}$ & 0 & $\mu M$ &  & $d _{2}$ & 0.398406 & $yr^{-1}$ & \\
+        $Ca$ & 100 & $nM$ & & $e _{1}$ & 0.01463 & MMSE decline$/yr$ & \\
+        $\tau$ & $0$& $\mu M$ &  & $e _{2}$ & 0.008684 &$yr ^{-1}$ & \\
+        $N$ & 0 & billions neurons lost & & $e _{3}$ & 0.01992 & $yr^{-1}$ & \\
+        $C$ & 0 & MMSE point decline & & $k _{1}$ & 0.303598 & $yr ^{-1}$ & \\
+        $a _{1}$ & 6.5641 & $\mu M/yr$ &  & $k _{2}$ & 3155692.6 & $yr ^{-1}$ & \\
+        $a _{2}$ & 1.5778 & $\mu M/yr$ &  & $k _{3}$ & 1.8333 & $yr^{-1}$ &\\
+        $b _{1}$ & 315569260 & $nM/yr$ &  & $k _{4}$ & 0.3588 & $yr^{-1}$ & \\
+        $b _{2}$ & 6311385.2 & $yr ^{-1}$ &  & $k _{5}$ & 0.08684 & $yr^{-1}$ & \\
+        $c _{1}$ & 52.2958 & $\mu M / yr$ & & $u _{1}$ & varies & $yr^{-1}$ & \\
+        $c _{2}$ & 1.78367 & $yr ^{-1}$ &  & $u _{2}$ & varies & $yr^{-1}$ & \\
+        $c _{3}$ & 0.1 & $yr^{-1}$ & & $u _{3}$ & varies & $yr^{-1}$ & \\
+        $d _{1}$ & 0.0716 & bil. neurons lost$/yr$ & & $\sigma$ & $50-150$& $nM$ &  \\
+        \hline
     \end{tabular}
 \end{table} \bigskip
+
+\section{Results}
+
+Using the derived biological parameters, we run the simulation forward for 50 years with the initial conditions $(A_\beta,Ca,\tau,N,C)=(0,100,0,0,0)$. This simulation uses solve\_ivp from the SciPy package in Python. The results from the simulation are shown in Figure \ref{fig:general}. Initially, $A_\beta$ and $Ca$ increase and drive each other's growth. This leads to a large growth of $\tau$ proteins, thus leading to neuron loss over time, and cognitive decline over an even longer time scale. The biomarker populations reach their equilibrium values relatively early, but it takes cognitive decline many years to reach its equilibrium value. \bigskip
+
+\begin{figure}
+    \centering
+    \fbox{\includegraphics[scale=0.5]{alzgraph1.png}}
+    \caption{ODE System Simulation\label{fig:general}}
+\end{figure} 
+
+A phase portrait (Figure \ref{fig:phaseportrait}) shows how different trajectories from varying initial conditions traverse the $A_\beta-Ca$ space. Trajectories will primarily move toward the $Ca$ nullcline with slight movement along the horizontal axis. This is because the time-scale of $Ca$ is much smaller than that of $A_\beta$. Once trajectories are near this nullcline, they travel directly toward the equilibrium solution. \bigskip
+
+\begin{figure}
+    \centering
+    \fbox{\includegraphics[scale=0.5]{alzgraph3.png}}
+    \caption{Phase Portrait\label{fig:phaseportrait}}
+\end{figure} 
+
+To determine which proteins are most effective to treat, we graphed the equilibrium cognitive decline value against varying treatments against each protein, as seen in Figure \ref{fig:treatment}. Each $u_n$ term increases such that the behavior of the function can be observed. We see that the variable that has the largest impact on $C$ is $u_3$, the treatment that reduces the number of $\tau$ proteins. The next most effective treatment is $u_1$, which reduces the concentration of $A_\beta$ plaques in the brain. We observe that treating the average level of $Ca$ does not have a large effect on the equilibrium cognitive decline. \bigskip
+
+\begin{figure}
+    \centering
+    \fbox{\includegraphics[scale=0.4]{alzgraph2.png}}
+    \caption{Treatment Effect On $C$\label{fig:treatment}}
+\end{figure}
 
 \section{Optimal Control}
 \subsection{Objective Function}
