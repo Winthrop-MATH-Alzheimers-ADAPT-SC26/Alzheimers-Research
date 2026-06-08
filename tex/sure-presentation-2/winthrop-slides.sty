@@ -1,0 +1,71 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{winthrop-slides}[2025/01/01 Winthrop University Beamer Theme]
+
+% --- Packages ---
+\RequirePackage{forest}
+\RequirePackage{pgfplots}
+\pgfplotsset{width=10cm, compat=1.9}
+\RequirePackage{times}
+\RequirePackage{amsmath, nccmath}
+\RequirePackage{amsthm}
+\RequirePackage{anyfontsize}
+\RequirePackage{graphicx}
+\RequirePackage[export]{adjustbox}
+\RequirePackage[multidot]{grffile}
+\RequirePackage{tabularx}
+\RequirePackage{wasysym}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+\RequirePackage{bm}
+
+% --- Fonts ---
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+
+% --- Colors ---
+\definecolor{WUred}{RGB}{240,179,35}
+\definecolor{WUgold}{RGB}{102, 0, 0}
+
+% --- Beamer Theme ---
+\usetheme{Boadilla}
+\usecolortheme{crane}
+
+\setbeamercolor{palette primary}{bg=WUgold, fg=WUred}
+\setbeamercolor{palette secondary}{bg=WUred, fg=white}
+\setbeamercolor{palette tertiary}{bg=WUgold, fg=white}
+\setbeamercolor{palette quaternary}{bg=WUgold, fg=white}
+\setbeamercolor{structure}{fg=WUred}
+\setbeamercolor{section in toc}{fg=WUgold}
+\setbeamercolor{section number projected}{fg=white,bg=WUgold}
+\setbeamercolor{block title}{use=structure, fg=WUgold, bg=WUred}
+\setbeamercolor{block body}{use=structure, fg=WUgold, bg=WUred}
+\setbeamercolor{subsection in head/foot}{bg=WUgold, fg=white}
+\setbeamercolor{caption name}{fg=WUgold}
+\setbeamercolor{bibliography item}{fg=WUgold} % Changes the cite icon/number
+\setbeamercolor{bibliography entry author}{fg=WUgold}
+\setbeamercolor{bibliography entry title}{fg=WUgold}
+
+% --- Templates ---
+\setbeamertemplate{sections/subsections in toc}[square]
+\setbeamertemplate{itemize items}[square]
+\setbeamertemplate{enumerate items}[square]
+\setbeamertemplate{caption}{default}
+\setbeamertemplate{page number in head/foot}{}
+\setbeamertemplate{date in head/foot}{}
+\setbeamertemplate{date}{}
+\setbeamertemplate{navigation symbols}{}
+
+\useoutertheme[footline=empty, subsection=false]{miniframes}
+
+\makeatletter
+\def\beamer@writeslidentry{\clearpage\beamer@notesactions}
+\makeatother
+
+% --- Bibliography ---
+\RequirePackage[backend=biber, style=numeric]{biblatex}
+\AtBeginBibliography{\scriptsize}
+
+% --- Theorem Style ---
+\theoremstyle{definition}
+
+\endinput

@@ -8,9 +8,10 @@ initial_conditions = [0.0, 200, 0.0, 0.0, 0.0] # initial conditions [ABeta_0, Ca
 t_span = (0, 100)
 t_eval = np.linspace(*t_span, 100)
 model_no_treatment = ODEModel(params, initial_conditions, t_span, t_eval)
+
 # start solver for ODEs
-print("...starting solver...")
-model_no_treatment.results()
+# print("...starting solver...")
+# model_no_treatment.results()
 
 print("...starting sensitivity analysis...")
 sobol_analysis = model_no_treatment.sensitivity_analysis()

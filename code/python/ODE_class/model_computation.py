@@ -88,7 +88,7 @@ class ODEModel:
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
         param_values = saltelli.sample(self.problem, 1024)
-        num_eval = param_values.shape[0] 
+        num_eval = param_values.shape[0]
         model_out = np.zeros(num_eval)
         # for params obtained from saltelli sampling, iterate
         for i, current_params in enumerate(param_values):
