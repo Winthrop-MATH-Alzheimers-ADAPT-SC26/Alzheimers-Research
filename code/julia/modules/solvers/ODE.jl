@@ -4,6 +4,7 @@ export print_final
 
 using DifferentialEquations
 using ModelingToolkit
+using ..Model: sys
 
 # --- Functions --- #
 

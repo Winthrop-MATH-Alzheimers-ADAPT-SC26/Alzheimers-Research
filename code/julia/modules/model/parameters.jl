@@ -27,6 +27,11 @@ const DEFAULT_PARAMS = (
     u₁=0.0,
     u₂=0.0,
     u₃=0.0,
+    Aβ=0.0,
+    Ca=100.0,
+    τ=0.0,
+    N=0.0,
+    C=0.0
 )
 
 function build_param_vector(; kwargs...)
@@ -55,6 +60,11 @@ function build_param_vector(; kwargs...)
         sys.u₁ => p.u₁,
         sys.u₂ => p.u₂,
         sys.u₃ => p.u₃,
+        sys.Aβ => p.Aβ,
+        sys.Ca => p.Ca,
+        sys.τ => p.τ,
+        sys.N => p.N,
+        sys.C => p.C
     ]
 end
 

@@ -5,7 +5,6 @@ export ControlsPlot,
     SolPlot,
     make_plot
 
-using ..Model: sys
 using CairoMakie
 
 abstract type PlotType end
@@ -33,17 +32,17 @@ function make_plot(::ControlsPlot, result)
     t = result.t
     sol = result.sol
 
-    Aβ = sol[sys.Aβ]
-    Ca = sol[sys.Ca]
-    τ = sol[sys.τ]
-    N = sol[sys.N]
-    C = sol[sys.C]
+    Aβ = sol[1, :]
+    Ca = sol[2, :]
+    τ = sol[3, :]
+    N = sol[4, :]
+    C = sol[5, :]
 
     u1 = result.controls.u1
     u2 = result.controls.u2
     u3 = result.controls.u3
 
-    fig = Figure(size=(1200, 800))
+    fig = Figure(size=(1600, 900))
 
     left = fig[1, 1] = GridLayout()
     right = fig[1, 2] = GridLayout()
@@ -79,14 +78,14 @@ function make_plot(::SolPlotCombined, result)
     t = result.t
     sol = result.sol
 
-    fig = Figure(size=(900, 600))
+    fig = Figure(size=(1600, 900))
     ax = Axis(fig[1, 1], title="State Variables", xlabel="years")
 
-    lines!(ax, t, sol[sys.Aβ], label="Aβ")
-    lines!(ax, t, sol[sys.Ca], label="Ca")
-    lines!(ax, t, sol[sys.τ], label="τ")
-    lines!(ax, t, sol[sys.N], label="N")
-    lines!(ax, t, sol[sys.C], label="C")
+    lines!(ax, t, sol[1, :], label="Aβ")
+    lines!(ax, t, sol[2, :], label="Ca")
+    lines!(ax, t, sol[3, :], label="τ")
+    lines!(ax, t, sol[4, :], label="N")
+    lines!(ax, t, sol[5, :], label="C")
 
     axislegend(ax)
 
@@ -100,16 +99,15 @@ function make_plot(::SolPlot, result)
     sol = result.sol
 
     names = ["Aβ", "Ca", "τ", "N", "C"]
-    vars = (sys.Aβ, sys.Ca, sys.τ, sys.N, sys.C)
 
-    fig = Figure(size=(1200, 800))
+    fig = Figure(size=(1600, 900))
 
     for i in 1:5
         row = (i - 1) ÷ 2 + 1
         col = (i - 1) % 2 + 1
 
         ax = Axis(fig[row, col], title=names[i], xlabel="years")
-        lines!(ax, t, sol[vars[i]])
+        lines!(ax, t, sol[i, :])
     end
 
     return fig

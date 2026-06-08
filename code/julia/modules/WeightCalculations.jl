@@ -3,21 +3,20 @@ module Weight
 export calculate_weights
 
 using Statistics: mean
-using DifferentialEquations: ODEProblem, solve, Tsit5
-using ..Parameters: Params, build_param_vector
-using ..Model: sys
+using DifferentialEquations
+using ModelingToolkit
 
-function calculate_weights(x0, umax, tspan)
+function calculate_weights(sys::ModelingToolkitBase.System, pvec::Vector, tspan::NTuple{2,Float64}, umax::NTuple{3,Float64})
     u1max, u2max, u3max = umax
     u1 = u1max / 2
     u2 = u2max / 2
     u3 = u3max / 2
-    p = Params(u₁=u1, u₂=u2, u₃=u3)
-    pvec
 
-    prob = ODEProblem(sys, x0, tspan, p)
+    pvec_u = [k => v for (k, v) in merge(Dict(pvec), Dict(sys.u₁ => u1, sys.u₂ => u2, sys.u₃ => u3))]
 
-    sol = solve(prob, Tsit5(), abstol=1e-8, reltol=1e-6)
+    prob = ODEProblem(sys, pvec_u, tspan)
+
+    sol = solve(prob, abstol=1e-8, reltol=1e-6)
     _, _, _, avg_n, avg_c = mean(sol.u)
 
     w1 = 1.0

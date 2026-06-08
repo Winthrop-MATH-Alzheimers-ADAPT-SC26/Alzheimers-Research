@@ -21,8 +21,7 @@ eqs = [
     D(C) ~ e₁ + e₂ * N * R + e₃ * τ - k₅ * C
 ]
 
-@named sys = ODESystem(eqs, t)
-sys = structural_simplify(sys)
+@mtkcompile sys = System(eqs, t)
 
 # State RHS
 function state_rhs!(dx, x, p, t)
@@ -31,6 +30,14 @@ function state_rhs!(dx, x, p, t)
     u1 = p.u₁(t)
     u2 = p.u₂(t)
     u3 = p.u₃(t)
+
+    a₁, a₂ = p.a₁, p.a₂
+    b₁, b₂ = p.b₁, p.b₂
+    c₁, c₂, c₃ = p.c₁, p.c₂, p.c₃
+    d₁, d₂ = p.d₁, p.d₂
+    e₁, e₂, e₃ = p.e₁, p.e₂, p.e₃
+    k₁, k₂, k₃, k₄, k₅ = p.k₁, p.k₂, p.k₃, p.k₄, p.k₅
+    σ, R = p.σ, p.R
 
     dx[1] = a₁ + a₂ * (Ca / (Ca + σ)) - k₁ * Aβ - u1 * Aβ
     dx[2] = b₁ + b₂ * Aβ - k₂ * Ca - u2 * Ca
@@ -48,6 +55,14 @@ function costate_rhs!(dλ, λ, p, t)
     u1 = p.u₁(t)
     u2 = p.u₂(t)
     u3 = p.u₃(t)
+
+    a₂ = p.a₂
+    b₂, c₂, c₃ = p.b₂, p.c₂, p.c₃
+    d₂ = p.d₂
+    e₂, e₃ = p.e₂, p.e₃
+    k₁, k₂, k₃, k₄, k₅ = p.k₁, p.k₂, p.k₃, p.k₄, p.k₅
+    σ, R = p.σ, p.R
+    w₁, w₂, w₃, w₄, w₅ = p.w₁, p.w₂, p.w₃, p.w₄, p.w₅
 
     w₁, w₂, w₃, w₄, w₅ = p.w₁, p.w₂, p.w₃, p.w₄, p.w₅
 

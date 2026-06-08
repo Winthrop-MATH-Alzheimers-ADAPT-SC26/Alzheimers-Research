@@ -5,11 +5,12 @@ export forward_backward_sweep
 using DifferentialEquations
 using Interpolations
 using LinearAlgebra
+using ModelingToolkit: unknowns
 using ..Model: state_rhs!, costate_rhs!
 
 # --- Forward-Backward Sweep ─── #
 
-function forward_backward_sweep(x0, tspan, umax, weights;
+function forward_backward_sweep(sys, pvec, tspan, umax, weights;
     n=365,
     max_iter=200,
     tol=1e-6
@@ -17,9 +18,16 @@ function forward_backward_sweep(x0, tspan, umax, weights;
     t0, tf = tspan
     n = n * Int(tf - t0)
     u₁max, u₂max, u₃max = umax
-
     w₁, w₂, w₃, w₄, w₅ = weights
     ts = collect(range(t0, tf, length=n))
+
+    pvec_dict = Dict(pvec)
+    x0 = [pvec_dict[sys.Aβ], pvec_dict[sys.Ca], pvec_dict[sys.τ], pvec_dict[sys.N], pvec_dict[sys.C]]
+
+    # Strip state keys from pvec for use with plain RHS functions
+    unknown_syms = Set(Symbol(u) for u in unknowns(sys))
+    pd = NamedTuple(Symbol(k) => v for (k, v) in pvec if Symbol(k) ∉ unknown_syms)
+
 
     # Step 1 — initialize controls to zero
     u1 = zeros(n)
@@ -38,21 +46,22 @@ function forward_backward_sweep(x0, tspan, umax, weights;
         u2fun = linear_interpolation(ts, u2, extrapolation_bc=Flat())
         u3fun = linear_interpolation(ts, u3, extrapolation_bc=Flat())
 
+
         # Step 3 — forward solve
-        fwd_prob = ODEProblem(
-            state_rhs!, x0, tspan,
-            (u₁=u1fun, u₂=u2fun, u₃=u3fun)
-        )
-        fwd_sol = solve(fwd_prob, abstol=1e-8, reltol=1e-6)
+        fwd_p = merge(pd, (u₁=u1fun, u₂=u2fun, u₃=u3fun))
+        fwd_prob = ODEProblem(state_rhs!, x0, tspan, fwd_p)
+        fwd_sol = solve(fwd_prob, abstol=1e-10, reltol=1e-8)
+
 
         # Step 4 — backward solve (tf → t0, λᵢ(T) = 0)
-        bwd_prob = ODEProblem(
-            costate_rhs!,
-            zeros(5),
-            (tf, t0),
-            (state_sol=fwd_sol, u₁=u1fun, u₂=u2fun, u₃=u3fun, w₁=w₁, w₂=w₂, w₃=w₃, w₄=w₄, w₅=w₅)
-        )
-        bwd_sol = solve(bwd_prob, saveat=ts, abstol=1e-8, reltol=1e-6)
+        bwd_p = merge(pd, (
+            state_sol=fwd_sol,
+            u₁=u1fun, u₂=u2fun, u₃=u3fun,
+            w₁=w₁, w₂=w₂, w₃=w₃, w₄=w₄, w₅=w₅
+        ))
+
+        bwd_prob = ODEProblem(costate_rhs!, zeros(5), (tf, t0), bwd_p)
+        bwd_sol = solve(bwd_prob, saveat=ts, abstol=1e-10, reltol=1e-8)
 
         # Step 5 — update controls using optimal characterization
         u1_new = similar(u1)
@@ -100,43 +109,22 @@ function forward_backward_sweep(x0, tspan, umax, weights;
         end
     end
 
-    # Final solve using converged controls
-
+    # Final solve with converged controls
     u1fun = linear_interpolation(ts, u1, extrapolation_bc=Flat())
     u2fun = linear_interpolation(ts, u2, extrapolation_bc=Flat())
     u3fun = linear_interpolation(ts, u3, extrapolation_bc=Flat())
 
-    fwd_prob = ODEProblem(
-        state_rhs!,
-        x0,
-        tspan,
-        (u₁=u1fun, u₂=u2fun, u₃=u3fun)
-    )
+    fwd_p = merge(pd, (u₁=u1fun, u₂=u2fun, u₃=u3fun))
+    fwd_prob = ODEProblem(state_rhs!, x0, tspan, fwd_p)
+    fwd_sol = solve(fwd_prob, saveat=ts, abstol=1e-10, reltol=1e-8)
 
-    fwd_sol = solve(
-        fwd_prob,
-        saveat=ts,
-        abstol=1e-8,
-        reltol=1e-6
-    )
-
-    bwd_prob = ODEProblem(
-        costate_rhs!,
-        zeros(5),
-        (tf, t0),
-        (
-            state_sol=fwd_sol,
-            u₁=u1fun,
-            u₂=u2fun,
-            u₃=u3fun, w₁=w₁, w₂=w₂, w₃=w₃, w₄=w₄, w₅=w₅
-        )
-    )
-
-    bwd_sol = solve(
-        bwd_prob,
-        abstol=1e-8,
-        reltol=1e-6
-    )
+    bwd_p = merge(pd, (
+        state_sol=fwd_sol,
+        u₁=u1fun, u₂=u2fun, u₃=u3fun,
+        w₁=w₁, w₂=w₂, w₃=w₃, w₄=w₄, w₅=w₅
+    ))
+    bwd_prob = ODEProblem(costate_rhs!, zeros(5), (tf, t0), bwd_p)
+    bwd_sol = solve(bwd_prob, abstol=1e-10, reltol=1e-8)
 
     return (
         sol=fwd_sol, t=ts, controls=(
