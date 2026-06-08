@@ -27,36 +27,16 @@
 \begin{document}
 \maketitle
 \vspace{-2em}  % Remove space after title block
+
+
 \section{Introduction}
-Alzheimer's Disease (AD) is characterized as a complex neurodegenerative disease affecting approximately more than 55 million people globally \cite{maji2025mathematical}. 
-Symptoms are caused by the degeneration of the central nervous system, and are portrayed by progressive memory loss, difficulty with language, drastic mood swings, among other effects.
-It is a disease that causes an extensive burden to those suffering from the disease through disorientation, to relatives in the form of mental taxation, as well as economically; 
-projecting an estimated global economic burden of $16.9$ trillion dollars by 2050 \cite{nandi2022global}.
-These factors are but a few reasons as to the importance of research in this area, where many scientists have worked to understand the underlying mechanisms of AD.
-However, much is still unknown in how AD is caused, as well as what biological processes occur in the brain, making the disease difficult to come to a decisive conclusion.
+Alzheimer's Disease (AD) is characterized as a complex neurodegenerative disease affecting more than 55 million people globally \cite{maji2025mathematical}. Symptoms are caused by the degeneration of the central nervous system, and are manifested by progressive memory loss, difficulty with language, drastic mood swings, among other effects. It is a disease that causes an extensive burden to those suffering from the disease through disorientation, to relatives in the form of mental taxation, as well as economically, projecting an estimated global economic burden of $16.9$ trillion dollars by 2050 \cite{nandi2022global}. These factors are just a few reasons as to the importance of research in this area, where many scientists have worked to understand the underlying mechanisms of AD. However, much is still unknown in how AD is caused, as well as what biological processes occur in the brain, making it difficult to come to a decisive conclusion regarding its cause.
 
-Many studies have been conducted in regard to understanding Alzheimer's Disease. 
-With this, there are a few main hypotheses that are generally considered to be factors in the causation and progression of AD \cite{zhang2024recent}.
-The so-called \textit{Amyloid Cascade Hypothesis} is among the most extensively studied in the literature, where it is proposed that a misfolding of $\beta$-amyloid (A$\beta$) protein form
-senile plaques. These plaques are hypothezied to be the main driving force in the intracellular deposition of misfolded tau proteins in neurofibrillary tangles (NFTs) and memory loss in the 
-progression of Alzheimer's Disease \cite{hardy1992alzheimer}. Growing evidence however, shows that this hypothesis is suggested to be but a small factor in the larger picture of the underlying 
-operative mechanisms of the disease \cite{kepp2023amyloid}. This has led researchers to branch into other pathways concerning AD, looking at the interactions between A$\beta$ and tau in an attempt
-to further understand the pathogensis of these two factors \cite{zhang2021interaction}. Some studies have also observed the role of Calcium in this process, further suggesting a more complex process
-that is occuring biologically. This occurs through a feedback interaction between an upregulation of Ca$^{2+}$ and the amyloidogenic pathway, remodeling the Ca$^{2+}$ signaling pathway \cite{berridge2010calcium}.
+Many studies have been conducted in regard to understanding Alzheimer's Disease. With this, there are a few main hypotheses that are generally considered to be factors in the causation and progression of AD \cite{zhang2024recent}. The so-called \textit{Amyloid Cascade Hypothesis} is among the most extensively studied in the literature, where it is proposed that a misfolding of $\beta$-amyloid ($A_\beta$) protein forms senile plaques. These plaques are hypothesized to be the main driving force in the intracellular deposition of misfolded $\tau$ proteins in neurofibrillary tangles (NFTs) and memory loss in the progression of Alzheimer's Disease \cite{hardy1992alzheimer}. Growing evidence, however, shows that this hypothesis is suggested to be but a small factor in the larger picture of the underlying operative mechanisms of the disease \cite{kepp2023amyloid}. This has led researchers to branch into other pathways concerning AD, looking at the interactions between A$\beta$ and $\tau$ in an attempt to further understand the pathogenesis of these two factors \cite{zhang2021interaction}. Some studies have also observed the role of calcium in this process, further suggesting a more complex process that is occurring biologically. This occurs through a feedback interaction between an upregulation of Ca$^{2+}$ and the amyloidogenic pathway, remodeling the Ca$^{2+}$ signaling pathway \cite{berridge2010calcium}.
 
-The various complex interactions in AD have shown to be an obstacle to yet overcome when modeling the behavior of the disease. 
-Numerous different studies have in turn given an attempt at creating mathematical models
-observing different aspects of the disease in order to observe the dynamics in occurance. 
-This has led to many models being introduced, each aiming to understand various components in Alzheimer's Disease through different methodologies. 
-Compartments concerning the interaction between A$\beta$ and tau are studied, observing the suspected effects on neurodegeneration and cognitive decline through a mechanistic causal model \cite{petrella2019computational,hao2022optimal}. 
-The feeback loop between A$\beta$ and Ca$^{2+}$ has also been analyzed using a deterministic system, adding a noise-inducing element to the system \cite{pal2025nonequilibrium,zhang2020mathematical}.
-Models that observe lower-level processes have also been studied, lending to valuable insight as to what is suggested to be seen on the cellular level \cite{maji2026quantifying,lang2023stationary}.
+The various complex interactions in AD have shown to be an obstacle to yet overcome when modeling the behavior of the disease. Numerous different studies have in turn given an attempt at creating mathematical models observing different aspects of the disease in order to observe the underlying dynamics. This has led to many models being introduced, each aiming to understand various components in Alzheimer's Disease through different methodologies. Compartments concerning the interaction between $A_\beta$ and $\tau$ are studied, observing the suspected effects on neurodegeneration and cognitive decline through a mechanistic causal model \cite{petrella2019computational,hao2022optimal}. The feedback loop between $A_\beta$ and Ca$^{2+}$ has also been analyzed using a deterministic system, adding a noise-inducing element to the system \cite{pal2025nonequilibrium,zhang2020mathematical}. Models that observe lower-level processes have also been studied, lending to valuable insight as to what is suggested to be seen on the cellular level \cite{maji2026quantifying,lang2023stationary}.
 
-It should be noted that in these models, while each has its own way of observing some of the underlying mechanisms, there are still potential shortfalls when it comes to finding effective treatments.
-Evidence suggests that focusing solely on anti-amyloid beta treatments or tau protein treatments, rather attempting to determine treatments for many different aspects of the disease \cite{abdulkhaliq2026amyloid,zhang2021interaction}
-This provides difficulty in understanding exactly the importance of which component of the disease should be the focus of further study in order to provide evidence for treatments having higher efficacy. 
-In this study, a mechanistic model is proposed, analyzing the interaction between A$\beta$, Ca$^{2+}$, and tau proteins; observing the effects of this multifaceted interaction on neurodegeneration, and cognitive decline.
-``Sensitivity analysis is performed in order to better understand the importance of each aspect of the model, and optimal control is used in order to determine the suggested avenues of effective treatment.'' \bigskip
+It should be noted that in these models, while each has its own way of observing some of the underlying mechanisms, there are still potential shortfalls when it comes to finding effective treatments. Evidence suggests that focusing solely on anti-$A_\beta$ treatments or $\tau$ protein treatments, rather than attempting to determine treatments for many different aspects of the disease \cite{abdulkhaliq2026amyloid,zhang2021interaction}. This provides difficulty in understanding exactly the importance of which component of the disease should be the focus of further study in order to provide evidence for treatments having higher efficacy. In this study, a mechanistic model is proposed, analyzing the interaction between $A_\beta$, Ca$^{2+}$, and $\tau$ proteins; observing the effects of this multifaceted interaction on neurodegeneration, and cognitive decline. Sensitivity analysis is performed in order to better understand the importance of each aspect of the model, and optimal control is used in order to determine the suggested avenues of effective treatment. \bigskip
 
 \section{Proposed Model}
 To understand the role calcium may have in the interaction of AD, a model is proposed using five biomarkers found to have interactions within the disease: hallmark biomarkers through amyloid beta and tau, an interactional biomarker through calcium, suggested to have a role in amyloid beta and tau protein accumulation. 
@@ -66,38 +46,39 @@ These plaques then promotes the hyperphosphorylation of tau proteins, leading to
 
 \subsection{Amyloid Beta and Calcium Equations}
 Because amyloid beta and calcium are suggested to interact in such a way that a dysregulation of calcium causes an acceleration of amyloid beta accumulation \cite{pal2025nonequilibrium}, this is modeled mathematically as 
-\begin{equation*}
-    \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\quad \text{with} \quad A _{\beta}(T _{0})=A _{0},
-\end{equation*}
-where $A _{0}$ is the initial condition of amyloid beta at age $T _{0}$, and can vary on a per patient basis \cite{hao2022optimal}. 
-Here, $a(Ca/[Ca+\sigma])$ acts as the interaction of calcium on $A _{\beta}$ using a Holling-Type II function.
+\begin{equation}
+    \label{eq:abeta_dt}
+    \frac{\mathrm dA _{\beta}}{\mathrm dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\quad \text{with} \quad A _{\beta}(T _{0})=A _{0},
+\end{equation}
+where $A _{0}$ is the initial condition of $A_\beta$ at age $T _{0}$, and can vary on a per patient basis \cite{hao2022optimal}. The rate of $A_\beta$ growth increases at a linear rate $a_1$ and decreases proportionally to the population of $A_\beta$, as described by $k_1 A_\beta$. Here, $a_2 \frac{Ca}{Ca + \sigma}$ acts as the interaction of calcium on $A _{\beta}$ using a Hill equation of $n=1$. The removal rate can be modified by choosing different values for $u_1$ which represents the effect of treatment targeting $A_\beta$. The term $u_1$ can either be constant or be a function of time.
 
-Similarly, an amyloid beta interaction is observed to have a role in the further dysregulation of calcium, and the equation for calcium is defined as 
-\begin{equation*}
-    \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\quad \text{with} \quad Ca(T _{0})=Ca _{0}.
-\end{equation*}
-Here, the accumulation of amyloid beta is positive at a rate $b _{2}$, with a natural removal rate of calcium, $k _{2}$. \bigskip
+Similarly, an $A_\beta$ interaction is observed to have a role in the further dysregulation of calcium, and the equation for calcium is defined as 
+\begin{equation}
+    \label{eq:calcium_dt}
+    \frac{\mathrm dCa}{\mathrm dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\quad \text{with} \quad Ca(T _{0})=Ca _{0}.
+\end{equation}
+Here, calcium grows at a linear rate $b_1$, and the accumulation of $A_\beta$ is positive at a rate $b _{2}$. There is also a natural removal rate of calcium, $k _{2}$. Notice that there is also the option to administer treatment targeting calcium through the term $u_2$. \bigskip
 
 \subsection{Tau Equation}
-Many studies have suggested that the pathology of tau is initiated by amyloid beta accumulation, and have modeled this process mathematically \cite{zheng2002amyloid, hao2022optimal}. 
-However, it has also been suggested that calcium also has an effect inducing the production of tau proteins \cite{guan2021elevating}. 
-This leads to a definition of the tau equation to be given by 
+Many studies have suggested that the pathology of tau is initiated by amyloid beta accumulation, and have modeled this process mathematically \cite{zheng2002amyloid, hao2022optimal}. However, it has also been suggested that calcium dysregulation also has an effect inducing the production of tau proteins \cite{guan2021elevating}. This leads to a definition of the tau equation to be given by 
 \begin{equation}
-    \frac{d \tau}{dt}=c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\quad \text{with} \quad \tau(T _{0})=\tau _{0}.
+    \frac{\mathrm d \tau}{\mathrm dt}=c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\quad \text{with} \quad \tau(T _{0})=\tau _{0}.
     \label{eq:tau}
 \end{equation}
-It is noted here that only pathological tau is observed, where other studies have used compartments relating to non-amyloid dependent tau accumulation, or suspected non-Alzheimer pathology (SNAP) \cite{petrella2019computational, hao2022optimal}. \bigskip
+It is noted here that only pathological tau is observed, where other studies have used compartments relating to non-amyloid dependent tau accumulation, or suspected non-Alzheimer pathology (SNAP) \cite{petrella2019computational, hao2022optimal}. This function is similar to Equation~\eqref{eq:abeta_dt} and Equation~\eqref{eq:calcium_dt} in that $\frac{\mathrm d\tau}{\mathrm dt}$ grows at a linear rate $d_1$ and decreases proportional to the population of $\tau$ through $k_3 \tau$. There is also the treatment term $u_3 \tau$. \bigskip
 
 \subsection{Neurodegeneration Equation}
 When tau is in a pathological state, it no longer binds to microtubules as intended; instead, the formation of NFTs occur in the neurons, leading to neurodegeneration \cite{ballatore2007tau}. Hence, this equation is defined as 
 \begin{equation*}
-    \frac{dN}{dt}=d _{1}+d _{2}\tau-k _{4}N.
+    \frac{\mathrm dN}{\mathrm dt}=d _{1}+d _{2}\tau-k _{4}N.
 \end{equation*} \bigskip
+
+This equation follows the established structure and also includes the interaction term $d_2 \tau$. \bigskip
 
 \subsection{Cognitive Decline Equation}
 Both tau and neurodegeneration are evidenced to directly affect cognitive decline \cite{bejanin2017tau, hao2022optimal}. Because of this, the equation for cognitive decline is defined as 
 \begin{equation*}
-    \frac{dC}{dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C.
+    \frac{\mathrm dC}{\mathrm dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C.
 \end{equation*}
 The parameter $R$ represents a patient having the APOE $\epsilon 4$ gene, which has been shown to be a risk factor in Alzheimer's disease (need to find citation of this).
 
@@ -105,15 +86,15 @@ This model is summarized as a system of ordinary system of differential equation
 
 \begin{equation}\label{eq:odesystem}
 \begin{cases}
-    \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
+    \frac{\mathrm dA _{\beta}}{\mathrm dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
 
-    \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\\
+    \frac{\mathrm dCa}{\mathrm dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\\
 
-    \frac{d \tau}{dt}=c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\\
+    \frac{\mathrm d \tau}{\mathrm dt}=c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\\
 
-    \frac{dN}{dt}=d _{1}+d _{2}\tau-k _{4}N\\
+    \frac{\mathrm dN}{\mathrm dt}=d _{1}+d _{2}\tau-k _{4}N\\
 
-    \frac{dC}{dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C
+    \frac{\mathrm dC}{\mathrm dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C
 \end{cases}
 \quad
 \text{with}
@@ -140,7 +121,7 @@ since $Ca/(Ca+\sigma)\in [0,1)$.
 So, $a_1 + a_2 - r_1 A_{\beta} < 0$ when $A_{\beta} > \frac{a_1 + a_2}{r_1}$. Similarly, using that $A _{\beta}$ is bounded, it follows that 
 
 \begin{equation*}
-    \frac{dCa}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca \leq b_1 + b_2 M - r_2 Ca
+    \frac{\mathrm dCa}{\mathrm dt} = b_1 + b_2 A_{\beta} - r_2 Ca \leq b_1 + b_2 M - r_2 Ca
 \end{equation*}
 
 as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $Ca > \frac{b_1 + b_2 M}{r_2}$, thus $Ca$ is also bounded. The rest of the system follows from these two variables, so the rest of the system is bounded as well. \bigskip
@@ -149,8 +130,8 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
     There exists a unique equilibria ($A _{\beta}^{*}, Ca ^{*}$) for the system
     \begin{equation}\label{eq:submodel}
         \begin{cases}
-            \frac{dA_{\beta}}{dt} = a_{1} + a_{2} \frac{Ca}{Ca + \sigma} - k_{1} A_{\beta} - u_{1} A_{\beta} \\
-            \frac{dCa}{dt} = b_{1} + b_{2} A_{\beta} - k_{2}Ca - u_{2}Ca. \\
+            \frac{\mathrm dA_{\beta}}{\mathrm dt} = a_{1} + a_{2} \frac{Ca}{Ca + \sigma} - k_{1} A_{\beta} - u_{1} A_{\beta} \\
+            \frac{\mathrm dCa}{\mathrm dt} = b_{1} + b_{2} A_{\beta} - k_{2}Ca - u_{2}Ca. \\
         \end{cases}
     \end{equation}
 \end{lem}
@@ -162,12 +143,12 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
         b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca &= 0.
     \end{align*}
 
-    By solving $\frac{d A_{\beta}}{dt} = a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}$ for $A_{\beta}$, we get
+    By solving $\frac{\mathrm d A_{\beta}}{\mathrm dt} = a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}$ for $A_{\beta}$, we get
     \begin{equation*}
         A_{\beta} = \frac{a_1 Ca + a_2 Ca + a_1 \sigma}{r_1 (Ca + \sigma)}.
     \end{equation*}
 
-    We then substitute this value into $\frac{d Ca}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca$. The resulting expression is,
+    We then substitute this value into $\frac{\mathrm d Ca}{\mathrm dt} = b_1 + b_2 A_{\beta} - r_2 Ca$. The resulting expression is,
     \begin{equation}\label{eq:prequadratic}
         b_1 - r_2 Ca + \frac{b_2 (a_1 Ca + a_2 Ca + a_1 \sigma)}{r_1 (Ca + \sigma)}.
     \end{equation}
@@ -212,6 +193,9 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
 \end{proof} \bigskip
 
 \section{Parameters}
+
+params in Table~\ref{tab:params1}. need elaboration and characterizations
+
 \begin{table}[h]
     \centering
     \footnotesize
@@ -239,12 +223,12 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
 
 \section{Results}
 
-Using the derived biological parameters in Table~\ref{tab:params1}, we run the simulation forward for 50 years with the initial conditions $(A_\beta,Ca,\tau,N,C)=(0,100,0,0,0)$. This simulation uses solve\_ivp from the SciPy package in Python. The results from the simulation are shown in Figure~\ref{fig:general}. Initially, $A_\beta$ and $Ca$ increase and drive each other's growth. This leads to a large growth of $\tau$ proteins, thus leading to neuron loss over time, and cognitive decline over an even longer time scale. The biomarker populations reach their equilibrium values relatively early, but it takes cognitive decline many years to reach its equilibrium value. \bigskip
+Using the derived biological parameters in Table~\ref{tab:params1}, we run the simulation forward for 50 years with the initial conditions $(A_0, Ca_0, \tau_0, N_0, C_0)=(0,100,0,0,0)$. This simulation uses solve\_ivp from the SciPy package in Python. The results from the simulation are shown in Figure~\ref{fig:general}. Initially, $A_\beta$ and $Ca$ increase and drive each other's growth. This leads to a large growth of $\tau$ proteins, thus leading to neuron loss over time, and cognitive decline over an even longer time scale. The biomarker populations reach their equilibrium values relatively early, but it takes cognitive decline many years to reach its equilibrium value. \bigskip
 
 \begin{figure}
     \centering
     \fbox{\includegraphics[scale=0.5]{alzgraph1.png}}
-    \caption{ODE System Simulation\label{fig:general}}
+    \caption{ODE system simulation\label{fig:general}}
 \end{figure} 
 
 A phase portrait (Figure~\ref{fig:phaseportrait}) shows how different trajectories from varying initial conditions traverse the $A_\beta-Ca$ space. Trajectories will primarily move toward the $Ca$ nullcline with slight movement along the horizontal axis. This is because the time-scale of $Ca$ is much smaller than that of $A_\beta$. Once trajectories are near this nullcline, they travel directly toward the equilibrium solution. \bigskip
@@ -252,7 +236,7 @@ A phase portrait (Figure~\ref{fig:phaseportrait}) shows how different trajectori
 \begin{figure}
     \centering
     \fbox{\includegraphics[scale=0.4]{alzgraph3.png}}
-    \caption{Phase Portrait\label{fig:phaseportrait}}
+    \caption{Phase portrait\label{fig:phaseportrait}}
 \end{figure} 
 
 To determine which proteins are most effective to treat, we graphed the equilibrium cognitive decline value against varying treatments against each protein, as seen in Figure~\ref{fig:treatment}. Each $u_n$ term increases such that the behavior of the function can be observed. We see that the variable that has the largest impact on $C$ is $u_3$, the treatment that reduces the number of $\tau$ proteins. The next most effective treatment is $u_1$, which reduces the concentration of $A_\beta$ plaques in the brain. We observe that treating the average level of $Ca$ does not have a large effect on the equilibrium cognitive decline. \bigskip
@@ -260,12 +244,14 @@ To determine which proteins are most effective to treat, we graphed the equilibr
 \begin{figure}
     \centering
     \fbox{\includegraphics[scale=0.4]{alzgraph2.png}}
-    \caption{Treatment Effect On $C$\label{fig:treatment}}
+    \caption{Treatment effect on $C$\label{fig:treatment}}
 \end{figure}
+
+\section{Sensitivity Analysis}
 
 \section{Optimal Control}
 
-Optimal control is a method we can use to determine the optimal values of $u_n$ while tracking some cost function. In optimal control, we will let each $u_n$ be a function of time, $u_n(t)$, as it is not realistic to maintain a constant treatment over a long time-frame. Tracking a cost function is useful for our application as some drugs used to treat Alzheimer's Disease have been shown to induce strong side effects such as brain swelling and brain bleeding (citation needed). 
+Optimal control is a method we can use to determine the optimal values of $u_n$ while tracking some cost function. In optimal control, we will let each $u_n$ be a function of time, $u_n(t)$, as it is not realistic to maintain a constant treatment over a long time-frame. Tracking a cost function is useful for our application as some drugs used to treat Alzheimer's Disease have been shown to induce strong side effects such as brain swelling and brain bleeding (citation needed). So, minimizing this cost function while maximizing treatments will let the medication have its strongest impact without crossing some side-effect threshold. \bigskip
 
 \subsection{Objective Function}
 
