@@ -87,7 +87,7 @@ class ODEModel:
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
-        param_values = saltelli.sample(self.problem, 1024)
+        param_values = saltelli.sample(self.problem, 2**14)
         num_eval = param_values.shape[0]
         model_out = np.zeros(num_eval)
         # for params obtained from saltelli sampling, iterate
@@ -112,7 +112,8 @@ class ODEModel:
         df = pd.DataFrame({
             'Params': param_string,
             'Sobol First Order (S1)': sobol_analysis['S1'],
-            'Sobol Total (ST)': sobol_analysis['ST']
+            'Sobol Total (ST)': sobol_analysis['ST'],
+            'Sobol Total Conf': sobol_analysis['ST_conf']
             }).sort_values(by='Sobol Total (ST)', ascending=False)
         print("\n ...Sobol Analysis Table...")
         print(df.to_string(index=False))
