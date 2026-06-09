@@ -232,6 +232,9 @@ params in Table~\ref{tab:params1}. need elaboration and characterizations
     \caption{Parameters used for simulation\label{tab:params1}}
 \end{table} \bigskip
 
+\section{Sensitivity Analysis}
+Sobol sensitivity analysis is used to provide a quantitative assessment of the impact model parameters have on the causal dynamics of the proposed model. The first, second, and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{20}$. Using the parameter ranges from Table (blank), the first-order and total-order sensitivity indices are highlighted in Figure (blank); initial conditions were set for $Ca(0)=200$, and zero for the rest of the state variables. In order to validate these indices, Figure (blank) shows the six most sensitive parameters for each sample size. The total-order indices are quantified along with the confidence interval for each parameter at $N=2^20$ in Table (blank).
+
 \section{Results}
 
 Using the derived biological parameters in Table~\ref{tab:params1}, we run the simulation forward for 50 years with the initial conditions $(A_0, Ca_0, \tau_0, N_0, C_0)=(0,100,0,0,0)$. This simulation uses solve\_ivp from the SciPy package in Python. The results from the simulation are shown in Figure~\ref{fig:general}. Initially, $A_\beta$ and $Ca$ increase and drive each other's growth. This leads to a large growth of $\tau$ proteins, thus leading to neuron loss over time, and cognitive decline over an even longer time scale. The biomarker populations reach their equilibrium values relatively early, but it takes cognitive decline many years to reach its equilibrium value. \bigskip
@@ -257,9 +260,6 @@ To determine which proteins are most effective to treat, we graphed the equilibr
     \fbox{\includegraphics[scale=0.4]{alzgraph2.png}}
     \caption{Treatment effect on $C$\label{fig:treatment}}
 \end{figure}
-
-\section{Sensitivity Analysis}
-Sobol sensitivity analysis is used to provide a quantitative assessment of the impact model parameters have on the causal dynamics of the proposed model. The first, second, and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{20}$. Using the parameter ranges from Table (blank), the first-order and total-order sensitivity indices are highlighted in Figure (blank); initial conditions were set for $Ca(0)=200$, and zero for the rest of the state variables. In order to validate these indices, Figure (blank) shows the six most sensitive parameters for each sample size. The total-order indices are quantified along with the confidence interval for each parameter at $N=2^20$ in Table (blank).
 
 \section{Optimal Control}
 
