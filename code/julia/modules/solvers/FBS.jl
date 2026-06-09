@@ -28,6 +28,26 @@ function forward_backward_sweep(sys, pvec, tspan, umax, weights;
     unknown_syms = Set(Symbol(u) for u in unknowns(sys))
     pd = NamedTuple(Symbol(k) => v for (k, v) in pvec if Symbol(k) ∉ unknown_syms)
 
+    # Baseline (no treatment)
+    zero_p = merge(pd, (
+        u₁=t -> 0.0,
+        u₂=t -> 0.0,
+        u₃=t -> 0.0
+    ))
+
+    baseline_prob = ODEProblem(
+        state_rhs!,
+        x0,
+        tspan,
+        zero_p
+    )
+
+    baseline_sol = solve(
+        baseline_prob,
+        saveat=ts,
+        abstol=1e-10,
+        reltol=1e-8
+    )
 
     # Step 1 — initialize controls to zero
     u1 = zeros(n)
@@ -50,7 +70,7 @@ function forward_backward_sweep(sys, pvec, tspan, umax, weights;
         # Step 3 — forward solve
         fwd_p = merge(pd, (u₁=u1fun, u₂=u2fun, u₃=u3fun))
         fwd_prob = ODEProblem(state_rhs!, x0, tspan, fwd_p)
-        fwd_sol = solve(fwd_prob, abstol=1e-10, reltol=1e-8)
+        fwd_sol = solve(fwd_prob, saveat=ts, abstol=1e-10, reltol=1e-8)
 
 
         # Step 4 — backward solve (tf → t0, λᵢ(T) = 0)
@@ -61,7 +81,7 @@ function forward_backward_sweep(sys, pvec, tspan, umax, weights;
         ))
 
         bwd_prob = ODEProblem(costate_rhs!, zeros(5), (tf, t0), bwd_p)
-        bwd_sol = solve(bwd_prob, saveat=ts, abstol=1e-10, reltol=1e-8)
+        bwd_sol = solve(bwd_prob, saveat=reverse(ts), abstol=1e-10, reltol=1e-8)
 
         # Step 5 — update controls using optimal characterization
         u1_new = similar(u1)
@@ -84,6 +104,11 @@ function forward_backward_sweep(sys, pvec, tspan, umax, weights;
             u2_new[i] = clamp(λ2 * Cav / (2 * w₄), 0.0, u₂max)
             u3_new[i] = clamp(λ3 * τv / (2 * w₅), 0.0, u₃max)
         end
+
+        # Hard enforce uᵢ[1] = 0
+        u1_new[1] = 0.0
+        u2_new[1] = 0.0
+        u3_new[1] = 0.0
 
         # Convex relaxation for stability
         u1 .= 0.5 .* u1_new .+ 0.5 .* u1_old
@@ -127,7 +152,7 @@ function forward_backward_sweep(sys, pvec, tspan, umax, weights;
     bwd_sol = solve(bwd_prob, abstol=1e-10, reltol=1e-8)
 
     return (
-        sol=fwd_sol, t=ts, controls=(
+        sol=fwd_sol, baseline_sol=baseline_sol, t=ts, controls=(
             u1=u1,
             u2=u2,
             u3=u3

@@ -23,6 +23,17 @@ eqs = [
 
 @mtkcompile sys = System(eqs, t)
 
+# --- Symbolic Solve for costate equations --- #
+# @variables λ(t)[1:5]
+# states = [Aβ, Ca, τ, N, C]
+# rhs = [eq.rhs for eq in eqs]
+# L = w₁*C + w₂*N + u₁^2 + w₄*u₂^2 + w₅*u₃^2
+# H = L + sum(λ[i] * rhs[i] for i in 1:5)
+# adjoint_eqs = [
+#     D(λ[i]) ~ -expand_derivatives(Symbolics.derivative(H, states[i]))
+#     for i in 1:5
+# ]
+
 # State RHS
 function state_rhs!(dx, x, p, t)
     Aβ, Ca, τ, N, C = x
