@@ -126,9 +126,9 @@ plt.show()
 # TREATMENT GRAPHS
 
 # ranges for the Us
-u1_range = np.linspace(0, 7.5, 500)
-u2_range = np.linspace(0, 7500000, 500)
-u3_range = np.linspace(0, 7.5, 500)
+u1_range = np.linspace(0, 10, 500)
+u2_range = np.linspace(0, 10000000, 500)
+u3_range = np.linspace(0, 10, 500)
 
 # store final C values
 C_end_u1 = []
@@ -148,6 +148,7 @@ fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
 # final C vs u1
 axes[0].plot(u1_range, C_end_u1, color='#21D2FF', lw=2)
+axes[0].set_ylim(0, 21)
 axes[0].set_xlabel('u1 (A beta treatment rate)')
 axes[0].set_ylabel('Final Cognitive Loss (MMSE score decrease)')
 axes[0].set_title('Impact of u1 on C at t=50')
@@ -155,6 +156,7 @@ axes[0].grid(True)
 
 # final C vs u2
 axes[1].plot(u2_range, C_end_u2, color='#FF2164', lw=2)
+axes[1].set_ylim(0, 21)
 axes[1].set_xlabel('u2 (Calcium treatment rate)')
 axes[1].set_ylabel('Final Cognitive Loss (MMSE score decrease)')
 axes[1].set_title('Impact of u2 on C at t=50')
@@ -162,6 +164,7 @@ axes[1].grid(True)
 
 # final C vs u3
 axes[2].plot(u3_range, C_end_u3, color='#FFBC21', lw=2)
+axes[2].set_ylim(0, 21)
 axes[2].set_xlabel('u3 (Tau treatment rate)')
 axes[2].set_ylabel('Final Cognitive Loss (MMSE score decrease)')
 axes[2].set_title('Impact of u3 on C at t=50')
