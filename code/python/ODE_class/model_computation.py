@@ -117,12 +117,12 @@ class ODEModel:
         print("\n ...Sobol Analysis Table...")
         print(df.to_string(index=False))
 
-        fig, ax = plt.subplots(figsize=(10, 6))
-        df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
-        ax.set_ylabel('Sensitivity Index Value')
-        ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
-        plt.tight_layout()
-        plt.show()
+        #fig, ax = plt.subplots(figsize=(10, 6))
+        #df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
+        #ax.set_ylabel('Sensitivity Index Value')
+        #ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
+        #plt.tight_layout()
+        #plt.show()
 
     # numerically model solution to ODE
     def solution(self):
