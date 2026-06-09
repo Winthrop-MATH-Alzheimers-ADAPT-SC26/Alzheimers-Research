@@ -197,24 +197,36 @@ params in Table~\ref{tab:params1}. need elaboration and characterizations
 
 \begin{table}[h]
     \centering
-    \footnotesize
-    \begin{tabular}{|l|l|l|l||l|l|l|l|}
+    \begin{tabular}{|l|l|l|l|}
         \hline
-        Var & Value & Unit & Source & Var & Value & Unit & Source \\
+        Var & Value & Unit & Source \\
         \hline
-        $A _{\beta}$ & 0 & $\mu M$ &  & $d _{2}$ & 0.398406 & $yr^{-1}$ & \\
-        $Ca$ & 100 & $nM$ & & $e _{1}$ & 0.01463 & MMSE decline$/yr$ & \\
-        $\tau$ & $0$& $\mu M$ &  & $e _{2}$ & 0.008684 &$yr ^{-1}$ & \\
-        $N$ & 0 & billions neurons lost & & $e _{3}$ & 0.01992 & $yr^{-1}$ & \\
-        $C$ & 0 & MMSE point decline & & $k _{1}$ & 0.303598 & $yr ^{-1}$ & \\
-        $a _{1}$ & 6.5641 & $\mu M/yr$ &  & $k _{2}$ & 3155692.6 & $yr ^{-1}$ & \\
-        $a _{2}$ & 1.5778 & $\mu M/yr$ &  & $k _{3}$ & 1.8333 & $yr^{-1}$ &\\
-        $b _{1}$ & 315569260 & $nM/yr$ &  & $k _{4}$ & 0.3588 & $yr^{-1}$ & \\
-        $b _{2}$ & 6311385.2 & $yr ^{-1}$ &  & $k _{5}$ & 0.08684 & $yr^{-1}$ & \\
-        $c _{1}$ & 52.2958 & $\mu M / yr$ & & $u _{1}$ & varies & $yr^{-1}$ & \\
-        $c _{2}$ & 1.78367 & $yr ^{-1}$ &  & $u _{2}$ & varies & $yr^{-1}$ & \\
-        $c _{3}$ & 0.1 & $yr^{-1}$ & & $u _{3}$ & varies & $yr^{-1}$ & \\
-        $d _{1}$ & 0.0716 & bil. neurons lost$/yr$ & & $\sigma$ & $50-150$& $nM$ &  \\
+        $A _{\beta}$ & 0 & $\mu M$ &   \\
+        $Ca$ & 100 & $nM$ &  \\
+        $\tau$ & $0$& $\mu M$ &   \\
+        $N$ & 0 & billions neurons lost &  \\
+        $C$ & 0 & MMSE point decline &  \\
+        $a _{1}$ & 6.5641 & $\mu M/yr$ & \\
+        $a _{2}$ & 1.5778 & $\mu M/yr$ & \\
+        $b _{1}$ & 315569260 & $nM/yr$ & \\
+        $b _{2}$ & 6311385.2 & $yr ^{-1} \, (100)$ & \\
+        $c _{1}$ & 52.2958 & $\mu M / yr$ & \\
+        $c _{2}$ & 1.78367 & $yr ^{-1}$ & \\
+        $c _{3}$ & 0.1 & $yr^{-1} \, (1/100)$ & \\
+        $d _{1}$ & 0.0716 & billions neurons lost$/yr$ & \\
+        $d _{2}$ & 0.398406 & billions neurons lost$/(yr \cdot \mu M)$ & \\
+        $e _{1}$ & 0.01463 & MMSE decline$/yr$ & \\
+        $e _{2}$ & 0.008684 & MMSE decline$/ (yr \, \cdot \, $billions neurons lost$)$ & \\
+        $e _{3}$ & 0.01992 & MMSE decline$/ (yr \cdot \mu M)$ & \\
+        $k _{1}$ & 0.303598 & $yr ^{-1}$ & \\
+        $k _{2}$ & 3155692.6 & $yr ^{-1}$ & \\
+        $k _{3}$ & 1.8333 & $yr^{-1}$ & \\
+        $k _{4}$ & 0.3588 & $yr^{-1}$ & \\
+        $k _{5}$ & 0.08684 & $yr^{-1}$ & \\
+        $u _{1}$ & varies & $yr^{-1}$ & \\
+        $u _{2}$ & varies & $yr^{-1}$ & \\
+        $u _{3}$ & varies & $yr^{-1}$ & \\
+        $\sigma$ & $50-150$& $nM$ &  \\
         \hline
     \end{tabular}
     \caption{Parameters used for simulation\label{tab:params1}}
