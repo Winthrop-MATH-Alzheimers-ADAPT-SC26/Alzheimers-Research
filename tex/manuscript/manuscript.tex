@@ -110,11 +110,10 @@ This model is summarized as a system of ordinary system of differential equation
 
 \section{Analysis}
 \subsection{Preliminary Results}
-Assuming \eqref{eq:odesystem} is subject to initial conditions that are non-negative, it is noted that the system is invariant in the non-negative orthant. Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt,dCa/dt$ can be shown to be bounded. 
-This is done by first noticing
+Assuming \eqref{eq:odesystem} is subject to initial conditions that are non-negative, it is noted that the system is invariant in the non-negative orthant. Let $r_1 = k_1 + u_1$ and $r_2 = k_2 + u_2$ for the simplicity of calculations. Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt,dCa/dt$ can be shown to be bounded. This is done by first noticing
 
 \begin{equation*}
-    a_1 + a_2\frac{Ca}{Ca + \sigma} - r_1 A_{\beta} \leq a_1 + a_2 - r_1 A_{\beta}
+    a_1 + a_2\frac{Ca}{Ca + \sigma} - r_1 A_\beta \leq a_1 + a_2 - r_1 A_\beta
 \end{equation*}
 
 since $Ca/(Ca+\sigma)\in [0,1)$. 
@@ -130,8 +129,8 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
     There exists a unique equilibria ($A _{\beta}^{*}, Ca ^{*}$) for the system
     \begin{equation}\label{eq:submodel}
         \begin{cases}
-            \frac{\mathrm dA_{\beta}}{\mathrm dt} = a_{1} + a_{2} \frac{Ca}{Ca + \sigma} - k_{1} A_{\beta} - u_{1} A_{\beta} \\
-            \frac{\mathrm dCa}{\mathrm dt} = b_{1} + b_{2} A_{\beta} - k_{2}Ca - u_{2}Ca. \\
+            \frac{\mathrm dA_{\beta}}{\mathrm dt} = a_{1} + a_{2} \frac{Ca}{Ca + \sigma} - r_1 A_{\beta} \\
+            \frac{\mathrm dCa}{\mathrm dt} = b_{1} + b_{2} A_{\beta} - r_2 Ca. \\
         \end{cases}
     \end{equation}
 \end{lem}
@@ -139,8 +138,8 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
 \begin{proof}
     To establish the existence of equilibria for Equation~\eqref{eq:submodel}, a solution to the following must be obtained:
     \begin{align*}
-        a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta} &= 0\\
-        b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca &= 0.
+        a_{1} + a_{2} \frac{Ca}{Ca+\sigma} - r_1 A_{\beta} &= 0\\
+        b_{1} + b_{2} A_{\beta} - r_2 Ca &= 0.
     \end{align*}
 
     By solving $\frac{\mathrm d A_{\beta}}{\mathrm dt} = a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}$ for $A_{\beta}$, we get
