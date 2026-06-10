@@ -77,7 +77,7 @@
         a _{1}+a _{2}\frac{Ca}{Ca+\sigma} -r _{1}A _{\beta} &\leq&a _{1}+a _{2}-r _{1}A _{\beta}<0 \text{ if } A _{\beta} > \frac{a _{1}+ a _{2}}{r _{1}}\\
         b _{1} + b _{2}A _{\beta} -r _{2}Ca &\leq&b _{1} + b _{2}M -r _{2}Ca< 0 \text{ if } Ca > \frac{b _{1}+b _{2}M}{r _{2}}.
     \end{eqnarray*}
-    since $A _{\beta},Ca$ feed into the other compartments it follows that each subsequent compartment is also bounded (Though due to time constraints this did not make it into the slides).}
+    since $A _{\beta},Ca$ feed into the other compartments it follows that each subsequent compartment is also bounded.}
     
 \end{frame}
 \begin{frame}{Discussion of Proposed Model}
@@ -144,6 +144,13 @@
         \caption{Visualization of Sobol Orders}
         \label{fig:sensitivity-analysis}
     \end{figure}}
+
+    \only<3>{\begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/6-most-sens-params.pdf}
+        \caption{6 most sensitive paramters across $N \in [2^4, 2^{16}]$}
+    \end{figure}
+    }
 \end{frame}
 
 \section{Optimal Control}
