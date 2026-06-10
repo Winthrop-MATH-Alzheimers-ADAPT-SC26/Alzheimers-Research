@@ -148,7 +148,23 @@
 
 \section{Optimal Control}
 \begin{frame}{Optimal Control}
+    Recall the system of equations:
+    \[\begin{cases}
+    \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
 
+    \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\\
+
+    \frac{d \tau}{dt}=c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\\
+
+    \frac{dN}{dt}=d _{1}+d _{2}\tau-k _{4}N\\
+
+    \frac{dC}{dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C
+\end{cases}\]
+
+    The purpose of optimal control is to determine the best way to administer treatments with minimal side effects (cost). The optimization problem is to minimize the objective function,
+    \[J(u_1, u_2, u_3) = \int_0^K A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 \, dt,\]
+
+    where $u_n$ are non-negative treatment rates for each corresponding drug. In optimal control, each $u_n$ will be a function of time $u_n (t)$, so treatment levels can vary.
 \end{frame}
 
 \section{Concluding Remarks}
@@ -156,6 +172,7 @@
     In order to provide a more interesting description of the mechanisms of AD, future directions include:
     \begin{itemize}
         \item Begin working with ADNI data in order to provide application modeled to real-world scenarios.
+        \item Apply optimal control to simulations to find values for treatments.
     \end{itemize}
 \end{frame}
 
