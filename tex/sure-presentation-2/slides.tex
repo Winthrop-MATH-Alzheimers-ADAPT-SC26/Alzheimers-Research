@@ -46,17 +46,17 @@
 \begin{frame}{Formation of a Newly Proposed Model}
     In order to understand these factors and subsequently the behavior of AD, many systems of ordinary differential equations (ODEs) have been proposed related to these hypotheses; but, a few are highlighted in regard to creating a newly proposed dynamical system:
     \begin{itemize}
-        \item Observing the dynamics between A$\beta$ and $Ca ^{2+}$ \cite{pal2025nonequilibrium}.
+        \item Observing the dynamics between $A_\beta$ and $Ca ^{2+}$ \cite{pal2025nonequilibrium}.
         \item Using causal models observing factors of genetic, non-amyloid dependent, and biomarker cascades \cite{petrella2019computational}.
     \end{itemize}
 \end{frame}
 
 \begin{frame}{The Proposed Model}
-    Due to the feedback loop created by A$\beta$ and $Ca ^{2+}$, along with the interaction between the hyperphosphorylation of $\tau$-protein caused by A$\beta$, a proposed causal model is described by the following system of ODEs:
+    Due to the feedback loop created by $A_\beta$ and $Ca ^{2+}$, along with the interaction between the hyperphosphorylation of $\tau$-protein caused by $A_\beta$, a proposed causal model is described by the following system of ODEs:
     \begin{eqnarray}
         \frac{dA _{\beta}}{dt}&=&a _{1}+\underbrace{a _{2}\frac{Ca}{Ca+\sigma}}_{\text{Holling Type II}}-r _{1}A _{\beta}\\
         \frac{dCa}{dt}&=& b _{1}+b _{2}A _{\beta}-r _{2}Ca\\
-        \frac{d \tau}{dt}&=&c _{1}+\underbrace{c _{2}A _{\beta}+c _{3}Ca}_{\text{A$\beta$, Ca $^{2+}$ interaction}}-r _{3}\tau\\
+        \frac{d \tau}{dt}&=&c _{1}+\underbrace{c _{2}A _{\beta}+c _{3}Ca}_{\text{$A_\beta$, Ca $^{2+}$ interaction}}-r _{3}\tau\\
         \frac{dN}{dt}&=&d _{1}+d _{2}\tau-k _{4}N\\
         \frac{dC}{dt}&=&e _{1}+e _{2}NR + e _{3}\tau - k_5 C,
     \end{eqnarray}
@@ -87,7 +87,7 @@
         \frac{dCa}{dt}&=& b _{1}+b _{2}A _{\beta}-r _{2}Ca
     \end{eqnarray*}
 
-    For showing the number of equilibria, solve $dA _{\beta}/dt=0$ in terms of $A _{\beta}$. Substituting this into $dCa/dt$ and simplifying (using CAS), a quadratic is obtained in the form 
+    For showing the number of equilibria, solve $dA _{\beta}/dt=0$ in terms of $A _{\beta}$. Substituting this into $dCa/dt$ and simplifying (using CAS), a quadratic is obtained of the form 
 
         \[-(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma)Ca + a_1 b_2 \sigma + b_1 r_1 \sigma = 0.\]
 
@@ -123,6 +123,8 @@
 \begin{frame}{Sensitivity Analysis}
     \only<1>{Using parameters obtained from the literature, Sobol Sensitivity analysis is performed using $\pm 0.15$ of the respective parameter value in order to obtain a parameter range. The table below provides a quantitative representation of the most sensitive parameters in the model (values closer to zero signifies lesser sensitivity). 
     \begin{table}
+        \small
+        \renewcommand{\arraystretch}{1.3}
     \caption{Quantitative Representation of Sensitivity Analysis}
     \begin{tabular}{|l|l|l|l|l|l|l|l|l|l}
     \hline
@@ -142,6 +144,11 @@
         \caption{Visualization of Sobol Orders}
         \label{fig:sensitivity-analysis}
     \end{figure}}
+\end{frame}
+
+\section{Optimal Control}
+\begin{frame}{Optimal Control}
+
 \end{frame}
 
 \section{Concluding Remarks}
