@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage{amsthm} % for theorem style environments for question and answers for readablity
 \usepackage{titlesec}
+\usepackage{upgreek} % non italicized greek letters
 \usepackage[backend=biber, style=numeric]{biblatex}
 \addbibresource{biblio.bib}
 % Customize section font size
@@ -197,36 +198,37 @@ params in Table~\ref{tab:params1}. need elaboration and characterizations
 
 \begin{table}[h]
     \centering
+    \small
     \begin{tabular}{|l|l|l|l|}
         \hline
         Var & Value & Unit & Source \\
         \hline
-        $A_0$ & 0 & $\mu M$ &   \\
-        $Ca_0$ & 100 & $nM$ &  \\
-        $\tau_0$ & $0$& $\mu M$ &   \\
-        $N_0$ & 0 & billions neurons lost &  \\
-        $C_0$ & 0 & MMSE point decline &  \\
-        $a _{1}$ & 6.5641 & $\mu M/yr$ & \\
-        $a _{2}$ & 1.5778 & $\mu M/yr$ & \\
-        $b _{1}$ & 315569260 & $nM/yr$ & \\
-        $b _{2}$ & 6311385.2 & $yr ^{-1} \, (100)$ & \\
-        $c _{1}$ & 52.2958 & $\mu M / yr$ & \\
-        $c _{2}$ & 1.78367 & $yr ^{-1}$ & \\
-        $c _{3}$ & 0.1 & $yr^{-1} \, (1/100)$ & \\
-        $d _{1}$ & 0.0716 & billions neurons lost$/yr$ & \\
-        $d _{2}$ & 0.398406 & billions neurons lost$/(yr \cdot \mu M)$ & \\
-        $e _{1}$ & 0.01463 & MMSE decline$/yr$ & \\
-        $e _{2}$ & 0.008684 & MMSE decline$/ (yr \, \cdot \, $billions neurons lost$)$ & \\
-        $e _{3}$ & 0.01992 & MMSE decline$/ (yr \cdot \mu M)$ & \\
-        $k _{1}$ & 0.303598 & $yr ^{-1}$ & \\
-        $k _{2}$ & 3155692.6 & $yr ^{-1}$ & \\
-        $k _{3}$ & 1.8333 & $yr^{-1}$ & \\
-        $k _{4}$ & 0.3588 & $yr^{-1}$ & \\
-        $k _{5}$ & 0.08684 & $yr^{-1}$ & \\
-        $u _{1}$ & varies & $yr^{-1}$ & \\
-        $u _{2}$ & varies & $yr^{-1}$ & \\
-        $u _{3}$ & varies & $yr^{-1}$ & \\
-        $\sigma$ & $50-150$& $nM$ & \\
+        $A_0$ & 0 & micromolars $(\upmu \mathrm M)$ & -  \\
+        $Ca_0$ & 100 & nanomolars (nM) & \cite{matikainen2021physiology} \\
+        $\tau_0$ & $0$& $\upmu \mathrm M$ & -  \\
+        $N_0$ & 0 & billions of neurons lost & - \\
+        $C_0$ & 0 & MMSE test score decline & - \\
+        $a _{1}$ & 6.5641 & $\upmu \mathrm M \; \cdot$ year$^{-1}$ & \cite{maji2026quantifying} adjusted \\
+        $a _{2}$ & 1.5778 & $\upmu \mathrm M \; \cdot$ year$^{-1}$ & \cite{zhang2020mathematical} adjusted \\
+        $b _{1}$ & 315569260 & nM $\cdot$ year$^{-1}$ & \cite{zhang2020mathematical} lets review this one \\
+        $b _{2}$ & 6311385.2 & year$^{-1} \, (100)$ & \cite{zhang2020mathematical} \\
+        $c _{1}$ & 52.2958 & $\upmu \mathrm M \; \cdot$ year$^{-1}$ & \cite{moravveji2025sensitivity} \\
+        $c _{2}$ & 1.78367 & year$^{-1}$ & \cite{maji2026quantifying} \\
+        $c _{3}$ & 0.1 & year$^{-1} \, (1/100)$ & no source \\
+        $d _{1}$ & 0.0716 & billions of neurons lost $\cdot$ year$^{-1}$ & no source \\
+        $d _{2}$ & 0.398406 & billions of neurons lost $\cdot$ year$^{-1}$ $\cdot \, \upmu \mathrm M ^{-1}$  & \cite{moravveji2025sensitivity} \\
+        $e _{1}$ & 0.01463 & MMSE decline $\cdot$ year$^{-1}$ & no source \\
+        $e _{2}$ & 0.008684 & MMSE decline $\cdot$ year$^{-1} \, \cdot $ billions neurons lost$^{-1}$ & \cite{hao2022optimal} adjusted \\
+        $e _{3}$ & 0.01992 & MMSE decline $\cdot$ year$^{-1} \cdot \upmu \mathrm M$ & \cite{hao2022optimal} adjusted \\
+        $k _{1}$ & 0.303598 & year$^{-1}$ & \cite{maji2026quantifying} adjusted \\
+        $k _{2}$ & 3155692.6 & year$^{-1}$ & \cite{zhang2020mathematical} \\
+        $k _{3}$ & 1.8333 & year$^{-1}$ & no source \\
+        $k _{4}$ & 0.3588 & year$^{-1}$ & no source (?) \\
+        $k _{5}$ & 0.08684 & year$^{-1}$ & no source \\
+        $u _{1}$ & varies & year$^{-1}$ & - \\
+        $u _{2}$ & varies & year$^{-1}$ & - \\
+        $u _{3}$ & varies & year$^{-1}$ & - \\
+        $\sigma$ & $50-150$& nM & no source (?) \\
         \hline
     \end{tabular}
     \caption{Parameters used for simulation\label{tab:params1}}
@@ -300,8 +302,8 @@ The Hamiltonian includes the cost function as described in Equation~\eqref{eq:ob
 
 more stuff to add here \bigskip 
 
-\begin{thm}[Optimal Control]
-    There exists an optimal control set $(u_1^*, u_2^*, u_3^*)$ that minimizes $J(u_1, u_2, u_3)$ over $\mathcal U$. Furthermore, there exists adjoint variables $\lambda_1, \lambda_2, \lambda_3, \lambda_4$ and $\lambda_5$ that satisfy the following system of differential equations:
+\begin{thm}[Existence of Optimal Control]
+    There exists an optimal control set $(u_1^*, u_2^*, u_3^*)$ that minimizes $J(u_1, u_2, u_3)$ over $\,\mathcal U$. Furthermore, there exists adjoint variables $\lambda_1, \lambda_2, \lambda_3, \lambda_4$ and $\lambda_5$ that satisfy the following system of differential equations:
 
     \begin{equation*}
     \label{eq:adjoints}
@@ -334,6 +336,8 @@ more stuff to add here \bigskip
 \begin{proof}
     The
 \end{proof}
+
+\subsection{Numerical Results}
 
 \printbibliography
 
