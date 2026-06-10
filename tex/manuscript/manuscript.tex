@@ -201,11 +201,11 @@ params in Table~\ref{tab:params1}. need elaboration and characterizations
         \hline
         Var & Value & Unit & Source \\
         \hline
-        $A _{\beta}$ & 0 & $\mu M$ &   \\
-        $Ca$ & 100 & $nM$ &  \\
-        $\tau$ & $0$& $\mu M$ &   \\
-        $N$ & 0 & billions neurons lost &  \\
-        $C$ & 0 & MMSE point decline &  \\
+        $A_0$ & 0 & $\mu M$ &   \\
+        $Ca_0$ & 100 & $nM$ &  \\
+        $\tau_0$ & $0$& $\mu M$ &   \\
+        $N_0$ & 0 & billions neurons lost &  \\
+        $C_0$ & 0 & MMSE point decline &  \\
         $a _{1}$ & 6.5641 & $\mu M/yr$ & \\
         $a _{2}$ & 1.5778 & $\mu M/yr$ & \\
         $b _{1}$ & 315569260 & $nM/yr$ & \\
@@ -253,12 +253,12 @@ A phase portrait (Figure~\ref{fig:phaseportrait}) shows how different trajectori
     \caption{Phase portrait\label{fig:phaseportrait}}
 \end{figure} 
 
-To determine which proteins are most effective to treat, we graphed the equilibrium cognitive decline value against varying treatments against each protein, as seen in Figure~\ref{fig:treatment}. Each $u_n$ term increases such that the behavior of the function can be observed. We see that the variable that has the largest impact on $C$ is $u_3$, the treatment that reduces the number of $\tau$ proteins. The next most effective treatment is $u_1$, which reduces the concentration of $A_\beta$ plaques in the brain. We observe that treating the average level of $Ca$ does not have a large effect on the equilibrium cognitive decline. \bigskip
+To determine which proteins are most effective to treat, we graphed the equilibrium cognitive decline value against varying treatments against each protein, as seen in Figure~\ref{fig:treatment}. Each $u_n$ term increases such that the behavior of the function can be observed. We see that the variable that has the largest impact on $C^*$ is $u_3$, the treatment that reduces the number of $\tau$ proteins. The next most effective treatment is $u_1$, which reduces the concentration of $A_\beta$ plaques in the brain. We observe that treating the average level of $Ca$ does not have a large effect on the equilibrium cognitive decline. \bigskip
 
 \begin{figure}
     \centering
     \fbox{\includegraphics[scale=0.42]{alzgraph2.png}}
-    \caption{Treatment effect on $C$\label{fig:treatment}}
+    \caption{Treatment effect on $C^*$\label{fig:treatment}}
 \end{figure}
 
 \section{Optimal Control}
@@ -274,10 +274,7 @@ The following equation is our objective function which tracks our cost over the 
     J(u_1, u_2, u_3) = \int_0^K A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 \, dt.
 \end{equation} \bigskip
 
-The goal of treatment is to minimize the equilibrium values $N$ and $C$ while also being mindful of the side effects from the drugs. The terms $A_n$ are the weights which determine how important each associated variable is in the optimization problem. The variables $u_n$ are the treatment inputs. \bigskip
-
-\subsection{Admissible Controls}
-
+The goal of treatment is to minimize the equilibrium values $N^*$ and $C^*$ while at the same time minimizing the side effects from the drugs. The terms $A_n$ are the weights which determine how important each associated variable is in the optimization problem. The variables $u_n$ are the treatment inputs, subject to the following constraints:
 \begin{equation*}
     \label{eq:admissible}
     u = \left\{ (u_1, u_2, u_3) \in L^\infty (0, K)^3 \mid (u_1, u_2, u_3) \in \left[ 0, u_1^{\max} \right], \left[ 0, u_2^{\max} \right], \left[ 0, u_3^{\max} \right] \, \forall \, t \in [0, K] \right\}
@@ -285,7 +282,7 @@ The goal of treatment is to minimize the equilibrium values $N$ and $C$ while al
 
 Each term $u_n$ must be non-negative during the duration of the treatment. \bigskip
 
-\subsection{Hamiltonian and Adjoint Equations}
+\subsection{Hamiltonian}
 
 \begin{equation*}
 \label{eq:hamiltonian}
@@ -296,40 +293,47 @@ Each term $u_n$ must be non-negative during the duration of the treatment. \bigs
 \end{split}
 \end{equation*} \bigskip
 
-The Hamiltonian includes the cost function as described in Equation~\eqref{eq:objective} as well as the co-state vectors for each variable present in our system. This leads to the adjoint equations:
-
+The Hamiltonian includes the cost function as described in Equation~\eqref{eq:objective} as well as the co-state vectors for each variable present in our system. Thus, we seek an optimal control set $(u_1^*, u_2^*, u_3^*)$ such that 
 \begin{equation*}
-\label{eq:adjoints}
-\begin{cases}
-    \frac{d\lambda_1}{dt} = \frac{- \partial \mathcal H}{\partial A_\beta} =  k_1 \lambda_1 + u_1 \lambda_1 - b_2 \lambda_2 - c_2 \lambda_3 \\
-
-    \frac{d\lambda_2}{dt} = \frac{- \partial \mathcal H}{\partial Ca} = -\lambda_1 \frac{a_2 \sigma}{\left( Ca + \sigma \right)^2 } + k_2 \lambda_2 + u_2 \lambda_2 - c_3 \lambda_3 \\
-
-    \frac{d\lambda_3}{dt} = \frac{- \partial \mathcal H}{\partial \tau} = k_3 \lambda_3 + u_3 \lambda_3 - d_2 \lambda_4 - e_3 \lambda_5 \\
-
-    \frac{d\lambda_4}{dt} = \frac{- \partial \mathcal H}{\partial N} = -A_1 + k_4 \lambda_4 - e_2 R \lambda_5 \\
-
-    \frac{d\lambda_5}{dt} = \frac{- \partial \mathcal H}{\partial C} = -A_2 + k_5 \lambda_5
-\end{cases}
-\end{equation*}
-
-with transversality conditions
-\begin{equation*}
-    \label{eq:transversality}
-    \lambda_1 (K) = \lambda_2 (K) = \lambda_3 (K) = \lambda_4 (K) = \lambda_5(K) = 0.
-\end{equation*}
-
-\subsection{Characterizations}
-\begin{equation*}
-\label{eq:characterizations}
-\begin{cases}
-    \frac{\partial \mathcal H}{\partial u_1} = 2 A_3 u_1 - \lambda_1 A_\beta = 0, & u_1^* = \min \left\{ u_1^{\max}, \max \left\{ 0, \frac{\lambda_1 A_\beta}{2 A_3} \right\} \right\} \\
-
-    \frac{\partial \mathcal H}{\partial u_2} = 2 A_4 u_2 - \lambda_2 Ca = 0, & u_2^* = \min \left\{ u_2^{\max}, \max \left\{ 0, \frac{\lambda_2 Ca}{2 A_4} \right\} \right\} \\
-
-    \frac{\partial \mathcal H}{\partial u_3} = 2 A_5 u_3 - \lambda_3 \tau = 0, & u_3^* = \min \left\{ u_3^{\max}, \max \left\{ 0, \frac{\lambda_3 \tau}{2 A_5} \right\} \right\}.
-\end{cases}
+    J(u_1^*, u_2^*, u_3^*) = \min \left\{ J(u_1, u_2, u_3) \mid (u_1, u_2, u_3) \in \mathcal U \right\}.
 \end{equation*} \bigskip
+
+more stuff to add here \bigskip 
+
+\begin{thm}[Optimal Control]
+    There exists an optimal control set $(u_1^*, u_2^*, u_3^*)$ that minimizes $J(u_1, u_2, u_3)$ over $\mathcal U$. Furthermore, there exists adjoint variables $\lambda_1, \lambda_2, \lambda_3, \lambda_4$ and $\lambda_5$ that satisfy the following system of differential equations:
+
+    \begin{equation*}
+    \label{eq:adjoints}
+    \begin{cases}
+        \frac{d\lambda_1}{dt} = \frac{- \partial \mathcal H}{\partial A_\beta} =  k_1 \lambda_1 + u_1 \lambda_1 - b_2 \lambda_2 - c_2 \lambda_3 \\
+
+        \frac{d\lambda_2}{dt} = \frac{- \partial \mathcal H}{\partial Ca} = -\lambda_1 \frac{a_2 \sigma}{\left( Ca + \sigma \right)^2 } + k_2 \lambda_2 + u_2 \lambda_2 - c_3 \lambda_3 \\
+
+        \frac{d\lambda_3}{dt} = \frac{- \partial \mathcal H}{\partial \tau} = k_3 \lambda_3 + u_3 \lambda_3 - d_2 \lambda_4 - e_3 \lambda_5 \\
+
+        \frac{d\lambda_4}{dt} = \frac{- \partial \mathcal H}{\partial N} = -A_1 + k_4 \lambda_4 - e_2 R \lambda_5 \\
+
+        \frac{d\lambda_5}{dt} = \frac{- \partial \mathcal H}{\partial C} = -A_2 + k_5 \lambda_5
+    \end{cases}
+    \end{equation*}
+
+    with transversality conditions $\lambda_1 (K) = \lambda_2 (K) = \lambda_3 (K) = \lambda_4 (K) = \lambda_5(K) = 0$. Also, the optimal control set has the characterization:
+    \begin{equation*}
+    \label{eq:characterizations}
+    \begin{cases}
+        \frac{\partial \mathcal H}{\partial u_1} = 2 A_3 u_1 - \lambda_1 A_\beta = 0, & u_1^* = \min \left\{ u_1^{\max}, \max \left\{ 0, \frac{\lambda_1 A_\beta}{2 A_3} \right\} \right\} \\
+
+        \frac{\partial \mathcal H}{\partial u_2} = 2 A_4 u_2 - \lambda_2 Ca = 0, & u_2^* = \min \left\{ u_2^{\max}, \max \left\{ 0, \frac{\lambda_2 Ca}{2 A_4} \right\} \right\} \\
+
+        \frac{\partial \mathcal H}{\partial u_3} = 2 A_5 u_3 - \lambda_3 \tau = 0, & u_3^* = \min \left\{ u_3^{\max}, \max \left\{ 0, \frac{\lambda_3 \tau}{2 A_5} \right\} \right\}.
+    \end{cases}
+    \end{equation*}
+\end{thm} \bigskip 
+
+\begin{proof}
+    The
+\end{proof}
 
 \printbibliography
 
