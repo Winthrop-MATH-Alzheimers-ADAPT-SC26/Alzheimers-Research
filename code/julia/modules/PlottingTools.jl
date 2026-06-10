@@ -50,36 +50,38 @@ function make_plot(::ControlsPlotSeperate, r1, r2, r3)
     left = fig[1, 1] = GridLayout()
     right = fig[1, 2] = GridLayout()
 
-    axc1 = Axis(left[1, 1], title="C with only u₁ Treatment", xticks=50:10:100)
+    axc1 = Axis(left[1, 1], title=L"\text{C with only } u_1 \text{ Treatment}", xticks=50:10:100)
     lines!(axc1, t, C1, label="With Treatment")
     lines!(axc1, t, C1_base, linestyle=:dash, label="No Treatment")
     axislegend(axc1)
 
-    axc2 = Axis(left[2, 1], title="C with only u₂ Treatment", xticks=50:10:100)
+    axc2 = Axis(left[2, 1], title=L"\text{C with only } u_2 \text{ Treatment}", xticks=50:10:100)
     lines!(axc2, t, C2, label="With Treatment")
     lines!(axc2, t, C2_base, linestyle=:dash, label="No Treatment")
     axislegend(axc2)
 
-    axc3 = Axis(left[3, 1], title="C with only u₃ Treatment", xticks=50:10:100)
+    axc3 = Axis(left[3, 1], title=L"\text{C with only } u_3 \text{ Treatment}", xticks=50:10:100)
     lines!(axc3, t, C3, label="With Treatment")
     lines!(axc3, t, C3_base, linestyle=:dash, label="No Treatment")
     axislegend(axc3)
 
-    axc4l = Axis(right[1, 1], title="Each Treatment", xticks=50:10:100)
-    axc4r = Axis(right[1, 1], xticks=50:10:100, yaxisposition=:right)
-    l1 = lines!(axc4l, t, u1, label="u₁")
-    l3 = lines!(axc4l, t, u3, label="u₃")
-    l2 = lines!(axc4r, t, u2, label="u₂")
+    axc4l = Axis(right[1, 1], title="Each Treatment", xticks=50:10:100, ylabel=L"u_1 \text{ & } u_2")
+    axc4r = Axis(right[1, 1], xticks=50:10:100, yaxisposition=:right, ylabel=L"u_2")
+    l1 = lines!(axc4l, t, u1, label=L"u_1")
+    l3 = lines!(axc4l, t, u3, label=L"u_3")
+    l2 = lines!(axc4r, t, u2, label=L"u_2")
 
     Legend(
         right[1, 1],
         [l1, l2, l3],
-        ["u₁", "u₂", "u₃"],
+        [L"u_1", L"u_2", L"u_3"],
         tellwidth=false,
         tellheight=false,
         halign=:right,
         valign=:top
     )
+    colgap!(fig.layout, 15)
+    rowgap!(fig.layout, 15)
 
     return fig
 end
@@ -104,33 +106,35 @@ function make_plot(::ControlsPlotSeperate2, r1, r2, r3)
     left = fig[1, 1] = GridLayout()
     right = fig[1, 2] = GridLayout()
 
-    axc1 = Axis(left[1, 1], title="C with only u₁ Treatment", xticks=50:10:100)
+    axc1 = Axis(left[1, 1], title=L"\text{C with only } u_1 \text{ Treatment}", xticks=50:10:100)
     lines!(axc1, t, C1, label="With Treatment")
     lines!(axc1, t, C1_base, linestyle=:dash, label="No Treatment")
     axislegend(axc1)
 
-    axc2 = Axis(left[2, 1], title="C with only u₂ Treatment", xticks=50:10:100)
+    axc2 = Axis(left[2, 1], title=L"\text{C with only } u_2 \text{ Treatment}", xticks=50:10:100)
     lines!(axc2, t, C2, label="With Treatment")
     lines!(axc2, t, C2_base, linestyle=:dash, label="No Treatment")
     axislegend(axc2)
 
-    axc3 = Axis(left[3, 1], title="C with only u₃ Treatment", xticks=50:10:100)
+    axc3 = Axis(left[3, 1], title=L"\text{C with only } u_3 \text{ Treatment}", xticks=50:10:100)
     lines!(axc3, t, C3, label="With Treatment")
     lines!(axc3, t, C3_base, linestyle=:dash, label="No Treatment")
     axislegend(axc3)
 
-    axc4 = Axis(right[1, 1], title="u₁ Treatment", xticks=50:10:100)
-    lines!(axc4, t, u1, label="u₁")
+    axc4 = Axis(right[1, 1], title=L"u_1 \text{ Treatment}", xticks=50:10:100)
+    lines!(axc4, t, u1, label=L"u_1")
     axislegend(axc4)
 
-    axc5 = Axis(right[2, 1], title="u₂ Treatment", xticks=50:10:100)
-    lines!(axc5, t, u2, label="u₂")
+    axc5 = Axis(right[2, 1], title=L"u_2 \text{ Treatment}", xticks=50:10:100)
+    lines!(axc5, t, u2, label=L"u_2")
     axislegend(axc5)
 
-    axc6 = Axis(right[3, 1], title="u₃ Treatment", xticks=50:10:100)
-    lines!(axc6, t, u3, label="u₃")
+    axc6 = Axis(right[3, 1], title=L"u_3 \text{ Treatment}", xticks=50:10:100)
+    lines!(axc6, t, u3, label=L"u_3")
     axislegend(axc6)
 
+    colgap!(fig.layout, 15)
+    rowgap!(fig.layout, 15)
     return fig
 end
 # Plot controls alongside solution
@@ -155,25 +159,34 @@ function make_plot(::ControlsPlot, result)
     left = fig[1, 1] = GridLayout()
     right = fig[1, 2] = GridLayout()
 
-    Axis(left[1, 1], title="Aβ Levels", xticks=50:10:100)
+    Axis(left[1, 1], title=L"Aβ\text{ Levels}", xticks=50:10:100)
     lines!(t, Aβ)
-    Axis(left[1, 2], title="Ca Levels", xticks=50:10:100)
+    Axis(left[1, 2], title=L"Ca\text{ Levels}", xticks=50:10:100)
     lines!(t, Ca)
-    Axis(left[2, 1], title="τ Levels", xticks=50:10:100)
+    Axis(left[2, 1], title=L"τ\text{ Levels}", xticks=50:10:100)
     lines!(t, τ)
-    Axis(left[2, 2], title="N Levels", xticks=50:10:100)
+    Axis(left[2, 2], title=L"N\text{ Levels}", xticks=50:10:100)
     lines!(t, N)
 
-    axC = Axis(right[1, 1], title="C Levels", xticks=50:10:100)
+    axC = Axis(right[1, 1], title=L"C\text{ Levels}", xticks=50:10:100)
     lines!(axC, t, C, label="With Treatment")
     lines!(axC, t, C_no_treatment, linestyle=:dash, label="No Treatment")
 
-    axU = Axis(right[2, 1], title="Control Levels", xticks=50:10:100)
-    lines!(axU, t, u1, label="u₁")
-    lines!(axU, t, u2, label="u₂")
-    lines!(axU, t, u3, label="u₃")
+    axc4l = Axis(right[2, 1], title="Each Treatment", xticks=50:10:100, ylabel=L"u_1 \text{ & } u_2")
+    axc4r = Axis(right[2, 1], xticks=50:10:100, yaxisposition=:right, ylabel=L"u_2")
+    l1 = lines!(axc4l, t, u1, label=L"u_1")
+    l3 = lines!(axc4l, t, u3, label=L"u_3")
+    l2 = lines!(axc4r, t, u2, label=L"u_2")
 
-    axislegend(axU)
+    Legend(
+        right[1, 1],
+        [l1, l2, l3],
+        [L"u_1", L"u_2", L"u_3"],
+        tellwidth=false,
+        tellheight=false,
+        halign=:right,
+        valign=:top
+    )
 
     colgap!(fig.layout, 15)
     rowgap!(fig.layout, 15)
@@ -190,13 +203,15 @@ function make_plot(::SolPlotCombined, result)
     fig = Figure(size=(1600, 900))
     ax = Axis(fig[1, 1], title="State Variables", xlabel="years")
 
-    lines!(ax, t, sol[1, :], label="Aβ")
-    lines!(ax, t, sol[2, :], label="Ca")
-    lines!(ax, t, sol[3, :], label="τ")
-    lines!(ax, t, sol[4, :], label="N")
-    lines!(ax, t, sol[5, :], label="C")
+    lines!(ax, t, sol[1, :], label=L"Aβ")
+    lines!(ax, t, sol[2, :], label=L"Ca")
+    lines!(ax, t, sol[3, :], label=L"τ")
+    lines!(ax, t, sol[4, :], label=L"N")
+    lines!(ax, t, sol[5, :], label=L"C")
 
     axislegend(ax)
+    colgap!(fig.layout, 15)
+    rowgap!(fig.layout, 15)
 
     return fig
 end
@@ -207,7 +222,7 @@ function make_plot(::SolPlotHorizontal, result)
     t = result.t .+ 50.0
     sol = result.sol
 
-    names = ["Aβ", "Ca", "τ", "N", "C"]
+    names = [L"Aβ", L"Ca", L"τ", L"N", L"C"]
 
     fig = Figure(size=(1600, 900))
 
@@ -218,6 +233,8 @@ function make_plot(::SolPlotHorizontal, result)
         ax = Axis(fig[row, col], title=string(names[i], " Levels"), xlabel="Age", xticks=50:10:100)
         lines!(ax, t, sol[i, :])
     end
+    colgap!(fig.layout, 15)
+    rowgap!(fig.layout, 15)
 
     return fig
 end

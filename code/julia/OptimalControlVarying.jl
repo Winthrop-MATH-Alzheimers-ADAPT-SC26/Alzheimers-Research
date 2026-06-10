@@ -54,7 +54,7 @@ function get_result(sys, pvec, tspan, umax; weights_new=nothing)
 end
 
 umax1 = (10.0, 0.0, 0.0)
-umax2 = (0.0, 10.0, 0.0)
+umax2 = (0.0, 1.0e+7, 0.0)
 umax3 = (0.0, 0.0, 10.0)
 
 pvec_default = build_param_vector()
@@ -69,6 +69,8 @@ result = get_result(sys, pvec_default, tspan, umax)
 
 # Plotting
 fig1 = make_plot(ControlsPlotSeperate(), r1, r2, r3)
+
+fig5 = make_plot(ControlsPlot(), result)
 
 fig2 = make_plot(SolPlotCombined(), result)
 
