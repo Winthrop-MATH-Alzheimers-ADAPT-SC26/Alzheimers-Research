@@ -66,18 +66,18 @@
 \subsection{Stability Analysis}
 \begin{frame}{On Invariance and Boundedness}
 
-    \only<1>{The system can be shown to be \textit{positively invariant}. This is shown by 
+    The system can be shown to be \textit{positively invariant}. This is shown by 
     \begin{equation*}
         \left.\frac{dA _{\beta}}{dt}\right]_{A _{\beta}=0}, \left.\frac{dCa}{dt}\right]_{Ca=0}, \left.\frac{d\tau}{dt}\right]_{\tau=0},\left.\frac{dN}{dt}\right]_{N=0},\left.\frac{dC}{dt}\right]_{C=0}.
     \end{equation*}
-    Since the model follows biological scenarios, non-negative parameter choices mean that each compartment is non-negative, and thus the non-negative orthant is invariant}
+    Since the model follows biological scenarios, non-negative parameter choices mean that each compartment is non-negative, and thus the non-negative orthant is invariant. \bigskip
 
-    \only<2>{The system can also be shown to be \textit{bounded} by
+    The system can also be shown to be \textit{bounded} by
     \begin{eqnarray*}
         a _{1}+a _{2}\frac{Ca}{Ca+\sigma} -r _{1}A _{\beta} &\leq&a _{1}+a _{2}-r _{1}A _{\beta}<0 \text{ if } A _{\beta} > \frac{a _{1}+ a _{2}}{r _{1}}\\
         b _{1} + b _{2}A _{\beta} -r _{2}Ca &\leq&b _{1} + b _{2}M -r _{2}Ca< 0 \text{ if } Ca > \frac{b _{1}+b _{2}M}{r _{2}}.
     \end{eqnarray*}
-    since $A _{\beta},Ca$ feed into the other compartments it follows that each subsequent compartment is also bounded.}
+    since $A _{\beta},Ca$ feed into the other compartments it follows that each subsequent compartment is also bounded
     
 \end{frame}
 \begin{frame}{Discussion of Proposed Model}
@@ -98,9 +98,9 @@
     \begin{equation*}
         \nabla \cdot \mathbf{F} = -r _{1}-r _{2}<0 \implies \nabla \cdot (\alpha \mathbf{F}) = -r_1 - r_2 < 0.
     \end{equation*}
-    Since $\nabla \cdot (\alpha \mathbf{F})<0$, by the Bendixson-Dulac Theorem there exists no limit cycles. This shows that the unique equilibrium for the uncoupled system is globally asymptotically stable.}
+    Since $\nabla \cdot (\alpha \mathbf{F})<0$, by the Bendixson-Dulac Theorem there exists no limit cycles. This shows that the unique equilibrium for the uncoupled system is globally asymptotically stable. \bigskip
     
-    \only<3>{Now, using $(A _{\beta}^{*},Ca ^{*})$, notice that 
+    Now, using $(A _{\beta}^{*},Ca ^{*})$, notice that 
     \begin{eqnarray*}
         0&=&c _{1}+c _{2}A _{\beta}+c _{3}Ca-r _{3}\tau\\
         \tau ^{*}&=&\frac{c _{1}+c _{2}A _{\beta}^{*}+c _{3}Ca ^{*}}{r _{3}}.
@@ -112,7 +112,7 @@
 \begin{frame}{Visualization of Model}
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=0.8\textwidth]{img/alzgraph1.png}
+        \includegraphics[width=0.8\textwidth]{img/alzgraph1.pdf}
         \caption{Visuzaliation of compartments in proposed ODE model.}
         \label{fig:ode-sim}
     \end{figure}
@@ -125,16 +125,16 @@
     \begin{table}
         \small
         \renewcommand{\arraystretch}{1.3}
-    \caption{Quantitative Representation of Sensitivity Analysis}
-    \begin{tabular}{|l|l|l|l|l|l|l|l|l|l}
-    \hline
-    Params & k5 & k3 & e3 & k1 & c1 & c2 & $\dots$ & c3 & $\dots$ \\
-    \hline
-    Sobol 1st Order & 0.2761 & 0.2743 & 0.1191 & 0.0579 & 0.0527 & 0.0463 & $\dots$ & 0.0047 & $\dots$ \\
-    \hline
-    Sobol Total Order & 0.2776 & 0.2760 & 0.1225 & 0.0596 & 0.0549 & 0.0478 & $\dots$ & 0.0047 & $\dots$ \\
-    \hline
-    \end{tabular}
+        \begin{tabular}{|l|l|l|l|l|l|l|l|l|l}
+            \hline
+            Params & k5 & k3 & e3 & k1 & c1 & c2 & $\dots$ & c3 & $\dots$ \\
+            \hline
+            Sobol 1st Order & 0.2761 & 0.2743 & 0.1191 & 0.0579 & 0.0527 & 0.0463 & $\dots$ & 0.0047 & $\dots$ \\
+            \hline
+            Sobol Total Order & 0.2776 & 0.2760 & 0.1225 & 0.0596 & 0.0549 & 0.0478 & $\dots$ & 0.0047 & $\dots$ \\
+            \hline
+        \end{tabular}
+        \caption{Quantitative Representation of Sensitivity Analysis}
     \end{table}}
 
 
@@ -148,7 +148,7 @@
     \only<3>{\begin{figure}[htbp]
         \centering
         \includegraphics[width=0.8\textwidth]{img/6-most-sens-params.pdf}
-        \caption{6 most sensitive paramters across $N \in [2^4, 2^{16}]$}
+        \caption{6 most sensitive parameters across $N \in [2^4, 2^{16}]$}
     \end{figure}
     }
 \end{frame}
