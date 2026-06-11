@@ -242,43 +242,44 @@ initial conditions were set for $Ca(0)=100$, and zero for the rest of the state 
 In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. 
 The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}.
 \begin{table}[]
-\centering
-\caption{Total Sobol Sensitivity indices for various parameters with corresponding confidence intervals for $N=2^{16}$}
-\label{tab:sobol-conf}
-\vspace{0.5em}
-\begin{tabular}{|l|l|l|l|l|l|l|l|}
-\hline
-Param    & k5        & k3        & e3        & k1        & c1        & c2        & a1        \\
-\hline
-ST       & 2.791e-01 & 2.756e-01 & 1.224e-01 & 5.973e-02 & 5.505e-02 & 4.745e-02 & 3.822e-02 \\
-\hline
-Conf Int & 3.103e-03 & 3.108e-03 & 1.441e-03 & 6.114e-04 & 6.182e-04 & 5.667e-04 & 4.264e-04 \\
-\hline
-\end{tabular}
+    \centering
+    \small
+    \vspace{0.5em}
+    \begin{tabular}{|l|l|l|l|l|l|l|l|}
+        \hline
+        Param    & k5        & k3        & e3        & k1        & c1        & c2        & a1        \\
+        \hline
+        ST       & 2.791e-01 & 2.756e-01 & 1.224e-01 & 5.973e-02 & 5.505e-02 & 4.745e-02 & 3.822e-02 \\
+        \hline
+        Conf Int & 3.103e-03 & 3.108e-03 & 1.441e-03 & 6.114e-04 & 6.182e-04 & 5.667e-04 & 4.264e-04 \\
+        \hline
+    \end{tabular}
 
-\vspace{0.5em}
+    \vspace{0.5em}
 
-\begin{tabular}{|l|l|l|l|l|l|l|l|}
-\hline
-Param    & k4        & e2        & r         & d2        & k2        & c3        & a2        \\
-\hline
-ST       & 3.051e-02 & 2.995e-02 & 2.992e-02 & 2.978e-02 & 5.006e-03 & 4.915e-03 & 2.209e-03 \\
-\hline
-Conf Int & 3.358e-04 & 3.693e-04 & 3.630e-04 & 3.453e-04 & 6.306e-05 & 5.278e-05 & 2.552e-05 \\
-\hline
-\end{tabular}
+    \begin{tabular}{|l|l|l|l|l|l|l|l|}
+        \hline
+        Param    & k4        & e2        & r         & d2        & k2        & c3        & a2        \\
+        \hline
+        ST       & 3.051e-02 & 2.995e-02 & 2.992e-02 & 2.978e-02 & 5.006e-03 & 4.915e-03 & 2.209e-03 \\
+        \hline
+        Conf Int & 3.358e-04 & 3.693e-04 & 3.630e-04 & 3.453e-04 & 6.306e-05 & 5.278e-05 & 2.552e-05 \\
+        \hline
+    \end{tabular}
 
-\vspace{0.5em}
+    \vspace{0.5em}
 
-\begin{tabular}{|l|l|l|l|l|l|}
-\hline
-Param    & b1        & b2        & e1        & d1        & sig       \\
-\hline
-ST       & 2.076e-03 & 6.138e-04 & 1.602e-05 & 2.445e-07 & 1.865e-14 \\
-\hline
-Conf Int & 2.592e-05 & 6.276e-06 & 1.866e-07 & 3.464e-09 & 2.977e-14 \\
-\hline
-\end{tabular}
+    \begin{tabular}{|l|l|l|l|l|l|}
+        \hline
+        Param    & b1        & b2        & e1        & d1        & sig       \\
+        \hline
+        ST       & 2.076e-03 & 6.138e-04 & 1.602e-05 & 2.445e-07 & 1.865e-14 \\
+        \hline
+        Conf Int & 2.592e-05 & 6.276e-06 & 1.866e-07 & 3.464e-09 & 2.977e-14 \\
+        \hline
+    \end{tabular}
+    \caption{Total Sobol Sensitivity indices for various parameters with corresponding confidence intervals for $N=2^{16}$}
+    \label{tab:sobol-conf}
 \end{table}
 
 \begin{figure}[htbp]
@@ -299,7 +300,7 @@ Conf Int & 2.592e-05 & 6.276e-06 & 1.866e-07 & 3.464e-09 & 2.977e-14 \\
 
 Using the derived biological parameters in Table~\ref{tab:params1}, we run the simulation forward for 50 years with the initial conditions $(A_0, Ca_0, \tau_0, N_0, C_0)=(0,100,0,0,0)$. This simulation uses solve\_ivp from the SciPy package in Python. The results from the simulation are shown in Figure~\ref{fig:general}. Initially, $A_\beta$ and $Ca$ increase and drive each other's growth. This leads to a large growth of $\tau$ proteins, thus leading to neuron loss over time, and cognitive decline over an even longer time scale. The biomarker populations reach their equilibrium values relatively early, but it takes cognitive decline many years to reach its equilibrium value. \bigskip
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \fbox{\includegraphics[scale=0.55]{alzgraph1.pdf}}
     \caption{ODE system simulation\label{fig:general}}
@@ -307,7 +308,7 @@ Using the derived biological parameters in Table~\ref{tab:params1}, we run the s
 
 A phase portrait (Figure~\ref{fig:phaseportrait}) shows how different trajectories from varying initial conditions traverse the $A_\beta-Ca$ space. Trajectories will primarily move toward the $Ca$ nullcline with slight movement along the horizontal axis. This is because the time-scale of $Ca$ is much smaller than that of $A_\beta$. Once trajectories are near this nullcline, they travel directly toward the equilibrium solution. \bigskip
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \fbox{\includegraphics[scale=0.45]{alzgraph3.pdf}}
     \caption{Phase portrait\label{fig:phaseportrait}}
@@ -315,7 +316,7 @@ A phase portrait (Figure~\ref{fig:phaseportrait}) shows how different trajectori
 
 To determine which proteins are most effective to treat, we graphed the equilibrium cognitive decline value against varying treatments against each protein, as seen in Figure~\ref{fig:treatment}. Each $u_n$ term increases such that the behavior of the function can be observed. We see that the variable that has the largest impact on $C^*$ is $u_3$, the treatment that reduces the number of $\tau$ proteins. The next most effective treatment is $u_1$, which reduces the concentration of $A_\beta$ plaques in the brain. We observe that treating the average level of $Ca$ does not have a large effect on the equilibrium cognitive decline. \bigskip
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \fbox{\includegraphics[scale=0.42]{alzgraph2.pdf}}
     \caption{Treatment effect on $C^*$\label{fig:treatment}}
