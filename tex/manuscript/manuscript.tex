@@ -111,7 +111,7 @@ This model is summarized as a system of ordinary system of differential equation
 
 \section{Analysis}
 \subsection{Preliminary Results}
-Assuming \eqref{eq:odesystem} is subject to initial conditions that are non-negative, it is noted that the system is invariant in the non-negative orthant. Let $r_1 = k_1 + u_1$ and $r_2 = k_2 + u_2$ for the simplicity of calculations. Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt,dCa/dt$ can be shown to be bounded. This is done by first noticing
+Assuming Equation~\eqref{eq:odesystem} is subject to initial conditions that are non-negative, it is noted that the system is invariant in the non-negative orthant. Let $r_1 = k_1 + u_1$ and $r_2 = k_2 + u_2$ for the simplicity of calculations. Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt,dCa/dt$ can be shown to be bounded. This is done by first noticing
 
 \begin{equation*}
     a_1 + a_2\frac{Ca}{Ca + \sigma} - r_1 A_\beta \leq a_1 + a_2 - r_1 A_\beta
@@ -153,12 +153,12 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
         b_1 - r_2 Ca + \frac{b_2 (a_1 Ca + a_2 Ca + a_1 \sigma)}{r_1 (Ca + \sigma)}.
     \end{equation}
 
-    Setting \eqref{eq:prequadratic} equal to 0 and doing further simplification yields the quadratic,
+    Setting Equation~\eqref{eq:prequadratic} equal to 0 and doing further simplification yields the quadratic,
     \begin{equation}\label{eq:quadratic}
         -(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma)Ca + a_1 b_2 \sigma + b_1 r_1 \sigma = 0.
     \end{equation}
 
-    Notice that in \eqref{eq:quadratic} the quadratic term is always negative and the constant term is always positive. The linear term can either be positive or negative depending on the choice of parameters. Regardless of the parity of the linear term, there is only one sign change in the expression, so by Descartes' Rule of Signs, there is one positive real root to this quadratic. 
+    Notice that in Equation~\eqref{eq:quadratic} the quadratic term is always negative and the constant term is always positive. The linear term can either be positive or negative depending on the choice of parameters. Regardless of the parity of the linear term, there is only one sign change in the expression, so by Descartes' Rule of Signs, there is one positive real root to this quadratic. 
     Thus, there exists a unique positive equilibrium ($A _{\beta}^{*},Ca ^{*}$) for the system in Equation~\eqref{eq:submodel}.
 \end{proof} \bigskip
 
@@ -193,11 +193,12 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
 \end{proof} \bigskip
 
 \section{Parameters}
-
-params in Table~\ref{tab:params1}. need elaboration and characterizations
+The values for the 19 key parameters in the causal model are obtained and estimated from the literature, and are summarized in Table~\ref{tab:params1}. In order to provide as accurate a model as possible, parameters used in previous studies are adjusted to allow for similar units and orders of magnitude. When this is not possible, parameters are estimated using values found from various biological studies.
 
 \begin{table}[h]
     \centering
+    \caption{Parameters used for simulation\label{tab:params1}}
+    \vspace{0.5em}
     \small
     \begin{tabular}{|l|l|l|l|}
         \hline
@@ -231,11 +232,68 @@ params in Table~\ref{tab:params1}. need elaboration and characterizations
         $\sigma$ & $50-150$& nM & no source (?) \\
         \hline
     \end{tabular}
-    \caption{Parameters used for simulation\label{tab:params1}}
 \end{table} \bigskip
 
 \section{Sensitivity Analysis}
-Sobol sensitivity analysis is used to provide a quantitative assessment of the impact model parameters have on the causal dynamics of the proposed model. The first, second, and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{20}$. Using the parameter ranges from Table (blank), the first-order and total-order sensitivity indices are highlighted in Figure (blank); initial conditions were set for $Ca(0)=200$, and zero for the rest of the state variables. In order to validate these indices, Figure (blank) shows the six most sensitive parameters for each sample size. The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{20}$ in Table (blank).
+Sobol sensitivity analysis is used to provide a quantitative assessment of the impact model parameters have on the causal dynamics of the proposed model. 
+The first, second, and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{16}$. 
+Using the parameter ranges from Table~\ref{tab:params1}, the first-order and total-order sensitivity indices are highlighted in Figure~\ref{fig:first-total-sens}; 
+initial conditions were set for $Ca(0)=100$, and zero for the rest of the state variables. 
+In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. 
+The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}.
+\begin{table}[]
+\centering
+\caption{Total Sobol Sensitivity indices for various parameters with corresponding confidence intervals for $N=2^{16}$}
+\label{tab:sobol-conf}
+\vspace{0.5em}
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\hline
+Param    & k5        & k3        & e3        & k1        & c1        & c2        & a1        \\
+\hline
+ST       & 2.791e-01 & 2.756e-01 & 1.224e-01 & 5.973e-02 & 5.505e-02 & 4.745e-02 & 3.822e-02 \\
+\hline
+Conf Int & 3.103e-03 & 3.108e-03 & 1.441e-03 & 6.114e-04 & 6.182e-04 & 5.667e-04 & 4.264e-04 \\
+\hline
+\end{tabular}
+
+\vspace{0.5em}
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\hline
+Param    & k4        & e2        & r         & d2        & k2        & c3        & a2        \\
+\hline
+ST       & 3.051e-02 & 2.995e-02 & 2.992e-02 & 2.978e-02 & 5.006e-03 & 4.915e-03 & 2.209e-03 \\
+\hline
+Conf Int & 3.358e-04 & 3.693e-04 & 3.630e-04 & 3.453e-04 & 6.306e-05 & 5.278e-05 & 2.552e-05 \\
+\hline
+\end{tabular}
+
+\vspace{0.5em}
+
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+Param    & b1        & b2        & e1        & d1        & sig       \\
+\hline
+ST       & 2.076e-03 & 6.138e-04 & 1.602e-05 & 2.445e-07 & 1.865e-14 \\
+\hline
+Conf Int & 2.592e-05 & 6.276e-06 & 1.866e-07 & 3.464e-09 & 2.977e-14 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sens_img_1.pdf}
+    \caption{First and Total order indices at $N=2^{10}$}
+    \label{fig:first-total-sens}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{6-most-sens-params.pdf}
+    \caption{6 most sensitive parameters for $N \in [2^4,2^{16}]$}
+    \label{fig:6-most-sens}
+\end{figure}
 
 \section{Results}
 
