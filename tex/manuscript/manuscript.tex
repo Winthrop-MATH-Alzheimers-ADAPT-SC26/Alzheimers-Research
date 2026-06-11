@@ -175,7 +175,7 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
 \end{thm}
 
 \begin{proof}
-    By Lemma~\ref{lem2}, there exists a unique globally asymptotic stable equilibrium ($A _{\beta}^{*},Ca ^{*}$). By solving \eqref{eq:tau} for $\tau$ we get the following equilibrium value:
+    By Lemma~\ref{lem2}, there exists a unique global asymptotically stable equilibrium ($A _{\beta}^{*},Ca ^{*}$). By solving \eqref{eq:tau} for $\tau$ we get the following equilibrium value:
     \begin{equation*}
         \tau ^{*}=\frac{c _{1}+c _{2}A _{\beta}^{*}+c _{3}Ca ^{*}}{k _{3}+u _{3}}.
     \end{equation*}
@@ -189,7 +189,7 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0$ when $
         C^* = \frac{e_1 + e_2 N^*R + e_3 \tau^*}{k_5}.
     \end{equation*}
 
-    Thus there is a unique globally asymptotic stable equilibrium solution for the system in Equation~\eqref{eq:odesystem}.
+    Thus there is a unique global asymptotically stable equilibrium solution for the system in Equation~\eqref{eq:odesystem}.
 \end{proof} \bigskip
 
 \section{Parameters}
@@ -236,11 +236,14 @@ The values for the 19 key parameters in the causal model are obtained and estima
 
 \section{Sensitivity Analysis}
 Sobol sensitivity analysis is used to provide a quantitative assessment of the impact model parameters have on the causal dynamics of the proposed model. 
+This computation was performed using Python, with the SALib library \cite{Iwanaga2022,Herman2017}.
 The first, second, and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{16}$. 
 Using the parameter ranges from Table~\ref{tab:params1}, the first-order and total-order sensitivity indices are highlighted in Figure~\ref{fig:first-total-sens}; 
 initial conditions were set for $Ca(0)=100$, and zero for the rest of the state variables. 
 In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. 
 The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}.
+Using a threshold of $10^{-4}$, the parameters falling below this threshold provide a neglible impact on the overall model.
+From this, it is observed that the growth of calcium in Equation~\eqref{eq:tau} is suggested to have very little effect on tau protein synthesis, which coroborates with findings in some studies (list citations).
 \begin{table}[]
     \centering
     \small
