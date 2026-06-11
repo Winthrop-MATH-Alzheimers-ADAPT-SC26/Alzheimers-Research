@@ -244,6 +244,8 @@ The total-order indices are quantified along with the confidence interval for ea
 \begin{table}[]
     \centering
     \small
+    \caption{Total Sobol Sensitivity indices for various parameters with corresponding confidence intervals for $N=2^{16}$}
+    \label{tab:sobol-conf}
     \vspace{0.5em}
     \begin{tabular}{|l|l|l|l|l|l|l|l|}
         \hline
@@ -278,20 +280,18 @@ The total-order indices are quantified along with the confidence interval for ea
         Conf Int & 2.592e-05 & 6.276e-06 & 1.866e-07 & 3.464e-09 & 2.977e-14 \\
         \hline
     \end{tabular}
-    \caption{Total Sobol Sensitivity indices for various parameters with corresponding confidence intervals for $N=2^{16}$}
-    \label{tab:sobol-conf}
 \end{table}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.5\textwidth]{sens_img_1.pdf}
+    \includegraphics[width=0.5\textwidth]{img/sens_img_1.pdf}
     \caption{First and Total order indices at $N=2^{10}$}
     \label{fig:first-total-sens}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{6-most-sens-params.pdf}
+    \includegraphics[width=0.8\textwidth]{img/6-most-sens-params.pdf}
     \caption{6 most sensitive parameters for $N \in [2^4,2^{16}]$}
     \label{fig:6-most-sens}
 \end{figure}
@@ -302,7 +302,7 @@ Using the derived biological parameters in Table~\ref{tab:params1}, we run the s
 
 \begin{figure}[h]
     \centering
-    \fbox{\includegraphics[scale=0.55]{alzgraph1.pdf}}
+    \fbox{\includegraphics[scale=0.55]{img/alzgraph1.pdf}}
     \caption{ODE system simulation\label{fig:general}}
 \end{figure} 
 
@@ -310,7 +310,7 @@ A phase portrait (Figure~\ref{fig:phaseportrait}) shows how different trajectori
 
 \begin{figure}[h]
     \centering
-    \fbox{\includegraphics[scale=0.45]{alzgraph3.pdf}}
+    \fbox{\includegraphics[scale=0.45]{img/alzgraph3.pdf}}
     \caption{Phase portrait\label{fig:phaseportrait}}
 \end{figure} 
 
@@ -318,7 +318,7 @@ To determine which proteins are most effective to treat, we graphed the equilibr
 
 \begin{figure}[h]
     \centering
-    \fbox{\includegraphics[scale=0.42]{alzgraph2.pdf}}
+    \fbox{\includegraphics[scale=0.42]{img/alzgraph2.pdf}}
     \caption{Treatment effect on $C^*$\label{fig:treatment}}
 \end{figure}
 
@@ -397,6 +397,17 @@ more stuff to add here \bigskip
 \end{proof}
 
 \subsection{Numerical Results}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{img/OC-IndividualTreatments.pdf}
+    \caption{Optimal control simulation results}
+    \label{fig:optimalcontrolsim}
+\end{figure} \bigskip
+
+- explain how weights were calculated
+
+After running numerical simulations for optimal control, we find that the results are in line with the simulation shown in Figure \ref{fig:treatment}. Treatments that target $\tau$-protein are most effective in reducing $C^*$, followed by treatments targeting $A_\beta$. Again, treatments targeting $Ca$ are found to be the least effective. \bigskip
 
 \printbibliography
 
