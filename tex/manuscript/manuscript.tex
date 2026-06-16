@@ -87,32 +87,29 @@ The parameter $R$ represents a patient having the APOE $\epsilon 4$ gene, which 
 This model is summarized as the following system of ordinary differential equations: 
 
 \begin{equation}\label{eq:odesystem}
+\begin{split}
+    \frac{dA _{\beta}}{dt} &= a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
+    \frac{dCa}{dt} &= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\\
+    \frac{d \tau}{dt} &= c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\\
+    \frac{dN}{dt} &= d _{1}+d _{2}\tau-k _{4}N\\
+    \frac{dC}{dt} &= e _{1}+e _{2}NR + e _{3}\tau-k _{5}C
+\end{split}
+\end{equation}
+
+with the initial conditions:
+\begin{equation*}
 \begin{cases}
-    \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
-
-    \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\\
-
-    \frac{d \tau}{dt}=c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\\
-
-    \frac{dN}{dt}=d _{1}+d _{2}\tau-k _{4}N\\
-
-    \frac{dC}{dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C
+    A_{\beta}(T_{0}) = A_{0} \\
+    Ca(T_{0}) = Ca_{0} \\
+    \tau(T_{0}) = \tau_{0} \\
+    N(T_{0}) = N_{0} \\
+    C(T_{0}) = C_{0}.
 \end{cases}
-\quad
-\text{with}
-\quad
-\begin{cases}
-    A _{\beta}(T _{0})=A _{0}\\
-    Ca(T _{0})=Ca _{0}\\
-    \tau(T _{0})=\tau _{0}\\
-    N(T _{0})=N _{0}\\
-    C(T _{0})=C _{0}.
-\end{cases}
-\end{equation} \bigskip
+\end{equation*} \bigskip
 
 \section{Analysis}
-\subsection{Preliminary Results}
-Assuming \eqref{eq:odesystem} is subject to non-negative initial conditions, the system is invariant in the non-negative orthant. Let $r_n = k_n + u_n$ for the simplicity of calculations. Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt$ and $dCa/dt$ can be shown to be bounded. First, notice that
+\subsection{Preliminary Results}\label{subsec:boundedness}
+Assuming system~\eqref{eq:odesystem} is subject to non-negative initial conditions, the system is invariant in the non-negative orthant. Let $r_n = k_n + u_n$ for the simplicity of calculations. Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt$ and $dCa/dt$ can be shown to be bounded. First, notice that
 
 \begin{equation*}
     a_1 + a_2\frac{Ca}{Ca + \sigma} - r_1 A_\beta \leq a_1 + a_2 - r_1 A_\beta
@@ -184,7 +181,7 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0 \implie
         C^* = \frac{e_1 + e_2 N^*R + e_3 \tau^*}{k_5}.
     \end{equation*}
 
-    Thus there is a unique global asymptotically stable equilibrium solution for the general system in Equation~\eqref{eq:odesystem}.
+    Thus there is a unique global asymptotically stable equilibrium solution for system~\eqref{eq:odesystem}.
 \end{proof} \bigskip
 
 \section{Parameters}
@@ -215,7 +212,7 @@ The values for the 19 key parameters in the causal model are obtained and estima
         $d _{2}$ & 0.398406 & billions of neurons lost $\cdot$ year$^{-1}$ $\cdot \, \upmu \mathrm M ^{-1}$  & \cite{moravveji2025sensitivity} \\
         $e _{1}$ & 0.01463 & MMSE decline $\cdot$ year$^{-1}$ & no source \\
         $e _{2}$ & 0.008684 & MMSE decline $\cdot$ year$^{-1} \, \cdot $ billions neurons lost$^{-1}$ & \cite{hao2022optimal} adjusted \\
-        $e _{3}$ & 0.01992 & MMSE decline $\cdot$ year$^{-1} \cdot \upmu \mathrm M$ & \cite{hao2022optimal} adjusted \\
+        $e _{3}$ & 0.01992 & MMSE decline $\cdot$ year$^{-1} \cdot \upmu \mathrm M^{-1}$ & \cite{hao2022optimal} adjusted \\
         $k _{1}$ & 0.303598 & year$^{-1}$ & \cite{maji2026quantifying} adjusted \\
         $k _{2}$ & 3155692.6 & year$^{-1}$ & \cite{zhang2020mathematical} \\
         $k _{3}$ & 1.8333 & year$^{-1}$ & no source \\
@@ -230,15 +227,8 @@ The values for the 19 key parameters in the causal model are obtained and estima
 \end{table} \bigskip
 
 \section{Sensitivity Analysis}
-Sobol sensitivity analysis is used to provide a quantitative assessment of the impact model parameters have on the causal dynamics of the proposed model. 
-This computation was performed using Python, with the SALib library \cite{Iwanaga2022,Herman2017}.
-The first, second, and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{16}$. 
-Using the parameter ranges from Table~\ref{tab:params1}, the first-order and total-order sensitivity indices are highlighted in Figure~\ref{fig:first-total-sens}; 
-initial conditions were set for $Ca(0)=100$, and zero for the rest of the state variables. 
-In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. 
-The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}.
-Using a threshold of $10^{-4}$, the parameters falling below this threshold provide a neglible impact on the overall model.
-From this, it is observed that the growth of calcium in Equation~\eqref{eq:tau} is suggested to have very little effect on tau protein synthesis, which coroborates with findings in some studies (list citations).
+
+Sobol sensitivity analysis is used to provide a quantitative assessment of the impact that model parameters have on the causal dynamics of the proposed model. This computation was performed using Python with the SALib library \cite{Herman2017, Iwanaga2022}. The first, second, and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{16}$. Using the parameter ranges from Table~\ref{tab:params1}, the first-order and total-order sensitivity indices are highlighted in Figure~\ref{fig:first-total-sens}; initial conditions were set for $Ca(0)=100$, and zero for the rest of the state variables. In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}. Using a threshold of $10^{-4}$, the parameters falling below this threshold provide a neglible impact on the overall model. From this, it is observed that the growth of calcium in Equation~\eqref{eq:tau} is suggested to have very little effect on tau protein synthesis, which coroborates with findings in some studies (list citations).
 \begin{table}[]
     \centering
     \small
@@ -322,7 +312,7 @@ To determine which proteins are most effective to treat, we graph the equilibriu
 
 \section{Optimal Control}
 
-Optimal control is a method we can use to determine the optimal values of $u_n$ while tracking some cost function. In optimal control, we will let each $u_n$ be a function of time, $u_n(t)$, as it is not realistic to maintain a constant treatment over a long time-frame. Tracking a cost function is useful for our application as some drugs used to treat Alzheimer's Disease have been shown to induce strong side effects such as brain swelling and brain bleeding (citation needed). So, minimizing this cost function while maximizing treatments will let the medication have its strongest impact without crossing some side-effect threshold. \bigskip
+We use optimal control to determine the optimal values of $u_n$ to minimize the total cost of treatments and results. In optimal control, we will let each $u_n$ be a function of time, $u_n(t)$, as it is not realistic to maintain a constant treatment long-term. Tracking the cost of treatments is useful for our application as some drugs used to treat Alzheimer's Disease have been shown to induce strong side effects such as brain swelling and brain bleeding \cite{cummings2023lecanemab}. So, minimizing this cost function while maximizing treatments will let the medication have its strongest impact without adverse effects. \bigskip
 
 \subsection{Objective Function}
 
@@ -333,13 +323,11 @@ The following equation is our objective function which tracks our cost over the 
     J(u_1, u_2, u_3) = \int_0^K A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 \, dt.
 \end{equation} \bigskip
 
-The goal of treatment is to minimize the equilibrium values $N^*$ and $C^*$ while at the same time minimizing the side effects from the drugs. The terms $A_n$ are the weights which determine how important each associated variable is in the optimization problem. The variables $u_n$ are the treatment inputs, subject to the following constraints:
+The goal of treatment is to minimize the equilibrium values $N^*$ and $C^*$ while at the same time minimizing the side effects from the drugs. The terms $A_n$ are the weights which determine how important each associated variable is in the optimization problem. $A_3$, $A_4$, and $A_5$ are the weights associated with the quadratic cost of treatments $u_n$ that target $A_\beta$, calcium, and $\tau$ protein levels. The set of admissible control functions is given by:
 \begin{equation*}
     \label{eq:admissible}
     u = \left\{ (u_1, u_2, u_3) \in L^\infty (0, K)^3 \mid (u_1, u_2, u_3) \in \left[ 0, u_1^{\max} \right], \left[ 0, u_2^{\max} \right], \left[ 0, u_3^{\max} \right] \, \forall \, t \in [0, K] \right\}
 \end{equation*} \bigskip
-
-Each term $u_n$ must be non-negative during the duration of the treatment. \bigskip
 
 \subsection{Hamiltonian}
 
@@ -352,47 +340,39 @@ Each term $u_n$ must be non-negative during the duration of the treatment. \bigs
 \end{split}
 \end{equation*} \bigskip
 
-The Hamiltonian includes the cost function as described in Equation~\eqref{eq:objective} as well as the co-state vectors for each variable present in our system. Thus, we seek an optimal control set $(u_1^*, u_2^*, u_3^*)$ such that 
+The Hamiltonian includes the treatment costs as described in Equation~\eqref{eq:objective} as well as the co-state vectors for each variable present in our system. Thus, we seek an optimal control set $(u_1^*, u_2^*, u_3^*)$ such that 
 \begin{equation*}
     J(u_1^*, u_2^*, u_3^*) = \min \left\{ J(u_1, u_2, u_3) \mid (u_1, u_2, u_3) \in \mathcal U \right\}.
 \end{equation*} \bigskip
 
-more stuff to add here \bigskip 
-
 \begin{thm}[Existence of Optimal Control]
     There exists an optimal control set $(u_1^*, u_2^*, u_3^*)$ that minimizes $J(u_1, u_2, u_3)$ over $\,\mathcal U$. Furthermore, there exists adjoint variables $\lambda_1, \lambda_2, \lambda_3, \lambda_4$ and $\lambda_5$ that satisfy the following system of differential equations:
 
-    \begin{equation*}
+    \begin{equation}
     \label{eq:adjoints}
-    \begin{cases}
-        \frac{d\lambda_1}{dt} = \frac{- \partial \mathcal H}{\partial A_\beta} =  k_1 \lambda_1 + u_1 \lambda_1 - b_2 \lambda_2 - c_2 \lambda_3 \\
-
-        \frac{d\lambda_2}{dt} = \frac{- \partial \mathcal H}{\partial Ca} = -\lambda_1 \frac{a_2 \sigma}{\left( Ca + \sigma \right)^2 } + k_2 \lambda_2 + u_2 \lambda_2 - c_3 \lambda_3 \\
-
-        \frac{d\lambda_3}{dt} = \frac{- \partial \mathcal H}{\partial \tau} = k_3 \lambda_3 + u_3 \lambda_3 - d_2 \lambda_4 - e_3 \lambda_5 \\
-
-        \frac{d\lambda_4}{dt} = \frac{- \partial \mathcal H}{\partial N} = -A_1 + k_4 \lambda_4 - e_2 R \lambda_5 \\
-
-        \frac{d\lambda_5}{dt} = \frac{- \partial \mathcal H}{\partial C} = -A_2 + k_5 \lambda_5
-    \end{cases}
-    \end{equation*}
+    \begin{split}
+        \frac{d\lambda_1}{dt} &= -\frac{\partial \mathcal H}{\partial A_\beta} =  k_1 \lambda_1 + u_1 \lambda_1 - b_2 \lambda_2 - c_2 \lambda_3 \\
+        \frac{d\lambda_2}{dt} &= -\frac{\partial \mathcal H}{\partial Ca} = -\lambda_1 \frac{a_2 \sigma}{\left( Ca + \sigma \right)^2 } + k_2 \lambda_2 + u_2 \lambda_2 - c_3 \lambda_3 \\
+        \frac{d\lambda_3}{dt} &= -\frac{\partial \mathcal H}{\partial \tau} = k_3 \lambda_3 + u_3 \lambda_3 - d_2 \lambda_4 - e_3 \lambda_5 \\
+        \frac{d\lambda_4}{dt} &= -\frac{\partial \mathcal H}{\partial N} = -A_1 + k_4 \lambda_4 - e_2 R \lambda_5 \\
+        \frac{d\lambda_5}{dt} &= -\frac{\partial \mathcal H}{\partial C} = -A_2 + k_5 \lambda_5
+    \end{split}
+    \end{equation}
 
     with transversality conditions $\lambda_1 (K) = \lambda_2 (K) = \lambda_3 (K) = \lambda_4 (K) = \lambda_5(K) = 0$. Also, the optimal control set has the characterization:
-    \begin{equation*}
+    \begin{align*}
     \label{eq:characterizations}
-    \begin{cases}
-        \frac{\partial \mathcal H}{\partial u_1} = 2 A_3 u_1 - \lambda_1 A_\beta = 0, & u_1^* = \min \left\{ u_1^{\max}, \max \left\{ 0, \frac{\lambda_1 A_\beta}{2 A_3} \right\} \right\} \\
-
-        \frac{\partial \mathcal H}{\partial u_2} = 2 A_4 u_2 - \lambda_2 Ca = 0, & u_2^* = \min \left\{ u_2^{\max}, \max \left\{ 0, \frac{\lambda_2 Ca}{2 A_4} \right\} \right\} \\
-
-        \frac{\partial \mathcal H}{\partial u_3} = 2 A_5 u_3 - \lambda_3 \tau = 0, & u_3^* = \min \left\{ u_3^{\max}, \max \left\{ 0, \frac{\lambda_3 \tau}{2 A_5} \right\} \right\}.
-    \end{cases}
-    \end{equation*}
+        u_1^* &= \min \left\{ u_1^{\max}, \max \left\{ 0, \frac{\lambda_1 A_\beta}{2 A_3} \right\} \right\} \\
+        u_2^* &= \min \left\{ u_2^{\max}, \max \left\{ 0, \frac{\lambda_2 Ca}{2 A_4} \right\} \right\} \\
+        u_3^* &= \min \left\{ u_3^{\max}, \max \left\{ 0, \frac{\lambda_3 \tau}{2 A_5} \right\} \right\}.
+    \end{align*}
 \end{thm} \bigskip 
 
 \begin{proof}
-    The
-\end{proof}
+    Using Corollary 4.1 of \cite{fleming2012deterministic}, the existence of an optimal control set follows from the Lipschitz property of system~\eqref{eq:odesystem} with respect to the state variables, \textit{a priori} boundedness of the state solutions established in Subsection~\ref{subsec:boundedness}, and the convexity of the integrand of $J$ with respect to $(u_1, u_2, u_3)$.
+
+    By applying Pontryagin's Maximum Principle, the adjoint variables must satisfy system~\eqref{eq:adjoints} with zero final time conditions. To obtain the characterizations of the optimal controls, we solve $\frac{ \partial \mathcal H }{ \partial u_1 } = \frac{ \partial \mathcal H }{ \partial u_2 } = \frac{ \partial \mathcal H }{ \partial u_3 } = 0$ on the interior of the control set $\mathcal U$. Using the bounds on the controls, we obtain the desired characterization.
+\end{proof} \bigskip
 
 \subsection{Numerical Results}
 
@@ -405,7 +385,9 @@ more stuff to add here \bigskip
 
 - explain how weights were calculated
 
-After running numerical simulations for optimal control, we find that the results are in line with the simulation shown in Figure \ref{fig:treatment}. Treatments that target $\tau$-protein are most effective in reducing $C^*$, followed by treatments targeting $A_\beta$. Again, treatments targeting $Ca$ are found to be the least effective. \bigskip
+Figure~\ref{fig:optimalcontrolsim} shows the values of $A_\beta$, calcium, and tau proteins over time with and without treatments, as well as the value of $u_n$ over the duration of the treatment. After running numerical simulations for optimal control, we find that the results are in line with the simulation shown in Figure \ref{fig:treatment}. That is, treatments that target tau protein are most effective in reducing $C^*$, followed by treatments targeting $A_\beta$. Again, treatments targeting $Ca$ are found to be the least effective. \bigskip
+
+\section{Conclusion}
 
 \printbibliography
 
