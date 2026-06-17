@@ -10,6 +10,9 @@ packaging==26.2
 pandas==3.0.3
 pillow==12.2.0
 pyparsing==3.3.2
+PyQt6==6.11.0
+PyQt6-Qt6==6.11.1
+PyQt6_sip==13.11.1
 python-dateutil==2.9.0.post0
 SALib==1.5.2
 scipy==1.17.1

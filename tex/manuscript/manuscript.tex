@@ -65,11 +65,11 @@ Here, calcium grows at a linear rate $b_1$, and the accumulation due to $A_\beta
 \subsection{Tau Equation}
 Many studies have suggested that the pathology of tau is initiated by amyloid beta accumulation, and have modeled this process mathematically \cite{hao2022optimal, zheng2002amyloid}. However, it has also been suggested that calcium dysregulation has an effect inducing the production of tau proteins \cite{guan2021elevating}. Since no calcium-tau interaction is found in dynamical systems literature, we implement a Hill equation similar to that of Equation~\eqref{eq:abeta_dt}. Thus, the tau equation is given by, 
 \begin{equation}
-    \frac{d \tau}{dt} = c_{1} + c_{2} A_{\beta} + c_{3} \frac{Ca}{Ca + \sigma_2} - k_{3} \tau - u_{3} \tau \quad \text{with} \quad \tau(T_0) = \tau_{0}.
+    \frac{d \tau}{dt} = c_{1} + c_{2} A_{\beta} + c_{3} \frac{Ca^n}{Ca^n + \sigma_2^n} - k_{3} \tau - u_{3} \tau \quad \text{with} \quad \tau(T_0) = \tau_{0}.
     \label{eq:tau}
 \end{equation}
 
-It is noted here that only pathological tau is observed, where other studies have used compartments relating to non-amyloid dependent tau accumulation, or suspected non-Alzheimer pathology (SNAP) \cite{hao2022optimal, petrella2019computational}. This function is similar to Equation~\eqref{eq:abeta_dt} and Equation~\eqref{eq:calcium_dt} in that $\frac{d\tau}{dt}$ grows at a linear rate $d_1$ and decreases proportional to the population of $\tau$ through $k_3 \tau$. There is also the treatment term $u_3 \tau$. \bigskip
+It is noted here that only pathological tau is observed, where other studies have used compartments relating to non-amyloid dependent tau accumulation, or suspected non-Alzheimer pathology (SNAP) \cite{hao2022optimal, petrella2019computational}. This function is similar to Equation~\eqref{eq:abeta_dt} and Equation~\eqref{eq:calcium_dt} in that $\frac{d\tau}{dt}$ grows at a linear rate $d_1$ and decreases proportional to the population of $\tau$ through $k_3 \tau$. There is also the treatment term $u_3 \tau$. Again, we choose $n=1$ for tractability of stability solutions and further analysis. \bigskip
 
 \subsection{Neurodegeneration Equation}
 When tau is in a pathological state, it no longer binds to microtubules as intended; instead, the formation of NFTs occur in the neurons, leading to neurodegeneration \cite{ballatore2007tau}. Hence, this equation is defined as 
@@ -170,7 +170,7 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0 \implie
 \begin{proof}
     By Lemma~\ref{lem2}, there is a unique globally asymptotically stable equilibrium ($A _{\beta}^{*},Ca ^{*}$) for the $(A_\beta, Ca)$ submodel. By solving \eqref{eq:tau} for $\tau$ we get the following equilibrium value:
     \begin{equation*}
-        \tau ^{*}=\frac{c _{1}+c _{2}A _{\beta}^{*}+c _{3}Ca ^{*}}{k _{3}+u _{3}}.
+        \tau^{*} = \frac{c_3 Ca^* + c_1 (Ca^* + \sigma_2) + A_\beta^* c_2 (Ca^* + \sigma_2)}{r_3 (Ca^* + \sigma_2)}
     \end{equation*}
 
     By similar methods we find
@@ -222,7 +222,8 @@ The values for the 19 key parameters in the causal model are obtained and estima
         $u _{1}$ & varies & year$^{-1}$ & - \\
         $u _{2}$ & varies & year$^{-1}$ & - \\
         $u _{3}$ & varies & year$^{-1}$ & - \\
-        $\sigma_1$ & $50-150$& nM & no source (?) \\
+        $\sigma_1$ & $50-150$ & nM & no source (?) \\
+        $\sigma_2$ & $50-150$ & nM & no source (?) \\
         \hline
     \end{tabular}
 \end{table} \bigskip
@@ -336,7 +337,7 @@ The goal of treatment is to minimize the equilibrium values $N^*$ and $C^*$ whil
 \label{eq:hamiltonian}
 \begin{split}
     \mathcal H &= A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 + \lambda_1 \left( a_1 + a_2 \frac{Ca}{Ca + \sigma_1} - k_1 A_\beta - u_1 A_\beta \right) \\
-    &\quad + \lambda_2 \left( b_1 + b_2 A_\beta - k_2 Ca - u_2 Ca \right) + \lambda_3 \left( c_1 + c_2 A_\beta + c_3 Ca - k_3 \tau - u_3 \tau \right) \\
+    &\quad + \lambda_2 \left( b_1 + b_2 A_\beta - k_2 Ca - u_2 Ca \right) + \lambda_3 \left( c_1 + c_2 A_\beta + c_3 \frac{Ca}{Ca + \sigma_2} - k_3 \tau - u_3 \tau \right) \\
     &\quad + \lambda_4 \left( d_1 + d_2 \tau - k_4 N \right) + \lambda_5 \left( e_1 + e_2 NR + e_3 \tau - k_5 C \right) .
 \end{split}
 \end{equation*} \bigskip
@@ -351,17 +352,6 @@ The Hamiltonian includes the treatment costs as described in Equation~\eqref{eq:
 
     \begin{equation}
     \label{eq:adjoints}
-    \begin{split}
-        \frac{d\lambda_1}{dt} &= -\frac{\partial \mathcal H}{\partial A_\beta} =  k_1 \lambda_1 + u_1 \lambda_1 - b_2 \lambda_2 - c_2 \lambda_3 \\
-        \frac{d\lambda_2}{dt} &= -\frac{\partial \mathcal H}{\partial Ca} = -\lambda_1 \frac{a_2 \sigma_1}{\left( Ca + \sigma_1 \right)^2 } + k_2 \lambda_2 + u_2 \lambda_2 - c_3 \lambda_3 \\
-        \frac{d\lambda_3}{dt} &= -\frac{\partial \mathcal H}{\partial \tau} = k_3 \lambda_3 + u_3 \lambda_3 - d_2 \lambda_4 - e_3 \lambda_5 \\
-        \frac{d\lambda_4}{dt} &= -\frac{\partial \mathcal H}{\partial N} = -A_1 + k_4 \lambda_4 - e_2 R \lambda_5 \\
-        \frac{d\lambda_5}{dt} &= -\frac{\partial \mathcal H}{\partial C} = -A_2 + k_5 \lambda_5
-    \end{split}
-    \end{equation}
-
-    \begin{equation}
-    \label{eq:adjoints-2.0}
     \begin{split}
         \frac{d\lambda_1}{dt} &= -\frac{\partial \mathcal H}{\partial A_\beta} =  (k_1 + u_1) \lambda_1 - b_2 \lambda_2 - c_2 \lambda_3 \\
         \frac{d\lambda_2}{dt} &= -\frac{\partial \mathcal H}{\partial Ca} = -\frac{a_2 \sigma_1 \lambda_1}{(Ca + \sigma_1)^2} + (k_2 + u_2)\lambda_2 - \frac{c_3 \sigma_2 \lambda_3}{(Ca + \sigma_2)^2} \\
