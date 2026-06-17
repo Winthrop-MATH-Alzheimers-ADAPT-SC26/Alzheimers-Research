@@ -229,7 +229,7 @@ The values for the 19 key parameters in the causal model are obtained and estima
 \section{Sensitivity Analysis}
 
 Sobol sensitivity analysis is used to provide a quantitative assessment of the impact that model parameters have on the causal dynamics of the proposed model. This computation was performed using Python with the SALib library \cite{Herman2017, Iwanaga2022}. The first, second, and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{16}$. Using the parameter ranges from Table~\ref{tab:params1}, the first-order and total-order sensitivity indices are highlighted in Figure~\ref{fig:first-total-sens}; initial conditions were set for $Ca(0)=100$, and zero for the rest of the state variables. In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}. Using a threshold of $10^{-4}$, the parameters falling below this threshold provide a neglible impact on the overall model. From this, it is observed that the growth of calcium in Equation~\eqref{eq:tau} is suggested to have very little effect on tau protein synthesis, which coroborates with findings in some studies (list citations).
-\begin{table}[]
+\begin{table}[] 
     \centering
     \small
     \caption{Total Sobol Sensitivity indices for various parameters with corresponding confidence intervals for $N=2^{16}$}
@@ -239,10 +239,10 @@ Sobol sensitivity analysis is used to provide a quantitative assessment of the i
         \hline
         Param    & k5        & k3        & e3        & k1        & c1        & c2        & a1        \\
         \hline
-        ST       & 2.791e-01 & 2.756e-01 & 1.224e-01 & 5.973e-02 & 5.505e-02 & 4.745e-02 & 3.822e-02 \\
+        ST & 2.499e-01 & 2.871e-01 & 1.283e-01 & 6.081e-02 & 5.787e-02 & 4.916e-02 & 3.960e-02 \\
         \hline
-        Conf Int & 3.103e-03 & 3.108e-03 & 1.441e-03 & 6.114e-04 & 6.182e-04 & 5.667e-04 & 4.264e-04 \\
-        \hline
+        Conf Int & 3.382e-03 & 3.768e-03 & 1.803e-03 & 8.049e-04 & 7.786e-04 & 6.181e-04 & 4.895e-04 \\ 
+        \hline 
     \end{tabular}
 
     \vspace{0.5em}
@@ -251,9 +251,9 @@ Sobol sensitivity analysis is used to provide a quantitative assessment of the i
         \hline
         Param    & k4        & e2        & r         & d2        & k2        & c3        & a2        \\
         \hline
-        ST       & 3.051e-02 & 2.995e-02 & 2.992e-02 & 2.978e-02 & 5.006e-03 & 4.915e-03 & 2.209e-03 \\
+        ST  & 3.111e-02 & 3.103e-02 & 3.100e-02 & 3.087e-02 & 5.261e-03 & 5.140e-03 & 2.289e-03 \\
         \hline
-        Conf Int & 3.358e-04 & 3.693e-04 & 3.630e-04 & 3.453e-04 & 6.306e-05 & 5.278e-05 & 2.552e-05 \\
+        Conf Int & 3.951e-04 & 4.445e-04 & 4.254e-04 & 4.166e-04 & 7.286e-05 & 7.242e-05 & 3.007e-05 \\
         \hline
     \end{tabular}
 
@@ -263,23 +263,23 @@ Sobol sensitivity analysis is used to provide a quantitative assessment of the i
         \hline
         Param    & b1        & b2        & e1        & d1        & sig       \\
         \hline
-        ST       & 2.076e-03 & 6.138e-04 & 1.602e-05 & 2.445e-07 & 1.865e-14 \\
+        ST       & 2.180e-03 & 6.361e-04 & 1.691e-05 & 3.243e-07 & 3.926e-16 \\
         \hline
-        Conf Int & 2.592e-05 & 6.276e-06 & 1.866e-07 & 3.464e-09 & 2.977e-14 \\
+        Conf Int & 3.303e-05 & 1.013e-05 & 2.063e-07 & 7.372e-09 & 5.648e-16 \\
         \hline
     \end{tabular}
 \end{table}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.5\textwidth]{img/sens_img_1.pdf}
+    \includegraphics[width=0.5\textwidth]{img/sens_img_2.pdf}
     \caption{First and Total order indices at $N=2^{10}$}
     \label{fig:first-total-sens}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{img/6-most-sens-params.pdf}
+    \includegraphics[width=0.8\textwidth]{img/6-most-sens-params-2.pdf}
     \caption{6 most sensitive parameters for $N \in [2^4,2^{16}]$}
     \label{fig:6-most-sens}
 \end{figure}
