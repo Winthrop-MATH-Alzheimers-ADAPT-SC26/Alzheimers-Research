@@ -37,9 +37,6 @@ class ODEModel:
         self.e1 = params[9]
         self.e2 = params[10]
         self.e3 = params[11]
-        #self.u1 = params[12] treatment parameters not needed here,
-        #self.u2 = params[13] implemented in optimal control later
-        #self.u3 = params[14]
         self.k1 = params[12]
         self.k2 = params[13]
         self.k3 = params[14]
@@ -47,12 +44,17 @@ class ODEModel:
         self.k5 = params[16]
         self.sigma = params[17]
         self.r = params[18]
+        #self.u1 = params[19]
+        #self.u2 = params[20]
+        #self.u3 = params[21]
+
         # for modeling solution space
         self.init_cond = initial_conditions
         self.t_span = t_span
         self.t_eval = t_eval
 
         self.param_ranges = ParameterEstimation(params).get_param_ranges()
+        # test variables for sensitivity analysis.
 
     # used in sobol sensitivity analysis for problem dict
     def return_string_list(self):
@@ -60,7 +62,7 @@ class ODEModel:
         params_string = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2',
                          'c3', 'd1', 'd2', 'e1', 'e2', 'e3',
                          'k1', 'k2', 'k3', 'k4', 'k5', 'sig',
-                         'r']
+                         'r']#, 'u1', 'u2', 'u3'
         num_params = len(params_string)
         return [params_string, num_params]
 
@@ -69,7 +71,7 @@ class ODEModel:
         """Use this throughout to call ODE model; useful for using self keyword within class methods."""
         ABeta, Ca, Tau, N, C = y
         dABeta = self.a1 + self.a2 * (Ca**2 / (Ca**2 + self.sigma**2)) - self.k1 * ABeta #- self.u1 * ABeta
-        dCa = self.b1 + self.b2 * ABeta - self.k2 * Ca # - self.u2 * Ca
+        dCa = self.b1 + self.b2 * ABeta - self.k2 * Ca  #- self.u2 * Ca
         dTau = self.c1 + self.c2 * ABeta + self.c3 * Ca - self.k3 * Tau #- self.u3 * Tau
         dN = self.d1 + self.d2 * Tau - self.k4 * N
         dC = self.e1 + self.e2 * N * self.r + self.e3 * Tau - self.k5 * C
@@ -87,7 +89,7 @@ class ODEModel:
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
-        param_values = saltelli.sample(self.problem, 2**4)
+        param_values = saltelli.sample(self.problem, 2**10)
         num_eval = param_values.shape[0]
         model_out = np.zeros(num_eval)
         # for params obtained from saltelli sampling, iterate
@@ -118,12 +120,12 @@ class ODEModel:
         print("\n ...Sobol Analysis Table...")
         print(df.to_string(index=False))
 
-        #fig, ax = plt.subplots(figsize=(10, 6))
-        #df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
-        #ax.set_ylabel('Sensitivity Index Value')
-        #ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
-        #plt.tight_layout()
-        #plt.show()
+        fig, ax = plt.subplots(figsize=(10, 6))
+        df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
+        ax.set_ylabel('Sensitivity Index Value')
+        ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
+        plt.tight_layout()
+        plt.show()
 
     # numerically model solution to ODE
     def solution(self):
