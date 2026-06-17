@@ -1,6 +1,6 @@
 module Model
 
-export sys, state_rhs!, adjoint_eqs
+export sys, state_rhs!, costate_rhs!
 
 using ModelingToolkit
 using ModelingToolkit: t_nounits as t, D_nounits as D
@@ -24,15 +24,18 @@ eqs = [
 @mtkcompile sys = System(eqs, t)
 
 # --- Symbolic Solve for costate equations --- #
-@variables λ(t)[1:5] w₁ w₂ w₃ w₄ w₅
-states = [Aβ, Ca, τ, N, C]
-rhs = [eq.rhs for eq in eqs]
-L = w₁*C + w₂*N + u₁^2 + w₄*u₂^2 + w₅*u₃^2
-H = L + sum(λ[i] * rhs[i] for i in 1:5)
-adjoint_eqs = [
-    D(λ[i]) ~ -expand_derivatives(Symbolics.derivative(H, states[i]))
-    for i in 1:5
-]
+# function calculate_adjoints()
+#     @variables λ(t)[1:5] w₁ w₂ w₃ w₄ w₅
+#     states = [Aβ, Ca, τ, N, C]
+#     rhs = [eq.rhs for eq in eqs]
+#     L = w₁ * C + w₂ * N + u₁^2 + w₄ * u₂^2 + w₅ * u₃^2
+#     H = L + sum(λ[i] * rhs[i] for i in 1:5)
+#     adjoint_eqs = [
+#         D(λ[i]) ~ -expand_derivatives(Symbolics.derivative(H, states[i]))
+#         for i in 1:5
+#     ]
+#     return adjoint_eqs
+# end
 
 # State RHS
 function state_rhs!(dx, x, p, t)
@@ -48,43 +51,43 @@ function state_rhs!(dx, x, p, t)
     d₁, d₂ = p.d₁, p.d₂
     e₁, e₂, e₃ = p.e₁, p.e₂, p.e₃
     k₁, k₂, k₃, k₄, k₅ = p.k₁, p.k₂, p.k₃, p.k₄, p.k₅
-    σ, R = p.σ, p.R
+    σ₁, σ₂, R = p.σ₁, p.σ₂, p.R
 
-    dx[1] = a₁ + a₂ * (Ca / (Ca + σ)) - k₁ * Aβ - u1 * Aβ
+    dx[1] = a₁ + a₂ * (Ca / (Ca + σ₁)) - k₁ * Aβ - u1 * Aβ
     dx[2] = b₁ + b₂ * Aβ - k₂ * Ca - u2 * Ca
-    dx[3] = c₁ + c₂ * Aβ + c₃ * Ca - k₃ * τ - u3 * τ
+    dx[3] = c₁ + c₂ * Aβ + c₃ * (Ca / (Ca + σ₂)) - k₃ * τ - u3 * τ
     dx[4] = d₁ + d₂ * τ - k₄ * N
     dx[5] = e₁ + e₂ * N * R + e₃ * τ - k₅ * C
 end
 
-# # Costate RHS (Hamiltonian adjoint system)
-# function costate_rhs!(dλ, λ, p, t)
-#     x = p.state_sol(t)
-# 
-#     Aβ, Ca, τ = x[1], x[2], x[3]
-# 
-#     u1 = p.u₁(t)
-#     u2 = p.u₂(t)
-#     u3 = p.u₃(t)
-# 
-#     a₂ = p.a₂
-#     b₂, c₂, c₃ = p.b₂, p.c₂, p.c₃
-#     d₂ = p.d₂
-#     e₂, e₃ = p.e₂, p.e₃
-#     k₁, k₂, k₃, k₄, k₅ = p.k₁, p.k₂, p.k₃, p.k₄, p.k₅
-#     σ, R = p.σ, p.R
-#     w₁, w₂, w₃, w₄, w₅ = p.w₁, p.w₂, p.w₃, p.w₄, p.w₅
-# 
-#     w₁, w₂, w₃, w₄, w₅ = p.w₁, p.w₂, p.w₃, p.w₄, p.w₅
-# 
-#     λ1, λ2, λ3, λ4, λ5 = λ
-# 
-#     dλ[1] = -b₂ * λ2 - c₂ * λ3 - (-k₁ - u₁) * λ1
-#     dλ[2] = -(-k₂ - u₂) * λ2 - λ1 * (a₂ / (Ca + σ₁) + (-a₂ * Ca) / (Ca + σ₁)^2
-#     dλ[3] = 
-#     dλ[4] = 
-#     dλ[5] = 
-# end
+# Costate RHS (Hamiltonian adjoint system)
+function costate_rhs!(dλ, λ, p, t)
+    x = p.state_sol(t)
+
+    Aβ, Ca, τ = x[1], x[2], x[3]
+
+    u₁ = p.u₁(t)
+    u₂ = p.u₂(t)
+    u₃ = p.u₃(t)
+
+    a₂ = p.a₂
+    b₂, c₂, c₃ = p.b₂, p.c₂, p.c₃
+    d₂ = p.d₂
+    e₂, e₃ = p.e₂, p.e₃
+    k₁, k₂, k₃, k₄, k₅ = p.k₁, p.k₂, p.k₃, p.k₄, p.k₅
+    σ₁, σ₂, R = p.σ₁, p.σ₂, p.R
+    w₁, w₂, w₃, w₄, w₅ = p.w₁, p.w₂, p.w₃, p.w₄, p.w₅
+
+    w₁, w₂, w₃, w₄, w₅ = p.w₁, p.w₂, p.w₃, p.w₄, p.w₅
+
+    λ₁, λ₂, λ₃, λ₄, λ₅ = λ
+
+    dλ[1] = (k₁ + u₁) * λ₁ - b₂ * λ₂ - c₂ * λ₃
+    dλ[2] = -((a₂ * σ₁ * λ₁) / (Ca + σ₁)^2) + (k₂ + u₂) * λ₂ - ((c₃ * σ₂ * λ₃) / (Ca + σ₂)^2)
+    dλ[3] = (k₃ + u₃) * λ₃ - d₂ * λ₄ - e₃ * λ₅
+    dλ[4] = -w₂ + k₄ * λ₄ - e₂ * R * λ₅
+    dλ[5] = -w₁ + k₅ * λ₅
+end
 
 # # Costate RHS (Hamiltonian adjoint system)
 # function costate_rhs!(dλ, λ, p, t)

@@ -24,7 +24,8 @@ k₅ = e₁ / 30
 u₁ = 0.0
 u₂ = 0.0
 u₃ = 0.0
-σ = 5.0
+σ₁ = 5.0
+σ₂ = 5.0
 Aβ = 0.01
 Ca = 0.05
 τ = 0.01
@@ -33,6 +34,7 @@ p_kwargs = (; a₁, a₂, k₁, u₁, b₁, b₂, k₂, u₂,
     e₁, e₂, e₃, k₅)
 #
 pvec = build_param_vector(; p_kwargs...)
+
 # Problem setup
 # u1max = 2.0
 # u2max = 3.0

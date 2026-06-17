@@ -31,7 +31,7 @@ set_theme!(merge(Theme(
     ), theme_latexfonts()))
 
 function make_plot(::ControlsPlotSeperate, r1, r2, r3)
-    t = r1.t .+ 50.0
+    t = r1.t
     sol1, sol2, sol3 = r1.sol, r2.sol, r3.sol
 
     C1 = sol1[5, :]
@@ -50,23 +50,23 @@ function make_plot(::ControlsPlotSeperate, r1, r2, r3)
     left = fig[1, 1] = GridLayout()
     right = fig[1, 2] = GridLayout()
 
-    axc1 = Axis(left[1, 1], title=L"\text{C with only } u_1 \text{ Treatment}", xticks=50:10:100)
+    axc1 = Axis(left[1, 1], title=L"\text{C with only } u_1 \text{ Treatment}", xticks=0:10:50)
     lines!(axc1, t, C1, label="With Treatment")
     lines!(axc1, t, C1_base, linestyle=:dash, label="No Treatment")
     axislegend(axc1)
 
-    axc2 = Axis(left[2, 1], title=L"\text{C with only } u_2 \text{ Treatment}", xticks=50:10:100)
+    axc2 = Axis(left[2, 1], title=L"\text{C with only } u_2 \text{ Treatment}", xticks=0:10:50)
     lines!(axc2, t, C2, label="With Treatment")
     lines!(axc2, t, C2_base, linestyle=:dash, label="No Treatment")
     axislegend(axc2)
 
-    axc3 = Axis(left[3, 1], title=L"\text{C with only } u_3 \text{ Treatment}", xticks=50:10:100)
+    axc3 = Axis(left[3, 1], title=L"\text{C with only } u_3 \text{ Treatment}", xticks=0:10:50)
     lines!(axc3, t, C3, label="With Treatment")
     lines!(axc3, t, C3_base, linestyle=:dash, label="No Treatment")
     axislegend(axc3)
 
-    axc4l = Axis(right[1, 1], title="Each Treatment", xticks=50:10:100, ylabel=L"u_1 \text{ & } u_2")
-    axc4r = Axis(right[1, 1], xticks=50:10:100, yaxisposition=:right, ylabel=L"u_2")
+    axc4l = Axis(right[1, 1], title="Each Treatment", xticks=0:10:50, ylabel=L"u_1 \text{ & } u_2")
+    axc4r = Axis(right[1, 1], xticks=0:10:50, yaxisposition=:right, ylabel=L"u_2")
     l1 = lines!(axc4l, t, u1, label=L"u_1")
     l3 = lines!(axc4l, t, u3, label=L"u_3")
     l2 = lines!(axc4r, t, u2, label=L"u_2")
@@ -87,7 +87,7 @@ function make_plot(::ControlsPlotSeperate, r1, r2, r3)
 end
 
 function make_plot(::ControlsPlotSeperate2, r1, r2, r3)
-    t = r1.t .+ 50.0
+    t = r1.t
     sol1, sol2, sol3 = r1.sol, r2.sol, r3.sol
 
     C1 = sol1[5, :]
@@ -106,30 +106,30 @@ function make_plot(::ControlsPlotSeperate2, r1, r2, r3)
     left = fig[1, 1] = GridLayout()
     right = fig[1, 2] = GridLayout()
 
-    axc1 = Axis(left[1, 1], title=L"\text{C with only } u_1 \text{ Treatment}", xticks=50:10:100)
+    axc1 = Axis(left[1, 1], title=L"\text{C with only } u_1 \text{ Treatment}", xticks=0:10:50)
     lines!(axc1, t, C1, label="With Treatment")
     lines!(axc1, t, C1_base, linestyle=:dash, label="No Treatment")
     axislegend(axc1)
 
-    axc2 = Axis(left[2, 1], title=L"\text{C with only } u_2 \text{ Treatment}", xticks=50:10:100)
+    axc2 = Axis(left[2, 1], title=L"\text{C with only } u_2 \text{ Treatment}", xticks=0:10:50)
     lines!(axc2, t, C2, label="With Treatment")
     lines!(axc2, t, C2_base, linestyle=:dash, label="No Treatment")
     axislegend(axc2)
 
-    axc3 = Axis(left[3, 1], title=L"\text{C with only } u_3 \text{ Treatment}", xticks=50:10:100)
+    axc3 = Axis(left[3, 1], title=L"\text{C with only } u_3 \text{ Treatment}", xticks=0:10:50)
     lines!(axc3, t, C3, label="With Treatment")
     lines!(axc3, t, C3_base, linestyle=:dash, label="No Treatment")
     axislegend(axc3)
 
-    axc4 = Axis(right[1, 1], title=L"u_1 \text{ Treatment}", xticks=50:10:100)
+    axc4 = Axis(right[1, 1], title=L"u_1 \text{ Treatment}", xticks=0:10:50)
     lines!(axc4, t, u1, label=L"u_1")
     axislegend(axc4)
 
-    axc5 = Axis(right[2, 1], title=L"u_2 \text{ Treatment}", xticks=50:10:100)
+    axc5 = Axis(right[2, 1], title=L"u_2 \text{ Treatment}", xticks=0:10:50)
     lines!(axc5, t, u2, label=L"u_2")
     axislegend(axc5)
 
-    axc6 = Axis(right[3, 1], title=L"u_3 \text{ Treatment}", xticks=50:10:100)
+    axc6 = Axis(right[3, 1], title=L"u_3 \text{ Treatment}", xticks=0:10:50)
     lines!(axc6, t, u3, label=L"u_3")
     axislegend(axc6)
 
@@ -140,7 +140,7 @@ end
 # Plot controls alongside solution
 function make_plot(::ControlsPlot, result)
 
-    t = result.t .+ 50.0
+    t = result.t
     sol = result.sol
 
     Aβ = sol[1, :]
@@ -159,21 +159,21 @@ function make_plot(::ControlsPlot, result)
     left = fig[1, 1] = GridLayout()
     right = fig[1, 2] = GridLayout()
 
-    Axis(left[1, 1], title=L"Aβ\text{ Levels}", xticks=50:10:100)
+    Axis(left[1, 1], title=L"Aβ\text{ Levels}", xticks=0:10:50)
     lines!(t, Aβ)
-    Axis(left[1, 2], title=L"Ca\text{ Levels}", xticks=50:10:100)
+    Axis(left[1, 2], title=L"Ca\text{ Levels}", xticks=0:10:50)
     lines!(t, Ca)
-    Axis(left[2, 1], title=L"τ\text{ Levels}", xticks=50:10:100)
+    Axis(left[2, 1], title=L"τ\text{ Levels}", xticks=0:10:50)
     lines!(t, τ)
-    Axis(left[2, 2], title=L"N\text{ Levels}", xticks=50:10:100)
+    Axis(left[2, 2], title=L"N\text{ Levels}", xticks=0:10:50)
     lines!(t, N)
 
-    axC = Axis(right[1, 1], title=L"C\text{ Levels}", xticks=50:10:100)
+    axC = Axis(right[1, 1], title=L"C\text{ Levels}", xticks=0:10:50)
     lines!(axC, t, C, label="With Treatment")
     lines!(axC, t, C_no_treatment, linestyle=:dash, label="No Treatment")
 
-    axc4l = Axis(right[2, 1], title="Each Treatment", xticks=50:10:100, ylabel=L"u_1 \text{ & } u_2")
-    axc4r = Axis(right[2, 1], xticks=50:10:100, yaxisposition=:right, ylabel=L"u_2")
+    axc4l = Axis(right[2, 1], title="Each Treatment", xticks=0:10:50, ylabel=L"u_1 \text{ & } u_2")
+    axc4r = Axis(right[2, 1], xticks=0:10:50, yaxisposition=:right, ylabel=L"u_2")
     l1 = lines!(axc4l, t, u1, label=L"u_1")
     l3 = lines!(axc4l, t, u3, label=L"u_3")
     l2 = lines!(axc4r, t, u2, label=L"u_2")
@@ -219,7 +219,7 @@ end
 # Individual state plots
 function make_plot(::SolPlotHorizontal, result)
 
-    t = result.t .+ 50.0
+    t = result.t
     sol = result.sol
 
     names = [L"Aβ", L"Ca", L"τ", L"N", L"C"]
@@ -230,7 +230,7 @@ function make_plot(::SolPlotHorizontal, result)
         row = (i - 1) ÷ 2 + 1
         col = (i - 1) % 2 + 1
 
-        ax = Axis(fig[row, col], title=string(names[i], " Levels"), xlabel="Age", xticks=50:10:100)
+        ax = Axis(fig[row, col], title=string(names[i], " Levels"), xlabel="Years After Age 50", xticks=0:10:50)
         lines!(ax, t, sol[i, :])
     end
     colgap!(fig.layout, 15)
