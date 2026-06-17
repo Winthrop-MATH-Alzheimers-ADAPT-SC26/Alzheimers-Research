@@ -12,19 +12,19 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import fsolve
 
 
-def ODEsystem(t, z, a1, a2, sigma, k1, u1, b1, b2, k2, u2, c1, c2, c3, k3, u3, d1, d2, k4, e1, e2, R, e3, k5):
+def ODEsystem(t, z, a1, a2, sigma1, k1, u1, b1, b2, k2, u2, c1, c2, c3, sigma2, k3, u3, d1, d2, k4, e1, e2, R, e3, k5):
     Ab, Ca, tau, N, C = z
 
-    dAbdt = a1 + a2 * (Ca / (Ca + sigma)) - (k1 * Ab) - (u1 * Ab)
+    dAbdt = a1 + a2 * (Ca / (Ca + sigma1)) - (k1 * Ab) - (u1 * Ab)
     dCadt = b1 + (b2 * Ab) - (k2 * Ca) - (u2 * Ca)
-    dtaudt = c1 + (c2 * Ab) + (c3 * Ca) - (k3 * tau) - (u3 * tau)
+    dtaudt = c1 + (c2 * Ab) + c3 * (Ca / (Ca + sigma2)) - (k3 * tau) - (u3 * tau)
     dNdt = d1 + (d2 * tau) - (k4 * N)
     dCdt = e1 + (e2 * N * R) + (e3 * tau) - (k5 * C)
 
     return [dAbdt, dCadt, dtaudt, dNdt, dCdt]
 
 def get_final_C(u1_val, u2_val, u3_val):
-    params = (a1, a2, sigma, k1, u1_val, b1, b2, k2, u2_val, c1, c2, c3, k3, u3_val, d1, d2, k4, e1, e2, R, e3, k5)
+    params = (a1, a2, sigma1, k1, u1_val, b1, b2, k2, u2_val, c1, c2, c3, sigma2, k3, u3_val, d1, d2, k4, e1, e2, R, e3, k5)
     sol = solve_ivp(
         fun = ODEsystem,
         t_span = t_span,
@@ -38,16 +38,16 @@ def get_final_C(u1_val, u2_val, u3_val):
 
 def find_equilibrium(vars):
     Ab, Ca = vars
-    dAb = a1 + a2 * (Ca / (Ca + sigma)) - (k1 * Ab) - (u1 * Ab)
+    dAb = a1 + a2 * (Ca / (Ca + sigma1)) - (k1 * Ab) - (u1 * Ab)
     dCa = b1 + (b2 * Ab) - (k2 * Ca) - (u2 * Ca)
     return [dAb, dCa]
 
 def find_equilibrium_sys(vars):
     Ab, Ca, tau, N, C = vars
 
-    dAbdt = a1 + a2 * (Ca / (Ca + sigma)) - (k1 * Ab) - (u1 * Ab)
+    dAbdt = a1 + a2 * (Ca / (Ca + sigma1)) - (k1 * Ab) - (u1 * Ab)
     dCadt = b1 + (b2 * Ab) - (k2 * Ca) - (u2 * Ca)
-    dtaudt = c1 + (c2 * Ab) + (c3 * Ca) - (k3 * tau) - (u3 * tau)
+    dtaudt = c1 + (c2 * Ab) + c3 * (Ca / (Ca + sigma2)) - (k3 * tau) - (u3 * tau)
     dNdt = d1 + (d2 * tau) - (k4 * N)
     dCdt = e1 + (e2 * N * R) + (e3 * tau) - (k5 * C)
 
@@ -56,7 +56,7 @@ def find_equilibrium_sys(vars):
 # A beta parameters
 a1 = 65641 / 10000
 a2 = 15778.463 / 10000
-sigma = 100
+sigma1 = 100
 k1 = 3035.98 / 10000
 u1 = 0
 
@@ -70,6 +70,7 @@ u2 = 0
 c1 = 52.2958
 c2 = 1.78367
 c3 = 0.1
+sigma2 = 100
 k3 = 10.9999 / 6
 u3 = 0
 
@@ -85,7 +86,7 @@ R = 1
 e3 = 199.16 / 10000
 k5 = 0.8684 / 10
 
-params = (a1, a2, sigma, k1, u1, b1, b2, k2, u2, c1, c2, c3, k3, u3, d1, d2, k4, e1, e2, R, e3, k5)
+params = (a1, a2, sigma1, k1, u1, b1, b2, k2, u2, c1, c2, c3, sigma2, k3, u3, d1, d2, k4, e1, e2, R, e3, k5)
 
 # initial values for Ab, Ca, tau, N, C
 initials = [0, 100, 0, 0, 0]
