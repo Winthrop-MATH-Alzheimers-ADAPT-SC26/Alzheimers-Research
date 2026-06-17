@@ -43,7 +43,8 @@ class ODEModel:
         self.k4 = params[15]
         self.k5 = params[16]
         self.sigma = params[17]
-        self.r = params[18]
+        self.sigma2 = params[18]
+        self.r = params[19]
         #self.u1 = params[19]
         #self.u2 = params[20]
         #self.u3 = params[21]
@@ -62,7 +63,7 @@ class ODEModel:
         params_string = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2',
                          'c3', 'd1', 'd2', 'e1', 'e2', 'e3',
                          'k1', 'k2', 'k3', 'k4', 'k5', 'sig',
-                         'r']#, 'u1', 'u2', 'u3'
+                         'sig2', 'r']#, 'u1', 'u2', 'u3'
         num_params = len(params_string)
         return [params_string, num_params]
 
@@ -70,9 +71,9 @@ class ODEModel:
     def __call__(self, t, y):
         """Use this throughout to call ODE model; useful for using self keyword within class methods."""
         ABeta, Ca, Tau, N, C = y
-        dABeta = self.a1 + self.a2 * (Ca**2 / (Ca**2 + self.sigma**2)) - self.k1 * ABeta #- self.u1 * ABeta
+        dABeta = self.a1 + self.a2 * (Ca / (Ca + self.sigma)) - self.k1 * ABeta #- self.u1 * ABeta
         dCa = self.b1 + self.b2 * ABeta - self.k2 * Ca  #- self.u2 * Ca
-        dTau = self.c1 + self.c2 * ABeta + self.c3 * Ca - self.k3 * Tau #- self.u3 * Tau
+        dTau = self.c1 + self.c2 * ABeta + self.c3 * (Ca / (Ca + self.sigma2)) - self.k3 * Tau #- self.u3 * Tau
         dN = self.d1 + self.d2 * Tau - self.k4 * N
         dC = self.e1 + self.e2 * N * self.r + self.e3 * Tau - self.k5 * C
         return [dABeta, dCa, dTau, dN, dC]
@@ -89,7 +90,7 @@ class ODEModel:
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
-        param_values = saltelli.sample(self.problem, 2**10)
+        param_values = saltelli.sample(self.problem, 2**16)
         num_eval = param_values.shape[0]
         model_out = np.zeros(num_eval)
         # for params obtained from saltelli sampling, iterate
@@ -120,12 +121,12 @@ class ODEModel:
         print("\n ...Sobol Analysis Table...")
         print(df.to_string(index=False))
 
-        fig, ax = plt.subplots(figsize=(10, 6))
-        df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
-        ax.set_ylabel('Sensitivity Index Value')
-        ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
-        plt.tight_layout()
-        plt.show()
+        #fig, ax = plt.subplots(figsize=(10, 6))
+        #df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
+        #ax.set_ylabel('Sensitivity Index Value')
+        #ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
+        #plt.tight_layout()
+        #plt.show()
 
     # numerically model solution to ODE
     def solution(self):
