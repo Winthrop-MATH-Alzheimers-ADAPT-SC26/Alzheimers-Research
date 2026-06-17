@@ -100,7 +100,7 @@ class ODEModel:
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
-        param_values = saltelli.sample(self.problem, 2**18)
+        param_values = saltelli.sample(self.problem, 2**20)
 
         # bundle arguments needed for each model run
         args_list = [(params, self.init_cond, self.t_span, self.t_eval) for params in param_values]
