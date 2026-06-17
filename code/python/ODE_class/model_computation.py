@@ -6,6 +6,7 @@ from parameter_estimation import ParameterEstimation
 from SALib.sample import saltelli
 from SALib.analyze import sobol
 import multiprocessing as mp
+from tqdm import tqdm
 
 # outside function for multiprocessing 
 def _solve_for_params(args):
@@ -99,7 +100,7 @@ class ODEModel:
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
-        param_values = saltelli.sample(self.problem, 2**16)
+        param_values = saltelli.sample(self.problem, 2**18)
 
         # bundle arguments needed for each model run
         args_list = [(params, self.init_cond, self.t_span, self.t_eval) for params in param_values]
@@ -110,9 +111,17 @@ class ODEModel:
 
         # spawn a pool of worker processes to evaluate models simultaneously
         with mp.Pool(processes=num_cores) as pool:
-            model_out = pool.map(_solve_for_params, args_list)
+            model_out = list(
+                # progress bar
+                tqdm(
+                    pool.imap(_solve_for_params, args_list), 
+                    total=len(args_list), 
+                    desc="Solving ODEs", 
+                    unit="sim"
+                )
+            )
 
-        # Convert the results back to a numpy array for SALib
+        # convert the results back to a numpy array for SALib
         model_out = np.array(model_out)
 
         sobol_analysis = sobol.analyze(self.problem, model_out, print_to_console=True)
