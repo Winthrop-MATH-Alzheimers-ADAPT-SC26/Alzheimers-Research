@@ -50,30 +50,32 @@ To understand the role that calcium may have in the development of AD, a model i
 Because amyloid beta and calcium are suggested to interact in a way that a dysregulation of calcium causes an acceleration of amyloid beta accumulation \cite{pal2025nonequilibrium}, this is modeled mathematically as 
 \begin{equation}
     \label{eq:abeta_dt}
-    \frac{dA _{\beta}}{dt}=a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\quad \text{with} \quad A _{\beta}(T _{0})=A _{0},
+    \frac{dA_{\beta}}{dt} = a_{1} + a_{2} \frac{Ca^n}{Ca^n + \sigma_1^n} - k_{1} A_{\beta} - u_{1} A_{\beta} \quad \text{with} \quad A_{\beta}(T_{0}) = A_{0},
 \end{equation}
-where $A_0$ is the initial condition of $A_\beta$ at age $T_0$, and can vary on a per patient basis \cite{hao2022optimal}. The rate of $A_\beta$ growth increases at a linear rate $a_1$ and decreases proportionally to the population of $A_\beta$, as described by $k_1 A_\beta$. Here, $a_2 \frac{Ca}{Ca + \sigma}$ acts as the interaction of calcium on $A _{\beta}$ using a Hill equation of $n=1$. The removal rate can be modified by choosing different values for $u_1$ which represents the effect of treatment targeting $A_\beta$. The term $u_1$ can either be constant or be a function of time.
+where $A_0$ is the initial condition of $A_\beta$ at age $T_0$, and can vary on a per patient basis \cite{hao2022optimal}. The rate of $A_\beta$ growth increases at a linear rate $a_1$ and decreases proportionally to the population of $A_\beta$, as described by $k_1 A_\beta$. Here, $a_2 \frac{Ca^n}{Ca^n + \sigma_1^n}$ acts as the interaction of calcium on $A _{\beta}$ using a Hill equation, where we choose $n=1$. In previous literature, Hill equations of $n=2$ are implemented in order to have bistability and (other stuff) (citation needed). Since our model only seeks to describe patients that already have Alzheimer's Disease, we use $n=1$, which also provides the benefit of tractable stability solutions. The removal rate can be modified by choosing different values for $u_1$ which represents the effect of treatment targeting $A_\beta$. The term $u_1$ can either be constant or be a function of time.
 
 Similarly, an $A_\beta$ interaction is observed to have a role in dysregulation of calcium, and the equation for calcium is defined as 
 \begin{equation}
     \label{eq:calcium_dt}
     \frac{dCa}{dt}= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\quad \text{with} \quad Ca(T _{0})=Ca _{0}.
 \end{equation}
+
 Here, calcium grows at a linear rate $b_1$, and the accumulation due to $A_\beta$ is positive at a rate $b _{2}$. There is also a natural removal rate of calcium, $k _{2}$. Notice that there is also the option to administer treatment targeting calcium through the term $u_2$. \bigskip
 
 \subsection{Tau Equation}
-Many studies have suggested that the pathology of tau is initiated by amyloid beta accumulation, and have modeled this process mathematically \cite{hao2022optimal, zheng2002amyloid}. However, it has also been suggested that calcium dysregulation has an effect inducing the production of tau proteins \cite{guan2021elevating}. Thus, the tau equation is given by, 
+Many studies have suggested that the pathology of tau is initiated by amyloid beta accumulation, and have modeled this process mathematically \cite{hao2022optimal, zheng2002amyloid}. However, it has also been suggested that calcium dysregulation has an effect inducing the production of tau proteins \cite{guan2021elevating}. Since no calcium-tau interaction is found in dynamical systems literature, we implement a Hill equation similar to that of Equation~\eqref{eq:abeta_dt}. Thus, the tau equation is given by, 
 \begin{equation}
-    \frac{d \tau}{dt} = c_{1} + c_{2} A_{\beta} + c_{3} Ca - k_{3} \tau - u_{3} \tau \quad \text{with} \quad \tau(T_0) = \tau_{0}.
+    \frac{d \tau}{dt} = c_{1} + c_{2} A_{\beta} + c_{3} \frac{Ca}{Ca + \sigma_2} - k_{3} \tau - u_{3} \tau \quad \text{with} \quad \tau(T_0) = \tau_{0}.
     \label{eq:tau}
 \end{equation}
+
 It is noted here that only pathological tau is observed, where other studies have used compartments relating to non-amyloid dependent tau accumulation, or suspected non-Alzheimer pathology (SNAP) \cite{hao2022optimal, petrella2019computational}. This function is similar to Equation~\eqref{eq:abeta_dt} and Equation~\eqref{eq:calcium_dt} in that $\frac{d\tau}{dt}$ grows at a linear rate $d_1$ and decreases proportional to the population of $\tau$ through $k_3 \tau$. There is also the treatment term $u_3 \tau$. \bigskip
 
 \subsection{Neurodegeneration Equation}
 When tau is in a pathological state, it no longer binds to microtubules as intended; instead, the formation of NFTs occur in the neurons, leading to neurodegeneration \cite{ballatore2007tau}. Hence, this equation is defined as 
 \begin{equation*}
     \frac{dN}{dt}=d _{1}+d _{2}\tau-k _{4}N.
-\end{equation*} \bigskip
+\end{equation*}
 
 This equation follows the established structure and also includes the interaction term $d_2 \tau$. There are no treatment terms for the $N$ and $C$ equations. \bigskip
 
@@ -82,17 +84,18 @@ Both tau and neurodegeneration are shown to directly affect cognitive decline \c
 \begin{equation*}
     \frac{dC}{dt}=e _{1}+e _{2}NR + e _{3}\tau-k _{5}C.
 \end{equation*}
+
 The parameter $R$ represents a patient having the APOE $\epsilon 4$ gene, which has been shown to be a risk factor in Alzheimer's disease \cite{petrella2019computational}.
 
 This model is summarized as the following system of ordinary differential equations: 
 
 \begin{equation}\label{eq:odesystem}
 \begin{split}
-    \frac{dA _{\beta}}{dt} &= a _{1} + a _{2}\frac{Ca }{Ca+\sigma} - k _{1}A _{\beta}-u _{1}A _{\beta}\\
-    \frac{dCa}{dt} &= b _{1}+b _{2}A _{\beta}-k _{2}Ca - u _{2}Ca\\
-    \frac{d \tau}{dt} &= c _{1}+c _{2}A _{\beta}+c _{3}Ca-k _{3}\tau-u _{3}\tau\\
-    \frac{dN}{dt} &= d _{1}+d _{2}\tau-k _{4}N\\
-    \frac{dC}{dt} &= e _{1}+e _{2}NR + e _{3}\tau-k _{5}C
+    \frac{dA_{\beta}}{dt} &= a_{1} + a_{2} \frac{Ca}{Ca + \sigma_1} - k_{1} A_{\beta} - u_{1} A_{\beta} \\
+    \frac{dCa}{dt} &= b_{1} + b_{2} A_{\beta} - k_{2} Ca - u_{2} Ca \\
+    \frac{d\tau}{dt} &= c_{1} + c_{2} A_{\beta} + c_{3} \frac{Ca}{Ca + \sigma_2} - k_{3} \tau - u_{3} \tau \\
+    \frac{dN}{dt} &= d_{1} + d_{2} \tau - k_{4} N \\
+    \frac{dC}{dt} &= e_{1} + e_{2} N R + e_{3} \tau - k_{5} C
 \end{split}
 \end{equation}
 
@@ -112,16 +115,14 @@ with the initial conditions:
 Assuming system~\eqref{eq:odesystem} is subject to non-negative initial conditions, the system is invariant in the non-negative orthant. Let $r_n = k_n + u_n$ for the simplicity of calculations. Considering the components uncoupled from the rest of the proposed model, $dA _{\beta}/dt$ and $dCa/dt$ can be shown to be bounded. First, notice that
 
 \begin{equation*}
-    a_1 + a_2\frac{Ca}{Ca + \sigma} - r_1 A_\beta \leq a_1 + a_2 - r_1 A_\beta
+    a_1 + a_2\frac{Ca}{Ca + \sigma_1} - r_1 A_\beta \leq a_1 + a_2 - r_1 A_\beta
 \end{equation*}
-
-since $Ca/(Ca+\sigma)\in [0,1)$. 
+since $Ca/(Ca+\sigma_1)\in [0,1)$. 
 So, $a_1 + a_2 - r_1 A_{\beta} < 0 \implies dA_\beta/dt < 0$ when $A_{\beta} > \frac{a_1 + a_2}{r_1}$. Similarly, using the fact $A _{\beta}$ is bounded, it follows that 
 
 \begin{equation*}
     \frac{dCa}{dt} = b_1 + b_2 A_{\beta} - r_2 Ca \leq b_1 + b_2 M - r_2 Ca
 \end{equation*}
-
 as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0 \implies dCa/dt < 0$ when $Ca > \frac{b_1 + b_2 M}{r_2}$, thus $Ca$ is also bounded. The rest of the system follows from these two variables, so the rest of the system is bounded as well. \bigskip
 
 \begin{lem}[Establishment of Unique Equilibria of Uncoupled System]\label{lem1}
@@ -131,23 +132,23 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0 \implie
 \begin{proof}
     To establish the existence of equilibria for the system, a solution to the following system of equations must be obtained:
     \[\begin{cases}
-        \frac{dA_\beta}{dt} = a_{1} + a_{2} \frac{Ca}{Ca+\sigma} - r_1 A_{\beta} = 0 & \\
+        \frac{dA_\beta}{dt} = a_{1} + a_{2} \frac{Ca}{Ca+\sigma_1} - r_1 A_{\beta} = 0 & \\
         \frac{dCa}{dt} = b_{1} + b_{2} A_{\beta} - r_2 Ca = 0. & 
     \end{cases}\]
 
     By solving $dA_\beta/dt$ for $A_{\beta}$, we get
     \begin{equation*}
-        A_{\beta} = \frac{a_1 Ca + a_2 Ca + a_1 \sigma}{r_1 (Ca + \sigma)}.
+        A_{\beta} = \frac{a_1 Ca + a_2 Ca + a_1 \sigma_1}{r_1 (Ca + \sigma_1)}.
     \end{equation*}
 
     We then substitute this value into $dCa/dt$. The resulting expression is
     \begin{equation}\label{eq:prequadratic}
-        b_1 - r_2 Ca + \frac{b_2 (a_1 Ca + a_2 Ca + a_1 \sigma)}{r_1 (Ca + \sigma)}.
+        b_1 - r_2 Ca + \frac{b_2 (a_1 Ca + a_2 Ca + a_1 \sigma_1)}{r_1 (Ca + \sigma_1)}.
     \end{equation}
 
     Setting Equation~\eqref{eq:prequadratic} equal to 0 and doing further simplification yields the quadratic,
     \begin{equation}\label{eq:quadratic}
-        -(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma)Ca + a_1 b_2 \sigma + b_1 r_1 \sigma = 0.
+        -(r_1 r_2)Ca^2 + (a_1 b_2 + a_2 b_2 + b_1 r_1 - r_1 r_2 \sigma_1)Ca + a_1 b_2 \sigma_1 + b_1 r_1 \sigma_1 = 0.
     \end{equation}
 
     Notice that in Equation~\eqref{eq:quadratic} the quadratic term is always negative and the constant term is always positive. The linear term can either be positive or negative depending on the choice of parameters. Regardless, there is only one sign change in the expression, so by Descartes' Rule of Signs, there is one positive real root to this quadratic. 
@@ -159,7 +160,7 @@ as $M > A_{\beta} (t)$ for all $t \geq 0$. So, $b_1 + b_2 M - r_2 Ca < 0 \implie
 \end{lem}
 
 \begin{proof}
-    Let $\mathbf{F} (A_{\beta}, Ca) = \left\langle a_1 + \frac{a_2 Ca}{Ca + \sigma} - r_1 A_{\beta}, \, b_1 + b_2 A_{\beta} - r_2 Ca \right\rangle$. Then, $\nabla \cdot \mathbf{F} = -r_1 - r_2$. Choose the function $\alpha (A_{\beta}, Ca) = 1$. So, $\nabla \cdot (\alpha \mathbf{F}) = -r_1 - r_2 < 0$, therefore by the Bendixson-Dulac Theorem, there is no limit cycle in the system of ODEs. So, the equilibrium point in the non-negative orthant must be globally asymptotically stable.
+    Let $\mathbf{F} (A_{\beta}, Ca) = \left\langle a_1 + \frac{a_2 Ca}{Ca + \sigma_1} - r_1 A_{\beta}, \, b_1 + b_2 A_{\beta} - r_2 Ca \right\rangle$. Then, $\nabla \cdot \mathbf{F} = -r_1 - r_2$. Choose the function $\alpha (A_{\beta}, Ca) = 1$. So, $\nabla \cdot (\alpha \mathbf{F}) = -r_1 - r_2 < 0$, therefore by the Bendixson-Dulac Theorem, there is no limit cycle in the system of ODEs. So, the equilibrium point in the non-negative orthant must be globally asymptotically stable.
 \end{proof} \bigskip 
 
 \begin{thm}[Global Stability of Equilibrium of System]
@@ -221,7 +222,7 @@ The values for the 19 key parameters in the causal model are obtained and estima
         $u _{1}$ & varies & year$^{-1}$ & - \\
         $u _{2}$ & varies & year$^{-1}$ & - \\
         $u _{3}$ & varies & year$^{-1}$ & - \\
-        $\sigma$ & $50-150$& nM & no source (?) \\
+        $\sigma_1$ & $50-150$& nM & no source (?) \\
         \hline
     \end{tabular}
 \end{table} \bigskip
@@ -334,7 +335,7 @@ The goal of treatment is to minimize the equilibrium values $N^*$ and $C^*$ whil
 \begin{equation*}
 \label{eq:hamiltonian}
 \begin{split}
-    \mathcal H &= A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 + \lambda_1 \left( a_1 + a_2 \frac{Ca}{Ca + \sigma} - k_1 A_\beta - u_1 A_\beta \right) \\
+    \mathcal H &= A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 + \lambda_1 \left( a_1 + a_2 \frac{Ca}{Ca + \sigma_1} - k_1 A_\beta - u_1 A_\beta \right) \\
     &\quad + \lambda_2 \left( b_1 + b_2 A_\beta - k_2 Ca - u_2 Ca \right) + \lambda_3 \left( c_1 + c_2 A_\beta + c_3 Ca - k_3 \tau - u_3 \tau \right) \\
     &\quad + \lambda_4 \left( d_1 + d_2 \tau - k_4 N \right) + \lambda_5 \left( e_1 + e_2 NR + e_3 \tau - k_5 C \right) .
 \end{split}
@@ -352,7 +353,7 @@ The Hamiltonian includes the treatment costs as described in Equation~\eqref{eq:
     \label{eq:adjoints}
     \begin{split}
         \frac{d\lambda_1}{dt} &= -\frac{\partial \mathcal H}{\partial A_\beta} =  k_1 \lambda_1 + u_1 \lambda_1 - b_2 \lambda_2 - c_2 \lambda_3 \\
-        \frac{d\lambda_2}{dt} &= -\frac{\partial \mathcal H}{\partial Ca} = -\lambda_1 \frac{a_2 \sigma}{\left( Ca + \sigma \right)^2 } + k_2 \lambda_2 + u_2 \lambda_2 - c_3 \lambda_3 \\
+        \frac{d\lambda_2}{dt} &= -\frac{\partial \mathcal H}{\partial Ca} = -\lambda_1 \frac{a_2 \sigma_1}{\left( Ca + \sigma_1 \right)^2 } + k_2 \lambda_2 + u_2 \lambda_2 - c_3 \lambda_3 \\
         \frac{d\lambda_3}{dt} &= -\frac{\partial \mathcal H}{\partial \tau} = k_3 \lambda_3 + u_3 \lambda_3 - d_2 \lambda_4 - e_3 \lambda_5 \\
         \frac{d\lambda_4}{dt} &= -\frac{\partial \mathcal H}{\partial N} = -A_1 + k_4 \lambda_4 - e_2 R \lambda_5 \\
         \frac{d\lambda_5}{dt} &= -\frac{\partial \mathcal H}{\partial C} = -A_2 + k_5 \lambda_5
@@ -369,7 +370,6 @@ The Hamiltonian includes the treatment costs as described in Equation~\eqref{eq:
         \frac{d\lambda_5}{dt} &= -\frac{\partial \mathcal H}{\partial C} = -A_1 + k_5 \lambda_5
     \end{split}
     \end{equation}
-
     with transversality conditions $\lambda_1 (K) = \lambda_2 (K) = \lambda_3 (K) = \lambda_4 (K) = \lambda_5(K) = 0$. Also, the optimal control set has the characterization:
     \begin{align*}
     \label{eq:characterizations}
