@@ -272,14 +272,14 @@ Sobol sensitivity analysis is used to provide a quantitative assessment of the i
     \end{tabular}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.5\textwidth]{img/sens_img_2.pdf}
     \caption{First and Total order indices at $N=2^{10}$}
     \label{fig:first-total-sens}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{img/6-most-sens-params-2.pdf}
     \caption{6 most sensitive parameters for $N \in [2^4,2^{16}]$}
@@ -290,7 +290,7 @@ Sobol sensitivity analysis is used to provide a quantitative assessment of the i
 
 Using the derived biological parameters in Table~\ref{tab:params1}, we run the simulation forward for 50 years with the initial conditions $(A_0, Ca_0, \tau_0, N_0, C_0)=(0,100,0,0,0)$. This simulation uses solve\_ivp from the SciPy package in Python, and the results from the simulation are shown in Figure~\ref{fig:general}. Initially, $A_\beta$ and $Ca$ increase and drive each other's growth. This leads to a large growth of $\tau$ proteins, thus increasing neuron loss over time. The biomarker populations reach their equilibrium values relatively early, but it takes cognitive decline many years to reach its equilibrium value. \bigskip
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \fbox{\includegraphics[scale=0.55]{img/alzgraph1.pdf}}
     \caption{ODE system simulation\label{fig:general}}
@@ -298,7 +298,7 @@ Using the derived biological parameters in Table~\ref{tab:params1}, we run the s
 
 A phase portrait, shown in Figure~\ref{fig:phaseportrait}, displays how different trajectories with varying initial conditions traverse the $A_\beta-Ca$ space. Trajectories will quickly move toward the $Ca$ nullcline with slight movement along the horizontal axis. This is because the time-scale of $Ca$ is much smaller than that of $A_\beta$. Once trajectories are nearby the nullcline, they along the nullcline toward the equilibrium solution. \bigskip
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \fbox{\includegraphics[scale=0.45]{img/alzgraph3.pdf}}
     \caption{Phase portrait\label{fig:phaseportrait}}
@@ -306,7 +306,7 @@ A phase portrait, shown in Figure~\ref{fig:phaseportrait}, displays how differen
 
 To determine which proteins are most effective to treat, we graph the equilibrium cognitive decline value against varying treatments against each protein, as seen in Figure~\ref{fig:treatment}. Each $u_n$ term increases such that the behavior of the function can be observed. We see that the variable that has the largest impact on $C^*$ is $u_3$, the treatment that reduces the number of $\tau$ proteins. The next most effective treatment is $u_1$, which reduces the concentration of $A_\beta$ plaques in the brain. We observe that treating the average level of $Ca$ does not have a large effect on the equilibrium cognitive decline. \bigskip
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
     \centering
     \fbox{\includegraphics[scale=0.42]{img/alzgraph2.pdf}}
     \caption{Treatment effect on $C^*$\label{fig:treatment}}
@@ -322,13 +322,13 @@ The following equation is our objective function which tracks our cost over the 
 
 \begin{equation}
     \label{eq:objective}
-    J(u_1, u_2, u_3) = \int_0^K A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 \, dt.
+    J(u_1, u_2, u_3) = \int_0^{t_f} A_1 N + A_2 C + A_3 u_1^2 + A_4 u_2^2 + A_5 u_3^2 \, dt.
 \end{equation} \bigskip
 
-The goal of treatment is to minimize the equilibrium values $N^*$ and $C^*$ while at the same time minimizing the side effects from the drugs. The terms $A_n$ are the weights which determine how important each associated variable is in the optimization problem. $A_3$, $A_4$, and $A_5$ are the weights associated with the quadratic cost of treatments $u_n$ that target $A_\beta$, calcium, and $\tau$ protein levels. The set of admissible control functions is given by:
+The goal of treatment is to minimize the equilibrium values $N^*$ and $C^*$ while at the same time minimizing the side effects from the drugs. The terms $A_n$ are the weights which determine how important each associated variable is in the optimization problem. $A_3$, $A_4$, and $A_5$ are the weights associated with the quadratic cost of treatments $u_n$ that target $A_\beta$, calcium, and $\tau$ protein levels. Also, $t_f$ is the final time of the control. The set of admissible control functions is given by:
 \begin{equation*}
     \label{eq:admissible}
-    u = \left\{ (u_1, u_2, u_3) \in L^\infty (0, K)^3 \mid (u_1, u_2, u_3) \in \left[ 0, u_1^{\max} \right], \left[ 0, u_2^{\max} \right], \left[ 0, u_3^{\max} \right] \, \forall \, t \in [0, K] \right\}
+    u = \left\{ (u_1, u_2, u_3) \in L^\infty (0, t_f)^3 \mid (u_1, u_2, u_3) \in \left[ 0, u_1^{\max} \right], \left[ 0, u_2^{\max} \right], \left[ 0, u_3^{\max} \right] \, \forall \, t \in [0, t_f] \right\}
 \end{equation*} \bigskip
 
 \subsection{Hamiltonian}
@@ -360,7 +360,7 @@ The Hamiltonian includes the treatment costs as described in Equation~\eqref{eq:
         \frac{d\lambda_5}{dt} &= -\frac{\partial \mathcal H}{\partial C} = -A_1 + k_5 \lambda_5
     \end{split}
     \end{equation}
-    with transversality conditions $\lambda_1 (K) = \lambda_2 (K) = \lambda_3 (K) = \lambda_4 (K) = \lambda_5(K) = 0$. Also, the optimal control set has the characterization:
+    with transversality conditions $\lambda_1 (t_f) = \lambda_2 (t_f) = \lambda_3 (t_f) = \lambda_4 (t_f) = \lambda_5(t_f) = 0$. Also, the optimal control set has the characterization:
     \begin{align*}
     \label{eq:characterizations}
         u_1^* &= \min \left\{ u_1^{\max}, \max \left\{ 0, \frac{\lambda_1 A_\beta}{2 A_3} \right\} \right\} \\
@@ -377,18 +377,30 @@ The Hamiltonian includes the treatment costs as described in Equation~\eqref{eq:
 
 \subsection{Numerical Results}
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=1\textwidth]{img/OC-IndividualTreatments.pdf}
     \caption{Optimal control simulation results}
     \label{fig:optimalcontrolsim}
 \end{figure} \bigskip
 
-- explain how weights were calculated
+- explain algorithm here
 
-Figure~\ref{fig:optimalcontrolsim} shows the values of $A_\beta$, calcium, and tau proteins over time with and without treatments, as well as the value of $u_n$ over the duration of the treatment. After running numerical simulations for optimal control, we find that the results are in line with the simulation shown in Figure \ref{fig:treatment}. That is, treatments that target tau protein are most effective in reducing $C^*$, followed by treatments targeting $A_\beta$. Again, treatments targeting $Ca$ are found to be the least effective. \bigskip
+Weights are calculated by initially running the ODE simulation with each $u_n(t) = u_n^{\max} / 2$. We choose $A_1 = 1$ using the extra degree of freedom. Using the fact that
+\begin{equation*}
+A_1 N_{\mathrm{avg}} = A_2 C_{\mathrm{avg}} = \int_0^{t_f} u_1^2 \, dt = \int_0^{t_f} u_2^2 \, dt = \int_0^{t_f} u_3^2 \, dt,
+\end{equation*}
+we use $A_1 = 1 \implies A_ 1 N_{\mathrm{avg}} = N_{\mathrm{avg}}$ to find that $A_2 = \frac{N_{\mathrm{avg}}}{C_{\mathrm{avg}}}$. Notice that each $u_n$ is constant, so $\int_0^{t_f} u_n^2 \,dt = u_n^2 t_f$, thus $A_3 = \frac{N_{\mathrm{avg}}}{u_1^2 t_f}$, $A_4 = \frac{N_{\mathrm{avg}}}{u_2^2 t_f}$, and $A_5 = \frac{N_{\mathrm{avg}}}{u_3^2 t_f}$. The optimality system was solved using parameter values found in Table~\ref{tab:params1}, a final time of $t = 50$, and the initial conditions $(A_\beta, Ca, \tau, N, C) = (0, 100, 0, 0, 0)$. 
+
+Figure~\ref{fig:optimalcontrolsim} shows the optimal control profile with the values of $A_\beta$, calcium, and tau proteins over time, with and without treatments. The value of the function $u_n(t)$ is shown over the duration of the treatment. After running numerical simulations for optimal control, we find that the results are in line with the simulation shown in Figure \ref{fig:treatment}. That is, treatments that target tau protein are most effective in reducing $C^*$, followed by treatments targeting $A_\beta$. Again, treatments targeting $Ca$ are found to be the least effective in reducing $C^*$. In each case, the treatment is maximally applied for around 40 years, and then tapers off for the remaining 10 years. \bigskip
 
 \section{Conclusion}
+
+In this paper we developed an ODE model for the progression of Alzheimer's Disease as a result of increasing populations of beta-amyloid proteins, intracellular calcium dysregulation, and tau proteins, which then led to neuron loss and cognitive decline. We completed a global stability analysis in the applicable region and then performed sensitivity analysis on the parameters of the model. The model is found to have one globally asymptotically stable equilibrium solution which changes as treatments are applied to the patient. Constant treatment projections were used to make an early hypothesis on the efficacy of targeting different biomarkers.
+
+We used a Runge-Kutta Forward Backward sweep to determine optimal control inputs for the model in order to minimize the cost of treating a patient. The results of the optimal control analysis showed that it is most effective to target tau protein populations. Including intracellular calcium in our model shows that beta-amyloid is not the only upstream influence on the development Alzheimer's Disease, thus giving explanation as to why beta-amyloid medications have been ineffective in clinical trials. Optimal treatments on tau proteins results in a significant decrease in cognitive decline as compared to beta-amyloid and calcium treatments.
+
+The model presented has limitations which provide different avenues for further research. To have more tractable solutions, the model uses Hill equations of $n=1$, although higher order equations more accurately describe the biological relationships between biomarkers. The model can be improved by using Alzheimer's Disease data sets to hone in on biologically accurate parameters.
 
 \printbibliography
 

@@ -5,6 +5,15 @@ import pandas as pd
 from parameter_estimation import ParameterEstimation
 from SALib.sample import saltelli
 from SALib.analyze import sobol
+import multiprocessing as mp
+
+# outside function for multiprocessing 
+def _solve_for_params(args):
+    current_params, init_cond, t_span, t_eval = args
+    temp_model = ODEModel(current_params, init_cond, t_span, t_eval)
+    sol = temp_model.solution()
+    return sol.y[4, -1]
+
 # define the class for system of equations
 class ODEModel:
     def __init__(self, params, initial_conditions, t_span, t_eval): 
@@ -91,17 +100,24 @@ class ODEModel:
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
         param_values = saltelli.sample(self.problem, 2**16)
-        num_eval = param_values.shape[0]
-        model_out = np.zeros(num_eval)
-        # for params obtained from saltelli sampling, iterate
-        for i, current_params in enumerate(param_values):
-            # create a temporary model instance with the SALib sampled parameters
-            temp_model = ODEModel(current_params, self.init_cond, self.t_span, t_eval=self.t_eval)
-            # solve ivp for this specific parameter set
-            sol = temp_model.solution()
-            model_out[i] = sol.y[4, -1]
+
+        # bundle the arguments needed for each model run
+        args_list = [(params, self.init_cond, self.t_span, self.t_eval) for params in param_values]
+        
+        # detect available CPU cores
+        num_cores = mp.cpu_count()
+        print(f"...evaluating {len(param_values)} parameter sets across {num_cores} cores...")
+        
+        # spawn a pool of worker processes to evaluate models simultaneously
+        with mp.Pool(processes=num_cores) as pool:
+            model_out = pool.map(_solve_for_params, args_list)
+            
+        # Convert the results back to a numpy array for SALib
+        model_out = np.array(model_out)
+
         sobol_analysis = sobol.analyze(self.problem, model_out, print_to_console=True)
         return sobol_analysis
+
 
     # using values from sensitivity analysis, print out dataframe of first and total order sobol
     def sobol_dataframe_output(self, sobol_analysis):
