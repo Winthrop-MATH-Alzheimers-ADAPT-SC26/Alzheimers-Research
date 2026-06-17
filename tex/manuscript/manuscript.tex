@@ -359,6 +359,17 @@ The Hamiltonian includes the treatment costs as described in Equation~\eqref{eq:
     \end{split}
     \end{equation}
 
+    \begin{equation}
+    \label{eq:adjoints-2.0}
+    \begin{split}
+        \frac{d\lambda_1}{dt} &= -\frac{\partial \mathcal H}{\partial A_\beta} =  (k_1 + u_1) \lambda_1 - b_2 \lambda_2 - c_2 \lambda_3 \\
+        \frac{d\lambda_2}{dt} &= -\frac{\partial \mathcal H}{\partial Ca} = -\frac{a_2 \sigma_1 \lambda_1}{(Ca + \sigma_1)^2} + (k_2 + u_2)\lambda_2 - \frac{c_3 \sigma_2 \lambda_3}{(Ca + \sigma_2)^2} \\
+        \frac{d\lambda_3}{dt} &= -\frac{\partial \mathcal H}{\partial \tau} = (k_3 + u_3) \lambda_3 - d_2 \lambda_4 - e_3 \lambda_5 \\
+        \frac{d\lambda_4}{dt} &= -\frac{\partial \mathcal H}{\partial N} = -A_2 + k_4 \lambda_4 - e_2 R \lambda_5\\
+        \frac{d\lambda_5}{dt} &= -\frac{\partial \mathcal H}{\partial C} = -A_1 + k_5 \lambda_5
+    \end{split}
+    \end{equation}
+
     with transversality conditions $\lambda_1 (K) = \lambda_2 (K) = \lambda_3 (K) = \lambda_4 (K) = \lambda_5(K) = 0$. Also, the optimal control set has the characterization:
     \begin{align*}
     \label{eq:characterizations}
