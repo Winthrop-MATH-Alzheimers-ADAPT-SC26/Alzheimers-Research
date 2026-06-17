@@ -101,17 +101,17 @@ class ODEModel:
         # call saltelli sampling values to feed into a new model instance
         param_values = saltelli.sample(self.problem, 2**16)
 
-        # bundle the arguments needed for each model run
+        # bundle arguments needed for each model run
         args_list = [(params, self.init_cond, self.t_span, self.t_eval) for params in param_values]
-        
+
         # detect available CPU cores
         num_cores = mp.cpu_count()
         print(f"...evaluating {len(param_values)} parameter sets across {num_cores} cores...")
-        
+
         # spawn a pool of worker processes to evaluate models simultaneously
         with mp.Pool(processes=num_cores) as pool:
             model_out = pool.map(_solve_for_params, args_list)
-            
+
         # Convert the results back to a numpy array for SALib
         model_out = np.array(model_out)
 
