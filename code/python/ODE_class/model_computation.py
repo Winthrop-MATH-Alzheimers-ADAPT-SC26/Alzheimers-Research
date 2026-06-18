@@ -100,7 +100,7 @@ class ODEModel:
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
-        param_values = saltelli.sample(self.problem, 2**8, calc_second_order = False)
+        param_values = saltelli.sample(self.problem, 2**4, calc_second_order = False)
 
         # bundle arguments needed for each model run
         args_list = [(params, self.init_cond, self.t_span, self.t_eval) for params in param_values]
@@ -117,7 +117,8 @@ class ODEModel:
                     pool.imap(_solve_for_params, args_list, chunksize = 100), 
                     total=len(args_list), 
                     desc="Solving ODEs", 
-                    unit="sim"
+                    unit="sim",
+                    smoothing = 0.1
                 )
             )
 
