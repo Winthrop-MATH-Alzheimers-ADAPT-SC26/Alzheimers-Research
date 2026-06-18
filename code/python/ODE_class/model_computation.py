@@ -149,7 +149,8 @@ class ODEModel:
             'Sobol First Order (S1)': sobol_analysis['S1'],
             'Sobol Total (ST)': total,
             'Sobol Total Conf': conf,
-            'High Accuracy': np.where((total / conf) < 10, '--', 'Yes')
+            'High Accuracy': np.where((total / conf) < 10, '--', 'Yes'),
+            'Below Relative Cutoff': np.where(total < (max(total)*0.01), '--', 'No')
             }).sort_values(by='Sobol Total (ST)', ascending=False)
         print("\n ...Sobol Analysis Table...")
         print(df.to_string(index=False))
