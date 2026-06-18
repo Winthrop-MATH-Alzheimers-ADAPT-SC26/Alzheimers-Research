@@ -228,21 +228,9 @@ The values for the 19 key parameters in the causal model are obtained and estima
     \end{tabular}
 \end{table} \bigskip
 
-\section{Se
 \section{Sensitivity Analysis}
 
-Sobol sensitivity analysis is used to provide a quantitative assessment of the impact that model parameters have on the causal dynamics of the proposed model. 
-This computation was performed using Python with the SALib library \cite{Herman2017, Iwanaga2022}. 
-The output being at a final time $T=50$ years, which is interpreted as years after age 50, the first, second, and total-order indices ($S_T$) were computed using different sample sizes, 
-ranging from $N=2^4$ to $N=2^{20}$. Using the parameter ranges from Table~\ref{tab:params1}, 
-the first-order and total-order sensitivity indices are highlighted in Figure~\ref{fig:first-total-sens}; 
-initial conditions were set for $Ca(0)=100$, and zero for the rest of the state variables. 
-In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}. 
-It is noted that the confidence intervals for each parameter less than $10\%$ of $S_T$, indicating a high level of accuracy.
-Using a relative cutoff, the threshold is calculated by $\text{Threshold}=0.01 \cdot \text{max}(S_{T_i})$. 
-This determines what parameters are negligible, relative to the highest scoring sensitivity indices.
-It is observed that $c_3$ is negligible. 
-This parameter being less than the threshold suggests that though calcium interplays with tau in the process of Alzheimer's Disease, it may be a minor factor in terms of its interaction on the hyperphosphorylation of tau. 
+Sobol sensitivity analysis is used to provide a quantitative assessment of the impact that model parameters have on the causal dynamics of the proposed model. This computation was performed using Python with the SALib library \cite{Herman2017, Iwanaga2022}. With a final time $t = 50$ years after age 50, the first and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{20}$. Using the parameter ranges from Table~\ref{tab:params1}, the first-order and total-order sensitivity indices are highlighted in Figure~\ref{fig:first-total-sens}; initial conditions were set for $Ca(0)=100$, and zero for the rest of the state variables. In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}. It is noted that the confidence intervals for each parameter being less than $10\%$ of $S_T$ indicates a high level of accuracy. Using a relative cutoff, the threshold is calculated by $\text{Threshold}=0.01 \cdot \text{max}(S_{T_i})$. This determines what parameters are negligible, relative to the highest scoring sensitivity indices. It is observed that $c_3$ is negligible. This parameter being less than the threshold suggests that, though calcium interplays with tau in the process of Alzheimer's Disease, it may be a minor factor in terms of its interaction on the hyperphosphorylation of tau. \bigskip
 
 \begin{table}[h] 
     \centering
@@ -283,21 +271,21 @@ This parameter being less than the threshold suggests that though calcium interp
         Conf Int & 2.544e-07 & 7.665e-08 & 6.758e-08 & 1.135e-09 & 3.273e-10 & 7.593e-11 \\
         \hline
     \end{tabular}
-\end{table}
+\end{table} \bigskip
 
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.5\textwidth]{img/sens_img_2.pdf}
     \caption{First and Total order indices at $N=2^{10}$}
     \label{fig:first-total-sens}
-\end{figure}
+\end{figure} \bigskip
 
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{img/6-most-sens-params-2.pdf}
     \caption{6 most sensitive parameters for $N \in [2^4,2^{16}]$}
     \label{fig:6-most-sens}
-\end{figure}
+\end{figure} \bigskip
 
 \section{Results}
 
