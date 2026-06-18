@@ -100,7 +100,7 @@ class ODEModel:
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
-        param_values = saltelli.sample(self.problem, 2**20)
+        param_values = saltelli.sample(self.problem, 2**12, calc_second_order = False)
 
         # bundle arguments needed for each model run
         args_list = [(params, self.init_cond, self.t_span, self.t_eval) for params in param_values]
@@ -114,7 +114,7 @@ class ODEModel:
             model_out = list(
                 # progress bar
                 tqdm(
-                    pool.imap(_solve_for_params, args_list), 
+                    pool.imap(_solve_for_params, args_list, chunksize = 100), 
                     total=len(args_list), 
                     desc="Solving ODEs", 
                     unit="sim"
@@ -124,7 +124,11 @@ class ODEModel:
         # convert the results back to a numpy array for SALib
         model_out = np.array(model_out)
 
-        sobol_analysis = sobol.analyze(self.problem, model_out, print_to_console=True)
+        sobol_analysis = sobol.analyze(self.problem, 
+                                       model_out, 
+                                       calc_second_order = False,
+                                       n_processors = num_cores,
+                                       print_to_console = True)
         return sobol_analysis
 
 
@@ -136,12 +140,16 @@ class ODEModel:
         Returns:
             None.
         """
+        total = sobol_analysis['ST']
+        conf = sobol_analysis['ST_conf']
+
         param_string = self.return_string_list()[0]
         df = pd.DataFrame({
             'Params': param_string,
             'Sobol First Order (S1)': sobol_analysis['S1'],
-            'Sobol Total (ST)': sobol_analysis['ST'],
-            'Sobol Total Conf': sobol_analysis['ST_conf']
+            'Sobol Total (ST)': total,
+            'Sobol Total Conf': conf,
+            'High Accuracy': np.where((total / conf) < 10, '--', 'Yes')
             }).sort_values(by='Sobol Total (ST)', ascending=False)
         print("\n ...Sobol Analysis Table...")
         print(df.to_string(index=False))

@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import matplotlib
 
+# use optimal PyPlot backend for OS 
 if sys.platform == 'darwin':  # macos
     matplotlib.use('MacOSX')
 elif sys.platform.startswith('linux'): # cachyos
@@ -11,7 +12,7 @@ import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 from scipy.optimize import fsolve
 
-
+# systems of ODEs for solve_ivp
 def ODEsystem(t, z, a1, a2, sigma1, k1, u1, b1, b2, k2, u2, c1, c2, c3, sigma2, k3, u3, d1, d2, k4, e1, e2, R, e3, k5):
     Ab, Ca, tau, N, C = z
 
@@ -23,6 +24,7 @@ def ODEsystem(t, z, a1, a2, sigma1, k1, u1, b1, b2, k2, u2, c1, c2, c3, sigma2, 
 
     return [dAbdt, dCadt, dtaudt, dNdt, dCdt]
 
+# used for treatment efficacy projections
 def get_final_C(u1_val, u2_val, u3_val):
     params = (a1, a2, sigma1, k1, u1_val, b1, b2, k2, u2_val, c1, c2, c3, sigma2, k3, u3_val, d1, d2, k4, e1, e2, R, e3, k5)
     sol = solve_ivp(
@@ -36,14 +38,9 @@ def get_final_C(u1_val, u2_val, u3_val):
     # return end C from simulation
     return sol.y[4][-1]
 
-def find_equilibrium(vars):
-    Ab, Ca = vars
-    dAb = a1 + a2 * (Ca / (Ca + sigma1)) - (k1 * Ab) - (u1 * Ab)
-    dCa = b1 + (b2 * Ab) - (k2 * Ca) - (u2 * Ca)
-    return [dAb, dCa]
-
-def find_equilibrium_sys(vars):
-    Ab, Ca, tau, N, C = vars
+# used for fsolving equilibrium
+def find_equilibrium_sys(bestguess):
+    Ab, Ca, tau, N, C = bestguess
 
     dAbdt = a1 + a2 * (Ca / (Ca + sigma1)) - (k1 * Ab) - (u1 * Ab)
     dCadt = b1 + (b2 * Ab) - (k2 * Ca) - (u2 * Ca)
@@ -52,6 +49,8 @@ def find_equilibrium_sys(vars):
     dCdt = e1 + (e2 * N * R) + (e3 * tau) - (k5 * C)
 
     return [dAbdt, dCadt, dtaudt, dNdt, dCdt]
+
+# PARAMETERS ----------------
 
 # A beta parameters
 a1 = 65641 / 10000
@@ -86,18 +85,20 @@ R = 1
 e3 = 199.16 / 10000
 k5 = 0.8684 / 10
 
+# ---------------------------
+
 params = (a1, a2, sigma1, k1, u1, b1, b2, k2, u2, c1, c2, c3, sigma2, k3, u3, d1, d2, k4, e1, e2, R, e3, k5)
 
 # initial values for Ab, Ca, tau, N, C
 initials = [0, 100, 0, 0, 0]
 
+# find equilibrium from best guess
 Ab_eq, Ca_eq, tau_eq, N_eq, C_eq = fsolve(find_equilibrium_sys, [20, 150, 60, 70, 20])
 print(f"\nEquilibrium: \nA beta: {Ab_eq:.2f} \nCalcium: {Ca_eq:.2f} \nTau: {tau_eq:.2f} \nNeuron Loss: {N_eq:.2f} \nCognitive Decline: {C_eq:.2f}\n")
 
-t_span = (0, 50)
-
 # OVERALL SIMULATION
 
+t_span = (0, 50)
 t_eval = np.linspace(t_span[0], t_span[1], 500)
 
 # run simulation forward
@@ -185,8 +186,6 @@ plt.show()
 # PHASE PORTRAIT
 
 plt.figure(figsize = (8, 6))
-
-Ab_eq, Ca_eq = fsolve(find_equilibrium, [25, 150])
 
 Ab_vals = np.linspace(-5, 35, 100)
 Ca_nullcline = (b1 + b2 * Ab_vals) / (k2 + u2)
