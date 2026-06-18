@@ -228,46 +228,59 @@ The values for the 19 key parameters in the causal model are obtained and estima
     \end{tabular}
 \end{table} \bigskip
 
+\section{Se
 \section{Sensitivity Analysis}
 
-Sobol sensitivity analysis is used to provide a quantitative assessment of the impact that model parameters have on the causal dynamics of the proposed model. This computation was performed using Python with the SALib library \cite{Herman2017, Iwanaga2022}. The first, second, and total-order indices ($S_T$) were computed using different sample sizes, ranging from $N=2^4$ to $N=2^{16}$. Using the parameter ranges from Table~\ref{tab:params1}, the first-order and total-order sensitivity indices are highlighted in Figure~\ref{fig:first-total-sens}; initial conditions were set for $Ca(0)=100$, and zero for the rest of the state variables. In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}. Using a threshold of $10^{-4}$, the parameters falling below this threshold provide a neglible impact on the overall model. From this, it is observed that the growth of calcium in Equation~\eqref{eq:tau} is suggested to have very little effect on tau protein synthesis, which coroborates with findings in some studies (list citations).
-\begin{table}[] 
+Sobol sensitivity analysis is used to provide a quantitative assessment of the impact that model parameters have on the causal dynamics of the proposed model. 
+This computation was performed using Python with the SALib library \cite{Herman2017, Iwanaga2022}. 
+The output being at a final time $T=50$ years, which is interpreted as years after age 50, the first, second, and total-order indices ($S_T$) were computed using different sample sizes, 
+ranging from $N=2^4$ to $N=2^{20}$. Using the parameter ranges from Table~\ref{tab:params1}, 
+the first-order and total-order sensitivity indices are highlighted in Figure~\ref{fig:first-total-sens}; 
+initial conditions were set for $Ca(0)=100$, and zero for the rest of the state variables. 
+In order to validate these indices, Figure~\ref{fig:6-most-sens} shows the six most sensitive parameters for each sample size. The total-order indices are quantified along with the confidence interval for each parameter at $N=2^{16}$ in Table~\ref{tab:sobol-conf}. 
+It is noted that the confidence intervals for each parameter less than $10\%$ of $S_T$, indicating a high level of accuracy.
+Using a relative cutoff, the threshold is calculated by $\text{Threshold}=0.01 \cdot \text{max}(S_{T_i})$. 
+This determines what parameters are negligible, relative to the highest scoring sensitivity indices.
+It is observed that $c_3$ is negligible. 
+This parameter being less than the threshold suggests that though calcium interplays with tau in the process of Alzheimer's Disease, it may be a minor factor in terms of its interaction on the hyperphosphorylation of tau. 
+
+\begin{table}[h] 
     \centering
     \small
-    \caption{Total Sobol Sensitivity indices for various parameters with corresponding confidence intervals for $N=2^{16}$}
+    \caption{Total Sobol Sensitivity indices for various parameters with corresponding confidence intervals for $N=2^{20}$}
     \label{tab:sobol-conf}
     \vspace{0.5em}
     \begin{tabular}{|l|l|l|l|l|l|l|l|}
         \hline
-        Param    & k5        & k3        & e3        & k1        & c1        & c2        & a1        \\
+        Param & $k_3$ & $k_5$ & $e_3$ & $c_1$ & $k_1$ & $c_2$ & $a_1$ \\
         \hline
-        ST & 2.499e-01 & 2.871e-01 & 1.283e-01 & 6.081e-02 & 5.787e-02 & 4.916e-02 & 3.960e-02 \\
+        ST & 2.783e-01 & 2.432e-01 & 1.244e-01 & 8.047e-02 & 6.020e-02 & 5.824e-02 & 4.607e-02 \\
         \hline
-        Conf Int & 3.382e-03 & 3.768e-03 & 1.803e-03 & 8.049e-04 & 7.786e-04 & 6.181e-04 & 4.895e-04 \\ 
+        Conf Int & 7.929e-04 & 7.580e-04 & 3.946e-04 & 2.732e-04 & 1.891e-04 & 1.871e-04 & 1.506e-04 \\ 
         \hline 
     \end{tabular}
 
-    \vspace{0.5em}
+    %\vspace{0.5em}
 
     \begin{tabular}{|l|l|l|l|l|l|l|l|}
         \hline
-        Param    & k4        & e2        & r         & d2        & k2        & c3        & a2        \\
+        Param & $k_4$ & $r$ & $e_2$ & $d_2$ & $a_2$ & $k_2$ & $\sigma_1$ \\
         \hline
-        ST  & 3.111e-02 & 3.103e-02 & 3.100e-02 & 3.087e-02 & 5.261e-03 & 5.140e-03 & 2.289e-03 \\
+        ST  & 3.021e-02 & 3.013e-02 & 3.013e-02 & 2.994e-02 & 9.639e-04 & 1.577e-04 & 1.544e-04 \\
         \hline
-        Conf Int & 3.951e-04 & 4.445e-04 & 4.254e-04 & 4.166e-04 & 7.286e-05 & 7.242e-05 & 3.007e-05 \\
+        Conf Int & 9.158e-05 & 9.651e-05 & 9.844e-05 & 9.105e-05 & 3.222e-06 & 4.884e-07 & 4.757e-07 \\
         \hline
     \end{tabular}
 
-    \vspace{0.5em}
+    %\vspace{0.5em}
 
-    \begin{tabular}{|l|l|l|l|l|l|}
+    \begin{tabular}{|l|l|l|l|l|l|l|}
         \hline
-        Param    & b1        & b2        & e1        & d1        & sig       \\
+        Param & $b_1$ & $e_1$ & $b_2$ & $d_1$ & $c_3$ & $\sigma_2$ \\
         \hline
-        ST       & 2.180e-03 & 6.361e-04 & 1.691e-05 & 3.243e-07 & 3.926e-16 \\
+        ST & 7.116e-05 & 2.352e-05 & 1.760e-05 & 3.409e-07 & 1.064e-07 & 1.720e-08 \\
         \hline
-        Conf Int & 3.303e-05 & 1.013e-05 & 2.063e-07 & 7.372e-09 & 5.648e-16 \\
+        Conf Int & 2.544e-07 & 7.665e-08 & 6.758e-08 & 1.135e-09 & 3.273e-10 & 7.593e-11 \\
         \hline
     \end{tabular}
 \end{table}
