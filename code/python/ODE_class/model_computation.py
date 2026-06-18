@@ -100,7 +100,7 @@ class ODEModel:
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
-        param_values = saltelli.sample(self.problem, 2**12, calc_second_order = False)
+        param_values = saltelli.sample(self.problem, 2**8, calc_second_order = False)
 
         # bundle arguments needed for each model run
         args_list = [(params, self.init_cond, self.t_span, self.t_eval) for params in param_values]
@@ -150,7 +150,7 @@ class ODEModel:
             'Sobol Total (ST)': total,
             'Sobol Total Conf': conf,
             'High Accuracy': np.where((total / conf) < 10, '--', 'Yes'),
-            'Below Relative Cutoff': np.where(total < (max(total)*0.01), '--', 'No')
+            'Below Relative Cutoff': np.where(total < (max(total)*0.01), 'Yes', 'No')
             }).sort_values(by='Sobol Total (ST)', ascending=False)
         print("\n ...Sobol Analysis Table...")
         print(df.to_string(index=False))
