@@ -25,6 +25,8 @@ To run the Python code, you will need to install the necessary packages. Python 
   pip install -r requirements.txt
   ```
 
+To run the Julia code, take a look at the [Julia module documentation](code/julia/README.md).
+
 ## Contributors
 
 | Name                      | winthrop.edu                                                           | Github                                    |

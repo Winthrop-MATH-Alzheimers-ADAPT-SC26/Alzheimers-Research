@@ -1,5 +1,7 @@
 # AlzheimerModel Useage
 
+← [Back to the main project overview](../../README.md)
+
 ## Loading
 
 ```julia-repl
@@ -39,3 +41,5 @@ julia> sol4 = solve_model(prob3, solver=Rodas5P())
 ```
 
 If solver is specified, then underlying `solve()` will determine best solver to use.
+
+← [Back to the main project overview](../../README.md)
