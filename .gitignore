@@ -12,6 +12,8 @@
 *.log
 *.run.xml
 *.synctex.gz
+*.pdf
+!**/img/**/*.pdf
 
 # julia/nix/direnv
 *.directory
