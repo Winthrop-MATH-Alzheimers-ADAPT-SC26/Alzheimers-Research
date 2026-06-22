@@ -101,7 +101,7 @@ function _update_controls(fwd_sol, bwd_sol, ts, weights_uw, umax)
             xk = x[k]
             wk = weights_uw[k]
             umaxk = umax[k]
-            u_new[k][i] = clamp(λk * xk / (2 * wk), 0.0, umaxk)
+            u_new[k][i] = (wk == 0.0) ? 0.0 : clamp(λk * xk / (2 * wk), 0.0, umaxk)
         end
     end
 

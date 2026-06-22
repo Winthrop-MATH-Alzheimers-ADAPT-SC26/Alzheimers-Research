@@ -11,7 +11,7 @@ weights = calculate_weights(sys, pvec, tspan, umax)
 params = FBSParams(
     u₁max=umax[1], u₂max=umax[2], u₃max=umax[3],
     w₁=weights.w1, w₂=weights.w2, w₃=weights.w3, w₄=weights.w4, w₅=weights.w5,
-    max_iter=1000, relax=0.65
+    max_iter=1000, relax=0.5
 )
 
 # Solve optimal control problem (FBS)

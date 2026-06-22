@@ -34,7 +34,7 @@ eqs = [
 #         D(λ[i]) ~ -expand_derivatives(Symbolics.derivative(H, states[i]))
 #         for i in 1:5
 #     ]
-#     return adjoint_eqs
+#     return adjoint_eqs, H
 # end
 
 # State RHS

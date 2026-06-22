@@ -21,4 +21,6 @@ export sys, print_final,
     calculate_weights, FBSParams
 # ControlsPlot, SolPlotCombined, SolPlotHorizontal, make_plot
 
+println("Project Module Loaded")
+
 end
