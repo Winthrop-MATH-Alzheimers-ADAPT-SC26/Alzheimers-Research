@@ -1,4 +1,4 @@
-for each of the sample sizes get sensitivity values
+for c3 = 0.1
 2^4: -------------------------------------------------------------
 Params  Sobol First Order (S1)  Sobol Total (ST)  Sobol Total Conf
     k3                0.268832      2.332754e-01      1.823219e-01

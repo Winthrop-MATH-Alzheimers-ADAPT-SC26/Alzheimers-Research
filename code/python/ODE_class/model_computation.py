@@ -55,9 +55,9 @@ class ODEModel:
         self.sigma = params[17]
         self.sigma2 = params[18]
         self.r = params[19]
-        #self.u1 = params[19]
-        #self.u2 = params[20]
-        #self.u3 = params[21]
+        #self.u1 = params[20]
+        #self.u2 = params[21]
+        #self.u3 = params[22]
 
         # for modeling solution space
         self.init_cond = initial_conditions
@@ -73,7 +73,7 @@ class ODEModel:
         params_string = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2',
                          'c3', 'd1', 'd2', 'e1', 'e2', 'e3',
                          'k1', 'k2', 'k3', 'k4', 'k5', 'sig',
-                         'sig2', 'r']#, 'u1', 'u2', 'u3'
+                         'sig2', 'r'] #, 'u1', 'u2', 'u3'
         num_params = len(params_string)
         return [params_string, num_params]
 
@@ -82,14 +82,14 @@ class ODEModel:
         """Use this throughout to call ODE model; useful for using self keyword within class methods."""
         ABeta, Ca, Tau, N, C = y
         dABeta = self.a1 + self.a2 * (Ca / (Ca + self.sigma)) - self.k1 * ABeta #- self.u1 * ABeta
-        dCa = self.b1 + self.b2 * ABeta - self.k2 * Ca  #- self.u2 * Ca
+        dCa = self.b1 + self.b2 * ABeta - self.k2 * Ca #- self.u2 * Ca
         dTau = self.c1 + self.c2 * ABeta + self.c3 * (Ca / (Ca + self.sigma2)) - self.k3 * Tau #- self.u3 * Tau
         dN = self.d1 + self.d2 * Tau - self.k4 * N
         dC = self.e1 + self.e2 * N * self.r + self.e3 * Tau - self.k5 * C
         return [dABeta, dCa, dTau, dN, dC]
 
     # call sensitivity analysis using model in class to run SAlib sobol analysis
-    def sensitivity_analysis(self):
+    def sensitivity_analysis(self, sample_size):
         """Using the self variables, the sobol sensitivity analysis is used from SALib.
 
         These parameters are used to create the saltelli sampling problem that is then used
@@ -100,7 +100,7 @@ class ODEModel:
             'names': self.return_string_list()[0],
             'bounds': self.param_ranges}
         # call saltelli sampling values to feed into a new model instance
-        param_values = saltelli.sample(self.problem, 2**10, calc_second_order = False)
+        param_values = saltelli.sample(self.problem, 2**sample_size, calc_second_order = False)
 
         # bundle arguments needed for each model run
         args_list = [(params, self.init_cond, self.t_span, self.t_eval) for params in param_values]
@@ -155,13 +155,14 @@ class ODEModel:
             }).sort_values(by='Sobol Total (ST)', ascending=False)
         print("\n ...Sobol Analysis Table...")
         print(df.to_string(index=False))
+        return df
 
-        fig, ax = plt.subplots(figsize=(10, 6))
-        df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
-        ax.set_ylabel('Sensitivity Index Value')
-        ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
-        plt.tight_layout()
-        plt.show()
+        #fig, ax = plt.subplots(figsize=(10, 6))
+        #df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
+        #ax.set_ylabel('Sensitivity Index Value')
+        #ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
+        #plt.tight_layout()
+        #plt.show()
 
     # numerically model solution to ODE
     def solution(self):

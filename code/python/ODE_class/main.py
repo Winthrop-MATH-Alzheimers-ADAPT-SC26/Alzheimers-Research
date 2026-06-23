@@ -1,10 +1,13 @@
 from model_computation import ODEModel
 import numpy as np
+import pandas as pd
+
+RESULTS_CSV = "sobol_results.csv"
 
 if __name__ == '__main__':
     # given arbitrary parameters
     params = [65641/10000, 15778.463/10000, 315569260, 6311385.2, 52.2958, 1.78467,
-            0.1, 0.07176, 0.398406, 146.308032/10000, 86.84/10000, 199.16/10000,
+            15778.463/10000, 0.07176, 0.398406, 146.308032/10000, 86.84/10000, 199.16/10000,  # c3 originally 0.1, testing with 1.0 for analysis.
             3035.98/10000, 3155692.6, 10.9999/6, 0.3588, 0.8684/10, 100, 100, 1]
     initial_conditions = [0.0, 100, 0.0, 0.0, 0.0] # initial conditions [ABeta_0, Ca_0, Tau_0, N_0, C_0]
     t_span = (0, 50)
@@ -15,7 +18,18 @@ if __name__ == '__main__':
     # print("...starting solver...")
     # model_no_treatment.results()
 
-    print("...starting sensitivity analysis...")
-    sobol_analysis = model_no_treatment.sensitivity_analysis()
-    model_no_treatment.sobol_dataframe_output(sobol_analysis)
-    #model_no_treatment.visualization()
+    sample_sizes = [4, 6, 8, 10, 12, 14, 16, 18, 20]
+ 
+    print(f"...starting sensitivity analysis for n={sample_sizes}...")
+    all_runs = []
+    for n in sample_sizes:
+        sobol_analysis = model_no_treatment.sensitivity_analysis(n)
+        df = model_no_treatment.sobol_dataframe_output(sobol_analysis)
+        all_runs.append(df)
+ 
+    # stack every run into one tidy dataframe and persist it to disk so the
+    # visualization script can pick it up without any manual copy-paste
+    combined_df = pd.concat(all_runs, ignore_index=True)
+    combined_df.to_csv(RESULTS_CSV, index=False)
+    print(f"\n...saved combined Sobol results for n={sample_sizes} to {RESULTS_CSV}...")
+
