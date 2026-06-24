@@ -4,6 +4,7 @@ export ControlsPlot,
     ControlsPlotSeperate,
     ControlsPlotSeperate2,
     ControlsPlotSeperate3,
+    WeightSensitivity,
     SolPlotCombined,
     SolPlotHorizontal,
     make_plot
@@ -16,6 +17,7 @@ struct ControlsPlot <: PlotType end
 struct ControlsPlotSeperate <: PlotType end
 struct ControlsPlotSeperate2 <: PlotType end
 struct ControlsPlotSeperate3 <: PlotType end
+struct WeightSensitivity <: PlotType end
 struct SolPlotCombined <: PlotType end
 struct SolPlotHorizontal <: PlotType end
 
@@ -31,6 +33,85 @@ set_theme!(merge(Theme(
             xlabelsize=13,
         )
     ), theme_latexfonts()))
+
+function make_plot(::WeightSensitivity, results)
+    # results is a NamedTuple or struct with:
+    #   results.baseline         => (r1, r2, r3) at baseline weights
+    #   results.vary_w1[1:3]     => (r1, r2, r3) at low/mid/high w1
+    #   results.vary_w2[1:3]     => same for w2
+    #   results.vary_w3[1:3]     => same for w3
+    #
+    # Each r has: r.t, r.controls.u1/u2/u3
+
+    col_labels = ["Baseline", "Low Weight", "Mid Weight", "High Weight"]
+    row_labels = [L"Vary $w_1$", L"Vary $w_2$", L"Vary $w_3$"]
+
+    fig = Figure(size=(2200, 1200))
+
+    for row in 1:3
+        for col in 1:4
+            if col == 1
+                r1, r2, r3 = results.baseline
+            elseif row == 1
+                r1, r2, r3 = results.vary_w1[col-1]
+            elseif row == 2
+                r1, r2, r3 = results.vary_w2[col-1]
+            else
+                r1, r2, r3 = results.vary_w3[col-1]
+            end
+
+            t = r1.t
+            u1 = r1.controls.u1
+            u2 = r2.controls.u2
+            u3 = r3.controls.u3
+
+            title_str = col_labels[col]
+
+            # Left y-axis: u1 and u3 (shared scale)
+            ax_left = Axis(
+                fig[row, col],
+                title=(row == 1 ? title_str : ""),
+                xlabel=(row == 3 ? "Years After Age 50" : ""),
+                ylabel=(col == 1 ? string(row_labels[row], "  u₁, u₃") : ""),
+                xticks=0:10:50,
+                yaxisposition=:left,
+            )
+
+            # Right y-axis: u2 (overlay axis sharing x)
+            ax_right = Axis(
+                fig[row, col],
+                ylabel=(col == 4 ? L"u_2" : ""),
+                yticks=0:1.0e7,
+                yaxisposition=:right,
+            )
+
+            hidespines!(ax_right)
+            hidexdecorations!(ax_right)
+
+            # Link x axes so zoom/pan stays consistent
+            # linkxaxes!(ax_left, ax_right)
+
+            lines!(ax_left, t, u1, label=L"u_1", color=Cycled(2))
+            lines!(ax_left, t, u3, label=L"u_3", color=Cycled(4))
+            lines!(ax_right, t, u2, label=L"u_2", color=Cycled(3))
+
+            # Only add legend on the first column to avoid clutter
+            if col == 1
+                axislegend(ax_left, position=:lt, merge=true)
+            end
+        end
+    end
+
+    # Row labels on the far left
+    for (i, label) in enumerate(row_labels)
+        Label(fig[i, 0], label, rotation=π / 2, tellheight=false)
+    end
+
+    colgap!(fig.layout, 12)
+    rowgap!(fig.layout, 12)
+
+    return fig
+end
 
 function make_plot(::ControlsPlotSeperate, r1, r2, r3)
     t = r1.t
