@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # print("...starting solver...")
     # model_no_treatment.results()
 
-    sample_sizes = 20
+    sample_sizes = 18
     print(f"...starting sensitivity analysis for n={sample_sizes}...")
     sobol_analysis = model_no_treatment.sensitivity_analysis(sample_sizes)
     model_no_treatment.sobol_dataframe_output(sobol_analysis)
