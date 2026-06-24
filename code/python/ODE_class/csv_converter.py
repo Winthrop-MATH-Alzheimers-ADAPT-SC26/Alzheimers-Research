@@ -1,7 +1,7 @@
 import re
 import pandas as pd
 
-INPUT_TXT = "temp7.txt"
+INPUT_TXT = "temp8.txt"
 OUTPUT_CSV = "sobol_results.csv"
 
 rows = []
