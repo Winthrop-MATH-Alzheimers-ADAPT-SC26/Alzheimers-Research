@@ -53,11 +53,11 @@ function make_plot(::WeightSensitivity, results)
             if col == 1
                 r1, r2, r3 = results.baseline
             elseif row == 1
-                r1, r2, r3 = results.vary_w1[col-1]
-            elseif row == 2
-                r1, r2, r3 = results.vary_w2[col-1]
-            else
                 r1, r2, r3 = results.vary_w3[col-1]
+            elseif row == 2
+                r1, r2, r3 = results.vary_w4[col-1]
+            else
+                r1, r2, r3 = results.vary_w5[col-1]
             end
 
             t = r1.t
