@@ -18,18 +18,7 @@ if __name__ == '__main__':
     # print("...starting solver...")
     # model_no_treatment.results()
 
-    sample_sizes = [4, 6, 8, 10, 12, 14, 16, 18, 20]
- 
+    sample_sizes = 20
     print(f"...starting sensitivity analysis for n={sample_sizes}...")
-    all_runs = []
-    for n in sample_sizes:
-        sobol_analysis = model_no_treatment.sensitivity_analysis(n)
-        df = model_no_treatment.sobol_dataframe_output(sobol_analysis)
-        all_runs.append(df)
- 
-    # stack every run into one tidy dataframe and persist it to disk so the
-    # visualization script can pick it up without any manual copy-paste
-    combined_df = pd.concat(all_runs, ignore_index=True)
-    combined_df.to_csv(RESULTS_CSV, index=False)
-    print(f"\n...saved combined Sobol results for n={sample_sizes} to {RESULTS_CSV}...")
-
+    sobol_analysis = model_no_treatment.sensitivity_analysis(sample_sizes)
+    model_no_treatment.sobol_dataframe_output(sobol_analysis)

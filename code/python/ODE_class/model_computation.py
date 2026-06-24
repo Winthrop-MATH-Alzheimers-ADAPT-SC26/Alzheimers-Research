@@ -155,7 +155,6 @@ class ODEModel:
             }).sort_values(by='Sobol Total (ST)', ascending=False)
         print("\n ...Sobol Analysis Table...")
         print(df.to_string(index=False))
-        return df
 
         #fig, ax = plt.subplots(figsize=(10, 6))
         #df.plot(kind='bar', x='Params', y=['Sobol First Order (S1)', 'Sobol Total (ST)'], ax=ax)
