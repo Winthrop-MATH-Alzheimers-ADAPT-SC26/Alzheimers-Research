@@ -4,9 +4,8 @@ includet("modules/PlottingTools.jl")
 
 using .Project
 using .PlottingTools
-using LaTeXStrings
 
-# ── Setup ─────────────────────────────────────────────────────────────────────
+# ── Setup ──
 pvec = build_param_vector(c₃=1.5778463)
 tspan = (0.0, 50.0)
 umax = (10.0, 1.0e7, 10.0)
@@ -15,9 +14,6 @@ u1_treat_weights = calculate_weights(sys, pvec, tspan, (umax[1], 0.0, 0.0))
 u2_treat_weights = calculate_weights(sys, pvec, tspan, (0.0, umax[2], 0.0))
 u3_treat_weights = calculate_weights(sys, pvec, tspan, (0.0, 0.0, umax[3]))
 
-weight_scales = range(start=1.0, step=0.5, length=4)  # [1.0, 1.5, 2.0, 2.5]
-
-# ── run_scenario ──────────────────────────────────────────────────────────────
 function run_scenario(pvec, tspan, umax, u1w, u2w, u3w;
     w3_scale=1.0, w4_scale=1.0, w5_scale=1.0,
     scenario_title="No Title")
@@ -47,25 +43,16 @@ function run_scenario(pvec, tspan, umax, u1w, u2w, u3w;
     return (r1, r2, r3)
 end
 
-# ── Baseline ──────────────────────────────────────────────────────────────────
-baseline = run_scenario(pvec, tspan, umax,
-    u1_treat_weights, u2_treat_weights, u3_treat_weights,
-    scenario_title="Baseline")
+function test_single_weight(scale; weight=:w3)
+    r1, r2, r3 = run_scenario(pvec, tspan, umax,
+        u1_treat_weights, u2_treat_weights, u3_treat_weights;
+        w3_scale=(weight == :w3 ? scale : 1.0),
+        w4_scale=(weight == :w4 ? scale : 1.0),
+        w5_scale=(weight == :w5 ? scale : 1.0),
+        scenario_title="$(weight) scale=$scale")
 
-# ── Vary w3 only ──────────────────────────────────────────────────────────────
-scales = weight_scales[2:end]   # [1.5, 2.0, 2.5]
+    return make_plot(ConPlotSep3Hor(), r1, r2, r3)
+end
 
-vary_w3 = [run_scenario(pvec, tspan, umax,
-    u1_treat_weights, u2_treat_weights, u3_treat_weights,
-    w3_scale=s, scenario_title="Varying w₃ s=$s")
-           for s in scales]
-
-# ── Collect & plot ────────────────────────────────────────────────────────────
-results = (
-    baseline=baseline,
-    vary_w3=vary_w3,
-);
-
-fig = make_plot(WeightSensitivitySingle(), results;
-    vary_key=:vary_w3,
-    weight_label=L"Vary $w_3$")
+# ── Run & plot ──
+fig1 = test_single_weight(100.0, weight=:w3)
