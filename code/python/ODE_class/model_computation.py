@@ -184,5 +184,3 @@ class ODEModel:
         axs[1, 0].plot(self.t_eval, self.solution().y[3])
         axs[1, 1].plot(self.t_eval, self.solution().y[4])
         plt.show()
-
-
