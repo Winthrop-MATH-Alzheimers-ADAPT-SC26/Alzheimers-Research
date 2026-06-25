@@ -5,6 +5,7 @@ export ControlsPlot,
     ControlsPlotSeperate2,
     ControlsPlotSeperate3,
     WeightSensitivity,
+    WeightSensitivitySingle,
     SolPlotCombined,
     SolPlotHorizontal,
     make_plot
@@ -18,6 +19,7 @@ struct ControlsPlotSeperate <: PlotType end
 struct ControlsPlotSeperate2 <: PlotType end
 struct ControlsPlotSeperate3 <: PlotType end
 struct WeightSensitivity <: PlotType end
+struct WeightSensitivitySingle <: PlotType end
 struct SolPlotCombined <: PlotType end
 struct SolPlotHorizontal <: PlotType end
 
@@ -33,6 +35,60 @@ set_theme!(merge(Theme(
             xlabelsize=13,
         )
     ), theme_latexfonts()))
+
+function make_plot(::WeightSensitivitySingle, results;
+    weight_label=L"Vary $w$",
+    vary_key=:vary_w3)
+
+    col_labels = ["Baseline", "Low Weight", "Mid Weight", "High Weight"]
+
+    fig = Figure(size=(2200, 400))
+
+    for col in 1:4
+        if col == 1
+            r1, r2, r3 = results.baseline
+        else
+            r1, r2, r3 = results[vary_key][col-1]
+        end
+
+        t = r1.t
+        u1 = r1.controls.u1
+        u2 = r2.controls.u2
+        u3 = r3.controls.u3
+
+        ax_left = Axis(
+            fig[1, col],
+            title=col_labels[col],
+            xlabel="Years After Age 50",
+            ylabel=(col == 1 ? "u₁, u₃" : ""),  # plain string, label set via Label below
+            xticks=0:10:50,
+            yaxisposition=:left,
+        )
+
+        ax_right = Axis(
+            fig[1, col],
+            ylabel=(col == 4 ? L"u_2" : ""),
+            yticks=0:1.0e7,
+            yaxisposition=:right,
+        )
+
+        hidespines!(ax_right)
+
+        lines!(ax_left, t, u1, label=L"u_1", color=Cycled(2))
+        lines!(ax_left, t, u3, label=L"u_3", color=Cycled(4))
+        lines!(ax_right, t, u2, label=L"u_2", color=Cycled(3))
+
+        if col == 1
+            axislegend(ax_left, position=:lt, merge=true)
+        end
+    end
+
+    Label(fig[1, 0], weight_label, rotation=π / 2, tellheight=false)
+
+    colgap!(fig.layout, 12)
+
+    return fig
+end
 
 function make_plot(::WeightSensitivity, results)
     # results is a NamedTuple or struct with:

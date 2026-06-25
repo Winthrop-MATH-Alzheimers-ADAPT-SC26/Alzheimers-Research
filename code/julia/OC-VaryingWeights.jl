@@ -1,19 +1,12 @@
-using Distributed
+cd(@__DIR__)
+include("modules/Project.jl")
+includet("modules/PlottingTools.jl")
 
-# Add exactly 3 worker processes
-addprocs(3; exeflags="--project")
+using .Project
+using .PlottingTools
+using LaTeXStrings
 
-@everywhere begin
-    cd(@__DIR__)
-    include("modules/Project.jl")
-    include("modules/PlottingTools.jl")
-end
-
-# Then import separately
-@everywhere using .Project
-@everywhere using .PlottingTools
-
-# ── Setup (main process only) ──────────────────────────────────────────────────
+# ── Setup ─────────────────────────────────────────────────────────────────────
 pvec = build_param_vector(c₃=1.5778463)
 tspan = (0.0, 50.0)
 umax = (10.0, 1.0e7, 10.0)
@@ -24,11 +17,11 @@ u3_treat_weights = calculate_weights(sys, pvec, tspan, (0.0, 0.0, umax[3]))
 
 weight_scales = range(start=1.0, step=0.5, length=4)  # [1.0, 1.5, 2.0, 2.5]
 
-# ── run_scenario must be defined on all workers ────────────────────────────────
-@everywhere function run_scenario(pvec, tspan, umax, u1w, u2w, u3w;
+# ── run_scenario ──────────────────────────────────────────────────────────────
+function run_scenario(pvec, tspan, umax, u1w, u2w, u3w;
     w3_scale=1.0, w4_scale=1.0, w5_scale=1.0,
     scenario_title="No Title")
-    println("Worker $(myid()) | Started: $scenario_title")
+    println("Started: $scenario_title")
 
     p1 = FBSParams(
         u₁max=umax[1], u₂max=0.0, u₃max=0.0,
@@ -50,45 +43,29 @@ weight_scales = range(start=1.0, step=0.5, length=4)  # [1.0, 1.5, 2.0, 2.5]
     r2 = forward_backward_sweep(sys, pvec, tspan, p2, n=52)
     r3 = forward_backward_sweep(sys, pvec, tspan, p3, n=52)
 
-    println("Worker $(myid()) | Finished: $scenario_title")
+    println("Finished: $scenario_title")
     return (r1, r2, r3)
 end
 
-# ── Baseline runs on main process ─────────────────────────────────────────────
-baseline = run_scenario(pvec, tspan, umax, u1_treat_weights, u2_treat_weights, u3_treat_weights,
+# ── Baseline ──────────────────────────────────────────────────────────────────
+baseline = run_scenario(pvec, tspan, umax,
+    u1_treat_weights, u2_treat_weights, u3_treat_weights,
     scenario_title="Baseline")
 
-# ── Dispatch one vary_* batch per worker ──────────────────────────────────────
+# ── Vary w3 only ──────────────────────────────────────────────────────────────
 scales = weight_scales[2:end]   # [1.5, 2.0, 2.5]
 
-# @spawnat pid expr — pins each comprehension to a specific worker
-f_w3 = @spawnat 2 [run_scenario(pvec, tspan, umax,
+vary_w3 = [run_scenario(pvec, tspan, umax,
     u1_treat_weights, u2_treat_weights, u3_treat_weights,
     w3_scale=s, scenario_title="Varying w₃ s=$s")
-                   for s in scales]
+           for s in scales]
 
-f_w4 = @spawnat 3 [run_scenario(pvec, tspan, umax,
-    u1_treat_weights, u2_treat_weights, u3_treat_weights,
-    w4_scale=s, scenario_title="Varying w₄ s=$s")
-                   for s in scales]
-
-f_w5 = @spawnat 4 [run_scenario(pvec, tspan, umax,
-    u1_treat_weights, u2_treat_weights, u3_treat_weights,
-    w5_scale=s, scenario_title="Varying w₅ s=$s")
-                   for s in scales]
-
-# fetch() blocks until each worker finishes and returns the result
-vary_w3 = fetch(f_w3)
-vary_w4 = fetch(f_w4)
-vary_w5 = fetch(f_w5)
-
-# ── Collect & plot (unchanged) ─────────────────────────────────────────────────
+# ── Collect & plot ────────────────────────────────────────────────────────────
 results = (
     baseline=baseline,
     vary_w3=vary_w3,
-    vary_w4=vary_w4,
-    vary_w5=vary_w5,
-    scales=weight_scales,
-)
+);
 
-fig = make_plot(WeightSensitivity(), results)
+fig = make_plot(WeightSensitivitySingle(), results;
+    vary_key=:vary_w3,
+    weight_label=L"Vary $w_3$")
