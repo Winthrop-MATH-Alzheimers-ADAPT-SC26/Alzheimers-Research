@@ -1,0 +1,10 @@
+Time to do sensitivity analysis with 2^10 samples:
+
+1. Default
+    1 min, 23 sec
+
+2. Disable second-order calculations
+    44 sec
+
+3. Multiprocessing (depends on cpu threads)
+    5 sec
