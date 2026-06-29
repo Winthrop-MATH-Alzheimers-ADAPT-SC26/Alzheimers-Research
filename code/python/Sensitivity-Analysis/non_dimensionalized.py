@@ -11,12 +11,12 @@ from tqdm import tqdm
 # outside function for multiprocessing 
 def _solve_for_params(args):
     current_params, init_cond, t_span, t_eval = args
-    temp_model = ODEModel(current_params, init_cond, t_span, t_eval)
+    temp_model = NonDimODEModel(current_params, init_cond, t_span, t_eval)
     sol = temp_model.solution()
     return sol.y[4, -1]
 
 # define the class for system of equations
-class ODEModel:
+class NonDimODEModel:
     def __init__(self, params, initial_conditions, t_span, t_eval): 
         """initialization.
 
@@ -33,56 +33,27 @@ class ODEModel:
         Returns:
             None.
         """
-        # params list is ordered: # a1, a2, b1, b2, c1, c2, c3,
-        # d1, d2, e1, e2, e3, k1, k2, k3, k4, k5, sigma, r.
-        self.a1 = params[0]
-        self.a2 = params[1]
-        self.b1 = params[2]
-        self.b2 = params[3]
-        self.c1 = params[4]
-        self.c2 = params[5]
-        self.c3 = params[6]
-        self.d1 = params[7]
-        self.d2 = params[8]
-        self.e1 = params[9]
-        self.e2 = params[10]
-        self.e3 = params[11]
-        self.k1 = params[12]
-        self.k2 = params[13]
-        self.k3 = params[14]
-        self.k4 = params[15]
-        self.k5 = params[16]
-        self.sigma = params[17]
-        self.sigma2 = params[18]
-        self.r = params[19]
-        #self.u1 = params[20]
-        #self.u2 = params[21]
-        #self.u3 = params[22]
-
         # for modeling solution space
         self.init_cond = initial_conditions
         self.t_span = t_span
         self.t_eval = t_eval
 
 
-        self.a1_bar = self.a2 / self.a1
-        self.sigma1_bar = self.sigma * self.k1 / self.b1
-        self.k2_bar = self.k2 / self.k1
-        self.b2_bar = self.b2 * self.a1 / (self. b1 * self.k1)
-        self.k3_bar = self.k3 / self.k1
-        self.c2_bar = self.c2 * self.a1 / (self.c1 * self.k1)
-        self.c3_bar = self.c3 / self.c1
-        self.sigma2_bar = self.sigma2 * self.k1 / self.b1
-        self.k4_bar = self.k4 / self.k1
-        self.d2_bar = self.d2 * self.c1 / (self.d1 * self.k1)
-        self.k5_bar = self.k5 / self.k1
-        self.e2_bar = self.e2 * self.d1 / (self.e1 * self.k1)
-        self.e3_bar = self.e3 * self.c1 / (self.e1 * self.k1)
-        reparam = [self.a1_bar, self.sigma1_bar, self.k2_bar, self.b2_bar,
-                   self.k3_bar, self.c2_bar, self.c3_bar, self.sigma2_bar,
-                   self.k4_bar, self.d2_bar, self.k5_bar, self.e2_bar, self.e3_bar]
+        self.a1_bar = params[0]
+        self.sigma1_bar = params[1]
+        self.k2_bar = params[2]
+        self.b2_bar = params[3]
+        self.k3_bar = params[4]
+        self.c2_bar = params[5]
+        self.c3_bar = params[6]
+        self.sigma2_bar = params[7]
+        self.k4_bar = params[8]
+        self.d2_bar = params[9]
+        self.k5_bar = params[10]
+        self.e2_bar = params[11]
+        self.e3_bar = params[12]
 
-        self.param_ranges = ParameterEstimation(reparam).get_param_ranges()
+        self.param_ranges = ParameterEstimation(params).get_param_ranges()
 
     # used in sobol sensitivity analysis for problem dict
     def return_string_list(self):
@@ -91,17 +62,6 @@ class ODEModel:
                         'sigma2_bar', 'k4_bar', 'd2_bar', 'k5_bar', 'e2_bar', 'e3_bar'] #, 'u1', 'u2', 'u3'
         num_params = len(params_string)
         return [params_string, num_params]
-
-    # use call to allow for solutions to be computed later, original model
-    #def __call__(self, t, y):
-    #    """Use this throughout to call ODE model; useful for using self keyword within class methods."""
-    #    ABeta, Ca, Tau, N, C = y
-    #    dABeta = self.a1 + self.a2 * (Ca / (Ca + self.sigma)) - self.k1 * ABeta #- self.u1 * ABeta
-    #    dCa = self.b1 + self.b2 * ABeta - self.k2 * Ca #- self.u2 * Ca
-    #    dTau = self.c1 + self.c2 * ABeta + self.c3 * (Ca / (Ca + self.sigma2)) - self.k3 * Tau #- self.u3 * Tau
-    #    dN = self.d1 + self.d2 * Tau - self.k4 * N
-    #    dC = self.e1 + self.e2 * N * self.r + self.e3 * Tau - self.k5 * C
-    #    return [dABeta, dCa, dTau, dN, dC]
 
     # non-dimensionalized system
     def __call__(self, t, y):
