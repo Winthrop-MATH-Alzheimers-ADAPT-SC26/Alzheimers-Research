@@ -103,3 +103,22 @@ sigma1_bar            3.218318e-05      3.446468e-05      4.133885e-07          
     k2_bar            1.448640e-05      1.487462e-05      1.644165e-07           Yes                   Yes
 sigma2_bar            3.953821e-06      4.028346e-06      5.184906e-08           Yes                   Yes
     b2_bar            3.732397e-07      3.722421e-07      4.379263e-09           Yes                   Yes
+
+
+
+2^20:
+    Params  Sobol First Order (S1)  Sobol Total (ST)  Sobol Total Conf High Accuracy Below Relative Cutoff
+    e3_bar            4.521575e-01      4.579278e-01      1.341388e-03           Yes                    No
+    k5_bar            1.204597e-01      1.262398e-01      4.469971e-04           Yes                    No
+    d2_bar            1.065708e-01      1.095369e-01      3.350150e-04           Yes                    No
+    k4_bar            1.060713e-01      1.089925e-01      3.167476e-04           Yes                    No
+    e2_bar            1.053892e-01      1.083533e-01      3.293552e-04           Yes                    No
+    k3_bar            8.935435e-02      9.437656e-02      2.643468e-04           Yes                    No
+    c2_bar            6.869862e-03      7.294284e-03      2.397724e-05           Yes                    No
+    a1_bar            1.537215e-04      1.648062e-04      5.844631e-07           Yes                   Yes
+sigma1_bar            3.200205e-05      3.446492e-05      1.161832e-07           Yes                   Yes
+    c3_bar            1.811439e-05      1.926240e-05      6.649115e-08           Yes                   Yes
+    k2_bar            1.350613e-05      1.489620e-05      5.344541e-08           Yes                   Yes
+sigma2_bar            3.786890e-06      4.028295e-06      1.274860e-08           Yes                   Yes
+    b2_bar            3.582981e-07      3.722016e-07      1.345929e-09           Yes                   Yes
+
