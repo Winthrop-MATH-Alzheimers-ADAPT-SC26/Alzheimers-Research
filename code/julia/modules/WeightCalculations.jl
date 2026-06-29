@@ -11,13 +11,17 @@ function calculate_weights(sys::ModelingToolkitBase.System, pvec::Vector, tspan:
     u1 = u1max / 2
     u2 = u2max / 2
     u3 = u3max / 2
+    t0, tf = tspan
+    n = 365 * Int(tf - t0)
+    ts = collect(range(t0, tf, length=n))
 
     pvec_u = [k => v for (k, v) in merge(Dict(pvec), Dict(sys.u₁ => u1, sys.u₂ => u2, sys.u₃ => u3))]
 
     prob = ODEProblem(sys, pvec_u, tspan)
 
-    sol = solve(prob, abstol=1e-8, reltol=1e-6)
-    _, _, _, avg_n, avg_c = mean(sol.u)
+    sol = solve(prob, abstol=1e-8, reltol=1e-6, saveat=ts)
+    avg_n = mean(sol[sys.N])
+    avg_c = mean(sol[sys.C])
 
     w1 = 1.0
     I1 = u1^2 * (tspan[2] - tspan[1])

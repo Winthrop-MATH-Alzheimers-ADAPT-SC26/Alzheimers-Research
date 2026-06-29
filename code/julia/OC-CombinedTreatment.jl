@@ -3,7 +3,7 @@ includet("modules/PlottingTools.jl")
 using .Project
 using .PlottingTools
 
-pvec = build_param_vector()
+pvec = build_param_vector(c₃=1.5778463)
 tspan = (0.0, 50.0)
 umax = (10.0, 1.0e+7, 10.0)
 weights = calculate_weights(sys, pvec, tspan, umax)
@@ -18,8 +18,8 @@ params = FBSParams(
 result = forward_backward_sweep(sys, pvec, tspan, params);
 
 # Plotting
-fig1 = make_plot(ControlsPlot(), result)
+fig1 = make_plot(ConPlot(), result)
 
-fig2 = make_plot(SolPlotCombined(), result)
+fig2 = make_plot(SolPlotComb(), result)
 
-fig3 = make_plot(SolPlotHorizontal(), result)
+fig3 = make_plot(SolPlotHor(), result)

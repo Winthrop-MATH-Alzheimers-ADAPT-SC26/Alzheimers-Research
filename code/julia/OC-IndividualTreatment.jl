@@ -7,23 +7,21 @@ using CairoMakie: save
 pvec = build_param_vector(c₃=1.5778463)
 tspan = (0.0, 50.0)
 umax = (10.0, 1.0e7, 10.0)
-weights1 = calculate_weights(sys, pvec, tspan, (umax[1], 0.0, 0.0))
-weights2 = calculate_weights(sys, pvec, tspan, (0.0, umax[2], 0.0))
-weights3 = calculate_weights(sys, pvec, tspan, (0.0, 0.0, umax[3]))
+weights = calculate_weights(sys, pvec, tspan, umax)
 
 p1 = FBSParams(
     u₁max=umax[1], u₂max=0.0, u₃max=0.0,
-    w₁=weights1.w1, w₂=weights1.w2, w₃=weights1.w3, w₄=0.0, w₅=0.0,
+    w₁=weights.w1, w₂=weights.w2, w₃=weights.w3, w₄=weights.w4, w₅=weights.w5,
     max_iter=10000, relax=0.5, verbose=false
 )
 p2 = FBSParams(
     u₁max=0.0, u₂max=umax[2], u₃max=0.0,
-    w₁=weights2.w1, w₂=weights2.w2, w₃=0.0, w₄=weights2.w4, w₅=0.0,
+    w₁=weights.w1, w₂=weights.w2, w₃=weights.w3, w₄=weights.w4, w₅=weights.w5,
     max_iter=10000, relax=0.5, verbose=false
 )
 p3 = FBSParams(
     u₁max=0.0, u₂max=0.0, u₃max=umax[3],
-    w₁=weights3.w1, w₂=weights3.w2, w₃=0.0, w₄=0.0, w₅=weights3.w5,
+    w₁=weights.w1, w₂=weights.w2, w₃=weights.w3, w₄=weights.w4, w₅=weights.w5,
     max_iter=10000, relax=0.5, verbose=false
 )
 
@@ -35,5 +33,5 @@ r3 = forward_backward_sweep(sys, pvec, tspan, p3, n=52);
 
 # fig2 = make_plot(ControlsPlotSeperate2(), r1, r2, r3)
 
-fig3 = make_plot(ControlsPlotSeperate3(), r1, r2, r3)
+fig3 = make_plot(ConPlotSep3(), r1, r2, r3)
 

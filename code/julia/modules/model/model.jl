@@ -78,15 +78,13 @@ function costate_rhs!(dλ, λ, p, t)
     σ₁, σ₂, R = p.σ₁, p.σ₂, p.R
     w₁, w₂, w₃, w₄, w₅ = p.w₁, p.w₂, p.w₃, p.w₄, p.w₅
 
-    w₁, w₂, w₃, w₄, w₅ = p.w₁, p.w₂, p.w₃, p.w₄, p.w₅
-
     λ₁, λ₂, λ₃, λ₄, λ₅ = λ
 
     dλ[1] = (k₁ + u₁) * λ₁ - b₂ * λ₂ - c₂ * λ₃
     dλ[2] = -((a₂ * σ₁ * λ₁) / (Ca + σ₁)^2) + (k₂ + u₂) * λ₂ - ((c₃ * σ₂ * λ₃) / (Ca + σ₂)^2)
     dλ[3] = (k₃ + u₃) * λ₃ - d₂ * λ₄ - e₃ * λ₅
-    dλ[4] = -w₂ + k₄ * λ₄ - e₂ * R * λ₅
-    dλ[5] = -w₁ + k₅ * λ₅
+    dλ[4] = -w₁ + k₄ * λ₄ - e₂ * R * λ₅
+    dλ[5] = -w₂ + k₅ * λ₅
 end
 
 # # Costate RHS (Hamiltonian adjoint system)
