@@ -103,9 +103,21 @@ sigma1_bar            3.218318e-05      3.446468e-05      4.133885e-07          
     k2_bar            1.448640e-05      1.487462e-05      1.644165e-07           Yes                   Yes
 sigma2_bar            3.953821e-06      4.028346e-06      5.184906e-08           Yes                   Yes
     b2_bar            3.732397e-07      3.722421e-07      4.379263e-09           Yes                   Yes
-
-
-
+2^18:
+    Params  Sobol First Order (S1)  Sobol Total (ST)  Sobol Total Conf High Accuracy Below Relative Cutoff
+    e3_bar            4.521566e-01      4.579296e-01      2.359949e-03           Yes                    No
+    k5_bar            1.204588e-01      1.262395e-01      6.917703e-04           Yes                    No
+    d2_bar            1.065656e-01      1.095312e-01      5.607740e-04           Yes                    No
+    k4_bar            1.060687e-01      1.089945e-01      6.778442e-04           Yes                    No
+    e2_bar            1.053929e-01      1.083538e-01      6.043396e-04           Yes                    No
+    k3_bar            8.934789e-02      9.437707e-02      5.343750e-04           Yes                    No
+    c2_bar            6.866875e-03      7.294257e-03      4.416683e-05           Yes                    No
+    a1_bar            1.542935e-04      1.648103e-04      1.093508e-06           Yes                   Yes
+sigma1_bar            3.217504e-05      3.446713e-05      2.391603e-07           Yes                   Yes
+    c3_bar            1.809542e-05      1.926193e-05      1.154710e-07           Yes                   Yes
+    k2_bar            1.353563e-05      1.490628e-05      9.060131e-08           Yes                   Yes
+sigma2_bar            3.646035e-06      4.028445e-06      2.459619e-08           Yes                   Yes
+    b2_bar            3.594199e-07      3.721879e-07      2.553499e-09           Yes                   Yes
 2^20:
     Params  Sobol First Order (S1)  Sobol Total (ST)  Sobol Total Conf High Accuracy Below Relative Cutoff
     e3_bar            4.521575e-01      4.579278e-01      1.341388e-03           Yes                    No
