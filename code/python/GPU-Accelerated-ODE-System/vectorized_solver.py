@@ -1,7 +1,7 @@
 import jax
 import jax.numpy as jnp
 import diffrax
-from diffrax import ODETerm, Tsit5, SaveAt, PIDController
+from diffrax import ODETerm, Kvaerno5, SaveAt, PIDController
 
 
 
@@ -21,7 +21,7 @@ def alzsys(t, y, args):
 
 # solver setup
 term = ODETerm(alzsys)
-solver = Tsit5() # non stiff solver. stiff is Kvaerno5
+solver = Kvaerno5() # non stiff solver. stiff is Kvaerno5
 t0 = 0
 tf = 50
 saveat = SaveAt(ts = jnp.linspace(t0, tf, 1000))
