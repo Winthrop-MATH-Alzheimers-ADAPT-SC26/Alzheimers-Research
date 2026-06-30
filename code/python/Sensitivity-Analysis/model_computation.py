@@ -152,6 +152,8 @@ class ODEModel:
         ax.set_ylabel('Sensitivity Index Value')
         ax.set_title('Sobol Sensitivity Analysis (Alzheimer\'s ODE Model)')
         plt.tight_layout()
+        plt.tick_params(axis='x', labelsize=26)
+        plt.tick_params(axis='y', labelsize=26)
         plt.show()
 
     # numerically model solution to ODE
