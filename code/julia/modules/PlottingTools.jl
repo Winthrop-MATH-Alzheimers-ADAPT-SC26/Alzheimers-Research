@@ -143,7 +143,7 @@ function make_plot(::ConPlotSep2, r1, r2, r3)
 end
 
 
-function make_plot(::ConPlotSep3, r1, r2, r3)
+function make_plot(::ConPlotSep3, r1, r2, r3; ND=false)
     t = r1.t
     sol1, sol2, sol3 = r1.sol, r2.sol, r3.sol
 
@@ -167,14 +167,14 @@ function make_plot(::ConPlotSep3, r1, r2, r3)
 
     # --- Left: 2x1 grid of state comparisons --- #
 
-    axn = Axis(left[1, 1], title=L"\text{Neuron Loss } (N) \text{ - Control Scenario}", xticks=0:10:50, xlabel="Years After Age 50")
+    axn = Axis(left[1, 1], title=L"\text{Neuron Loss } (N) \text{ - Control Scenario}", xticks=!ND ? (0:10:50) : Makie.automatic, xlabel=!ND ? "Years After Age 50" : "Time (Non-Dimensionalized Units)")
     lines!(axn, t, N_base, linestyle=:dash, label="No Treatment")
     lines!(axn, t, N_u1, label=L"N \text{ with only } u_1")
     lines!(axn, t, N_u2, label=L"N \text{ with only } u_2")
     lines!(axn, t, N_u3, label=L"N \text{ with only } u_3")
     axislegend(axn, position=:lt)
 
-    axc = Axis(left[2, 1], title=L"\text{Cognitive Decline } (C) \text{ - Control Scenario}", xticks=0:10:50, xlabel="Years After Age 50")
+    axc = Axis(left[2, 1], title=L"\text{Cognitive Decline } (C) \text{ - Control Scenario}", xticks=!ND ? (0:10:50) : Makie.automatic, xlabel=!ND ? "Years After Age 50" : "Time (Non-Dimensionalized Units)")
     lines!(axc, t, C_base, linestyle=:dash, label="No Treatment")
     lines!(axc, t, C_u1, label=L"C \text{ with only } u_1")
     lines!(axc, t, C_u2, label=L"C \text{ with only } u_2")
@@ -183,15 +183,15 @@ function make_plot(::ConPlotSep3, r1, r2, r3)
 
     # --- Right: 3x1 grid of control profiles over time --- #
 
-    axu1 = Axis(right[1, 1], title=L"u_1 \text{ Treatment}", xticks=0:10:50, xlabel="Years After Age 50")
+    axu1 = Axis(right[1, 1], title=L"u_1 \text{ Treatment}", xticks=!ND ? (0:10:50) : Makie.automatic, xlabel=!ND ? "Years After Age 50" : "Time (Non-Dimensionalized Units)")
     lines!(axu1, t, u1, label=L"u_1", color=Cycled(2))
     axislegend(axu1)
 
-    axu2 = Axis(right[2, 1], title=L"u_2 \text{ Treatment}", xticks=0:10:50, xlabel="Years After Age 50")
+    axu2 = Axis(right[2, 1], title=L"u_2 \text{ Treatment}", xticks=!ND ? (0:10:50) : Makie.automatic, xlabel=!ND ? "Years After Age 50" : "Time (Non-Dimensionalized Units)")
     lines!(axu2, t, u2, label=L"u_2", color=Cycled(3))
     axislegend(axu2)
 
-    axu3 = Axis(right[3, 1], title=L"u_3 \text{ Treatment}", xticks=0:10:50, xlabel="Years After Age 50")
+    axu3 = Axis(right[3, 1], title=L"u_3 \text{ Treatment}", xticks=!ND ? (0:10:50) : Makie.automatic, xlabel=!ND ? "Years After Age 50" : "Time (Non-Dimensionalized Units)")
     lines!(axu3, t, u3, label=L"u_3", color=Cycled(4))
     axislegend(axu3)
 
