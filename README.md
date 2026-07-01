@@ -25,7 +25,7 @@ To run the Python code, you will need to install the necessary packages. Python 
   pip install -r requirements.txt
   ```
 
-To run the Julia code, take a look at the [Julia module](code/julia/README.md) documentation. To run GPU vectorized sensitivity analysis, check out the [GPU Accelerated Sensitivity Analysis](code/python/GPU-Accelerated-ODE-System/README.md) documentation (note: this is only tested and developed for Linux systems running NVIDIA GPUs).
+To run the Julia code, take a look at the [Julia module](code/julia/README.md) documentation.
 
 ## Contributors
 
