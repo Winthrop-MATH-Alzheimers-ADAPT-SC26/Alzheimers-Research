@@ -1,33 +1,34 @@
 import numpy as np
-from scipy.integrate import solve_ivp, odeint
-from numba import njit
+from numba import cfunc, carray
+from numbalsoda import lsoda_sig, lsoda
 
-@njit
-def alzheimers_ode_numba(y, t, params):
-    Ab, Ca, Tau, N, C = y
+@cfunc(lsoda_sig)
+def alzheimers_ode_numba(t, u, du, p):
+    # cast pointers into arrays
+    y = carray(u, (5,))
+    dydt = carray(du, (5,))
+    params = carray(p, (19,))
+
+    Ab, Ca, Tau, N, C = y[0], y[1], y[2], y[3], y[4]
     
-    a1, a2, b1, b2, c1, c2, c3, d1, d2, e1, e2, e3, k1, k2, k3, k4, k5, sig1, sig2 = params
-    
-    dAb = a1 + a2 * (Ca / (Ca + sig1)) - k1 * Ab
-    dCa = b1 + b2 * Ab - k2 * Ca
-    dTau = c1 + c2 * Ab + c3 * (Ca / (Ca + sig2)) - k3 * Tau
-    dN = d1 + d2 * Tau - k4 * N
-    dC = e1 + e2 * N + e3 * Tau - k5 * C
-    
-    return (dAb, dCa, dTau, dN, dC)
+    dydt[0] = params[0] + params[1] * (Ca / (Ca + params[17])) - params[12] * Ab
+    dydt[1] = params[2] + params[3] * Ab - params[13] * Ca
+    dydt[2] = params[4] + params[5] * Ab + params[6] * (Ca / (Ca + params[18])) - params[14] * Tau
+    dydt[3] = params[7] + params[8] * Tau - params[15] * N
+    dydt[4] = params[9] + params[10] * N + params[11] * Tau - params[16] * C
 
 def solve_for_params(args):
     current_params, init_cond, t_span, t_eval = args
     
     # must be a np array for the solver
     params_array = np.array(current_params, dtype = np.float64)
+    u0 = np.array(init_cond, dtype = np.float64)
     
-    # run ODE solver (uses LSODA)
-    sol = odeint(
-        func = alzheimers_ode_numba, 
-        y0 = init_cond, 
-        t = t_eval, 
-        args = (params_array,) 
+    usol, success = lsoda(
+        funcptr = alzheimers_ode_numba.address,
+        u0 = u0,
+        t_eval = t_eval,
+        data = params_array
     )
     
-    return sol[-1, 4]
+    return usol[-1, 4]

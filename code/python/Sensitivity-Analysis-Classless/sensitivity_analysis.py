@@ -27,7 +27,7 @@ if __name__ == '__main__':
     }
 
     # log_2 (n) sample size
-    sample_size = 2**14
+    sample_size = 2**20
 
     # create args batch and convert to jnp array
     print("...sampling parameter values...")
@@ -55,6 +55,7 @@ if __name__ == '__main__':
     model_out = np.array(model_out)
 
     # analyze results from simulations
+    print("...analyzing...")
     sobol_analysis = sobol.analyze(
         problem, 
         model_out, 
