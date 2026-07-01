@@ -1,0 +1,79 @@
+from model_computation import solve_for_params
+import numpy as np
+import pandas as pd
+from SALib.sample import sobol as sobol_sample
+from SALib.analyze import sobol
+import multiprocessing as mp
+from tqdm import tqdm
+
+if __name__ == '__main__':
+    params = (65641/10000, 15778.463/10000, 315569260, 6311385.2, 52.2958, 1.78467, 15778.463/10000, 0.07176, 0.398406, 146.308032/10000, 86.84/10000, 199.16/10000, 3035.98/10000, 3155692.6, 10.9999/6, 0.3588, 0.8684/10, 100, 100)
+
+    init_cond = (0.0, 100, 0.0, 0.0, 0.0)
+    t_span = (0, 50)
+    t_eval = np.linspace(t_span[0], t_span[1], 100)
+
+    # get plus/minus 15% bounds for parameters
+    lower_bound = [param * 0.85 for param in params]
+    upper_bound = [param * 1.15 for param in params]
+    total_bounds = list(zip(lower_bound, upper_bound))
+
+    paramNames = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2', 'c3', 'd1', 'd2', 'e1', 'e2', 'e3', 'k1', 'k2', 'k3', 'k4', 'k5', 'sig1', 'sig2']
+
+    problem = {
+        'num_vars': len(paramNames),
+        'names': paramNames,
+        'bounds': total_bounds
+    }
+
+    # log_2 (n) sample size
+    sample_size = 2**14
+
+    # create args batch and convert to jnp array
+    print("...sampling parameter values...")
+    param_values = sobol_sample.sample(problem, sample_size, calc_second_order = False)
+
+    args_list = [(params, init_cond, t_span, t_eval) for params in param_values]
+
+    # multiprocessing ODE solving
+    print("...starting CPU solver...")
+    num_cores = mp.cpu_count()
+    print(f"...evaluating {len(param_values)} parameter sets across {num_cores} cores...")
+
+    with mp.Pool(processes = num_cores) as pool:
+        model_out = list(
+            # progress bar
+            tqdm(
+                pool.imap(solve_for_params, args_list, chunksize = 1024), 
+                total = len(args_list), 
+                desc = "Solving ODEs", 
+                unit = "sim",
+                smoothing = 0.1
+        )
+    )
+        
+    model_out = np.array(model_out)
+
+    # analyze results from simulations
+    sobol_analysis = sobol.analyze(
+        problem, 
+        model_out, 
+        calc_second_order = False,
+        n_processors = num_cores,
+        print_to_console = False)
+    
+    # analysis output
+    total = sobol_analysis['ST']
+    conf = sobol_analysis['ST_conf']
+
+    df = pd.DataFrame({
+        'Params': paramNames,
+        'Sobol First Order (S1)': sobol_analysis['S1'],
+        'Sobol Total (ST)': total,
+        'Sobol Total Conf': conf,
+        'High Accuracy': np.where((total / conf) < 10, '--', 'Yes'),
+        'Below Relative Cutoff': np.where(total < (max(total) * 0.01), 'Yes', 'No')
+    }).sort_values(by = 'Sobol Total (ST)', ascending = False)
+
+    print("\n ...Sobol Analysis Table...")
+    print(df.to_string(index=False))
