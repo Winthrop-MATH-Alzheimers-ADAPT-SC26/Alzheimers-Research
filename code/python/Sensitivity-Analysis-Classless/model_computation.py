@@ -1,5 +1,5 @@
 import numpy as np
-from numba import cfunc, carray
+from numba import cfunc, carray, njit, prange
 from numbalsoda import lsoda_sig, lsoda
 
 @cfunc(lsoda_sig)
@@ -17,18 +17,19 @@ def alzheimers_ode_numba(t, u, du, p):
     dydt[3] = params[7] + params[8] * Tau - params[15] * N
     dydt[4] = params[9] + params[10] * N + params[11] * Tau - params[16] * C
 
-def solve_for_params(args):
-    current_params, init_cond, t_span, t_eval = args
-    
-    # must be a np array for the solver
-    params_array = np.array(current_params, dtype = np.float64)
-    u0 = np.array(init_cond, dtype = np.float64)
-    
-    usol, success = lsoda(
-        funcptr = alzheimers_ode_numba.address,
-        u0 = u0,
-        t_eval = t_eval,
-        data = params_array
-    )
-    
-    return usol[-1, 4]
+@njit(parallel = True)
+def run_batch(funcptr, param_matrix, u0, t_eval):
+    n_sims = param_matrix.shape[0]
+    results = np.empty(n_sims, dtype = np.float64)
+
+    for i in prange(n_sims):
+        usol, success = lsoda(
+            funcptr = funcptr,
+            u0 = u0,
+            t_eval = t_eval,
+            data = param_matrix[i]
+        )
+
+        results[i] = usol[-1, 4]
+
+    return results

@@ -1,17 +1,13 @@
-from model_computation import solve_for_params
+from model_computation import run_batch, alzheimers_ode_numba
 import numpy as np
 import pandas as pd
 from SALib.sample import sobol as sobol_sample
 from SALib.analyze import sobol
-import multiprocessing as mp
-from tqdm import tqdm
+import os
+import time
 
 if __name__ == '__main__':
     params = (65641/10000, 15778.463/10000, 315569260, 6311385.2, 52.2958, 1.78467, 15778.463/10000, 0.07176, 0.398406, 146.308032/10000, 86.84/10000, 199.16/10000, 3035.98/10000, 3155692.6, 10.9999/6, 0.3588, 0.8684/10, 100, 100)
-
-    init_cond = (0.0, 100, 0.0, 0.0, 0.0)
-    t_span = (0, 50)
-    t_eval = np.linspace(t_span[0], t_span[1], 100)
 
     # get plus/minus 15% bounds for parameters
     lower_bound = [param * 0.85 for param in params]
@@ -32,27 +28,24 @@ if __name__ == '__main__':
     # create args batch and convert to jnp array
     print("...sampling parameter values...")
     param_values = sobol_sample.sample(problem, sample_size, calc_second_order = False)
+    param_values = np.ascontiguousarray(param_values, dtype = np.float64)
 
-    args_list = [(params, init_cond, t_span, t_eval) for params in param_values]
+    u0 = np.array([0.0, 100.0, 0.0, 0.0, 0.0], dtype = np.float64)
+    t_span = (0, 50)
+    t_eval = np.linspace(t_span[0], t_span[1], 100, dtype = np.float64)
 
     # multiprocessing ODE solving
     print("...starting CPU solver...")
-    num_cores = mp.cpu_count()
+    num_cores = os.cpu_count()
     print(f"...evaluating {len(param_values)} parameter sets across {num_cores} cores...")
 
-    with mp.Pool(processes = num_cores) as pool:
-        model_out = list(
-            # progress bar
-            tqdm(
-                pool.imap(solve_for_params, args_list, chunksize = 1024), 
-                total = len(args_list), 
-                desc = "Solving ODEs", 
-                unit = "sim",
-                smoothing = 0.1
-        )
-    )
-        
-    model_out = np.array(model_out)
+    start_time = time.perf_counter()
+    model_out = run_batch(alzheimers_ode_numba.address, param_values, u0, t_eval)
+    end_time = time.perf_counter()
+
+    total_time = end_time - start_time
+    sims_per_sec = len(param_values) / total_time
+    print(f"...batch took {total_time:.2f} seconds with {sims_per_sec:.1f} simulations per second...")
 
     # analyze results from simulations
     print("...analyzing...")
