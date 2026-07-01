@@ -23,7 +23,7 @@ if __name__ == '__main__':
     }
 
     # log_2 (n) sample size
-    sample_size = 2**20
+    sample_size = 2**18
 
     # create args batch and convert to jnp array
     print("...sampling parameter values...")
@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     u0 = np.array([0.0, 100.0, 0.0, 0.0, 0.0], dtype = np.float64)
     t_span = (0, 50)
-    t_eval = np.linspace(t_span[0], t_span[1], 100, dtype = np.float64)
+    t_eval = np.array([0.0, 50.0], dtype = np.float64)
 
     # multiprocessing ODE solving
     print("...starting CPU solver...")
