@@ -12,7 +12,7 @@ function calculate_weights(sys::ModelingToolkitBase.System, pvec::Vector, tspan:
     u2 = u2max / 2
     u3 = u3max / 2
     t0, tf = tspan
-    n = 365 * Int(tf - t0)
+    n = 10000
     ts = collect(range(t0, tf, length=n))
 
     pvec_u = [k => v for (k, v) in merge(Dict(pvec), Dict(sys.u₁ => u1, sys.u₂ => u2, sys.u₃ => u3))]

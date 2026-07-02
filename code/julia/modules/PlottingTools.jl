@@ -4,6 +4,7 @@ export ConPlot,
     ConPlotSep,
     ConPlotSep2,
     ConPlotSep3,
+    ConPlotSep3Ver,
     ConPlotSep3Hor,
     SolPlotComb,
     SolPlotHor,
@@ -17,6 +18,7 @@ struct ConPlot <: PlotType end
 struct ConPlotSep <: PlotType end
 struct ConPlotSep2 <: PlotType end
 struct ConPlotSep3 <: PlotType end
+struct ConPlotSep3Ver <: PlotType end
 struct ConPlotSep3Hor <: PlotType end
 struct SolPlotComb <: PlotType end
 struct SolPlotHor <: PlotType end
@@ -142,7 +144,6 @@ function make_plot(::ConPlotSep2, r1, r2, r3)
     return fig
 end
 
-
 function make_plot(::ConPlotSep3, r1, r2, r3; ND=false)
     t = r1.t
     sol1, sol2, sol3 = r1.sol, r2.sol, r3.sol
@@ -194,6 +195,57 @@ function make_plot(::ConPlotSep3, r1, r2, r3; ND=false)
     axu3 = Axis(right[3, 1], title=L"u_3 \text{ Treatment}", xticks=!ND ? (0:10:50) : Makie.automatic, xlabel=!ND ? "Years After Age 50" : "Time (Non-Dimensionalized Units)")
     lines!(axu3, t, u3, label=L"u_3", color=Cycled(4))
     axislegend(axu3)
+
+    colgap!(fig.layout, 15)
+    rowgap!(fig.layout, 15)
+    return fig
+end
+
+function make_plot(::ConPlotSep3Ver, r1, r2, r3; ND=false)
+    t = r1.t
+    sol1, sol2, sol3 = r1.sol, r2.sol, r3.sol
+
+    C_base = r1.baseline_sol[5, :]
+    C_u1 = sol1[5, :]
+    C_u2 = sol2[5, :]
+    C_u3 = sol3[5, :]
+
+    u1 = r1.controls.u1
+    u2 = r2.controls.u2
+    u3 = r3.controls.u3
+
+    fig = Figure(size=(1200, 1400), fontsize=20)
+
+    axc = Axis(fig[1, 1], title="Cognitive Decline (C) - Control Scenario", titlesize=24, xticks=!ND ? (0:10:50) : Makie.automatic, xlabel=!ND ? "Years After Age 50" : "Time (Non-Dimensionalized Units)", xlabelsize=20)
+    lines!(axc, t, C_base, linestyle=:dash, label="No Treatment")
+    lines!(axc, t, C_u1, label=L"C \text{ with only } u_1")
+    lines!(axc, t, C_u2, label=L"C \text{ with only } u_2")
+    lines!(axc, t, C_u3, label=L"C \text{ with only } u_3")
+    axislegend(axc, position=:lt)
+
+    axc4l = Axis(fig[2, 1], title="Treatment Options", titlesize=24, xticks=!ND ? (0:10:50) : Makie.automatic, xlabel=!ND ? "Years After Age 50" : "Time (Non-Dimensionalized Units)", xlabelsize=20, ylabel=L"u_1 \text{ & } u_2")
+    axc4l.yticks = !ND ? Maike.automatic : [0, 10, 20, 30]
+    axc4r = Axis(fig[2, 1], yaxisposition=:right, ylabel=L"u_2")
+    axc4r.yticks = !ND ? Maike.automatic : [0, 6.8e6, 6.8e6 * 2, 6.8e6 * 3]
+    hidespines!(axc4r, :l, :t, :b)
+    hidexdecorations!(axc4r)
+
+    l1 = lines!(axc4l, t, u1, label=L"u_1", color=Cycled(2))
+    l3 = lines!(axc4l, t, u3, label=L"u_3", color=Cycled(4))
+    l2 = lines!(axc4r, t, u2, label=L"u_2", color=Cycled(3))
+
+    # Box(fig[1, 1], color=(:blue, 0.2), strokewidth=0)
+    # Box(fig[2, 1], color=(:red, 0.2), strokewidth=0)
+
+    Legend(
+        fig[2, 1],
+        [l1, l2, l3],
+        [L"u_1", L"u_2", L"u_3"],
+        tellwidth=false,
+        tellheight=false,
+        halign=:right,
+        valign=:top
+    )
 
     colgap!(fig.layout, 15)
     rowgap!(fig.layout, 15)

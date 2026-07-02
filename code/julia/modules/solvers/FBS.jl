@@ -29,6 +29,8 @@ Base.@kwdef struct FBSParams
     w₃::Float64
     w₄::Float64
     w₅::Float64
+    state_rhs::Function
+    costate_rhs::Function
     tol::Float64 = 1e-6
     max_iter::Int = 200
     relax::Float64 = 0.5      # weight on the NEW control in convex combination;
@@ -119,7 +121,6 @@ end
 
 function forward_backward_sweep(sys, pvec, tspan, params::FBSParams; n=365)
     t0, tf = tspan
-    n = n * Int(tf - t0)   # n is points-per-unit-time (e.g. daily resolution);
     # total grid size scales with the horizon length
     ts = collect(range(t0, tf, length=n))
 
@@ -136,7 +137,7 @@ function forward_backward_sweep(sys, pvec, tspan, params::FBSParams; n=365)
 
     # Baseline (no treatment)
     zero_p = merge(pd, (u₁=t -> 0.0, u₂=t -> 0.0, u₃=t -> 0.0))
-    baseline_prob = ODEProblem(state_rhs!, x0, tspan, zero_p)
+    baseline_prob = ODEProblem(params.state_rhs, x0, tspan, zero_p)
     baseline_sol = solve(baseline_prob, saveat=ts, abstol=1e-10, reltol=1e-8)
 
     # Step 1 — initialize controls to zero
@@ -158,7 +159,7 @@ function forward_backward_sweep(sys, pvec, tspan, params::FBSParams; n=365)
         u3fun = linear_interpolation(ts, u3, extrapolation_bc=Flat())
 
         fwd_sol, bwd_sol = _solve_states_and_costates(
-            state_rhs!, costate_rhs!,
+            params.state_rhs, params.costate_rhs,
             x0, tspan, pd,
             u1fun, u2fun, u3fun,
             weights, ts;
@@ -202,7 +203,7 @@ function forward_backward_sweep(sys, pvec, tspan, params::FBSParams; n=365)
     u3fun = linear_interpolation(ts, u3, extrapolation_bc=Flat())
 
     fwd_sol, bwd_sol = _solve_states_and_costates(
-        state_rhs!, costate_rhs!,
+        params.state_rhs, params.costate_rhs,
         x0, tspan, pd,
         u1fun, u2fun, u3fun,
         weights, ts;

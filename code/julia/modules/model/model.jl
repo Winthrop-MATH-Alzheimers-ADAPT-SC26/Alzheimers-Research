@@ -1,6 +1,7 @@
 module Model
 
 export sys, state_rhs!, costate_rhs!
+export sys_nd, state_rhs_nd!, costate_rhs_nd!
 
 using ModelingToolkit
 using ModelingToolkit: t_nounits as t, D_nounits as D
@@ -23,12 +24,22 @@ eqs = [
 
 @mtkcompile sys = System(eqs, t)
 
+eqs_nd = [
+    D(Aβ) ~ 1 - Aβ + a₂ * (Ca / (Ca + σ₁)) - u₁ * Aβ,
+    D(Ca) ~ 1 + b₂ * Aβ - k₂ * Ca - u₂ * Ca,
+    D(τ) ~ 1 + c₂ * Aβ + c₃ * (Ca / (Ca + σ₂)) - k₃ * τ - u₃ * τ,
+    D(N) ~ 1 + d₂ * τ - k₄ * N,
+    D(C) ~ 1 + e₂ * N + e₃ * τ - k₅ * C
+]
+
+@mtkcompile sys_nd = System(eqs_nd, t)
+
 # --- Symbolic Solve for costate equations --- #
 # function calculate_adjoints()
 #     @variables λ(t)[1:5] w₁ w₂ w₃ w₄ w₅
 #     states = [Aβ, Ca, τ, N, C]
 #     rhs = [eq.rhs for eq in eqs]
-#     L = w₁ * C + w₂ * N + u₁^2 + w₄ * u₂^2 + w₅ * u₃^2
+#     L = w₁ * N + w₂ * C + w₃ * u₁^2 + w₄ * u₂^2 + w₅ * u₃^2
 #     H = L + sum(λ[i] * rhs[i] for i in 1:5)
 #     adjoint_eqs = [
 #         D(λ[i]) ~ -expand_derivatives(Symbolics.derivative(H, states[i]))
@@ -64,7 +75,7 @@ end
 function costate_rhs!(dλ, λ, p, t)
     x = p.state_sol(t)
 
-    Aβ, Ca, τ = x[1], x[2], x[3]
+    Ca = x[2]
 
     u₁ = p.u₁(t)
     u₂ = p.u₂(t)
@@ -76,7 +87,7 @@ function costate_rhs!(dλ, λ, p, t)
     e₂, e₃ = p.e₂, p.e₃
     k₁, k₂, k₃, k₄, k₅ = p.k₁, p.k₂, p.k₃, p.k₄, p.k₅
     σ₁, σ₂, R = p.σ₁, p.σ₂, p.R
-    w₁, w₂, w₃, w₄, w₅ = p.w₁, p.w₂, p.w₃, p.w₄, p.w₅
+    w₁, w₂ = p.w₁, p.w₂
 
     λ₁, λ₂, λ₃, λ₄, λ₅ = λ
 
@@ -84,6 +95,54 @@ function costate_rhs!(dλ, λ, p, t)
     dλ[2] = -((a₂ * σ₁ * λ₁) / (Ca + σ₁)^2) + (k₂ + u₂) * λ₂ - ((c₃ * σ₂ * λ₃) / (Ca + σ₂)^2)
     dλ[3] = (k₃ + u₃) * λ₃ - d₂ * λ₄ - e₃ * λ₅
     dλ[4] = -w₁ + k₄ * λ₄ - e₂ * R * λ₅
+    dλ[5] = -w₂ + k₅ * λ₅
+end
+
+function state_rhs_nd!(dx, x, p, t)
+    Aβ, Ca, τ, N, C = x
+
+    u₁ = p.u₁(t)
+    u₂ = p.u₂(t)
+    u₃ = p.u₃(t)
+
+    a₂ = p.a₂
+    b₂ = p.b₂
+    c₂, c₃ = p.c₂, p.c₃
+    d₂ = p.d₂
+    e₂, e₃ = p.e₂, p.e₃
+    k₂, k₃, k₄, k₅ = p.k₂, p.k₃, p.k₄, p.k₅
+    σ₁, σ₂ = p.σ₁, p.σ₂
+
+    dx[1] = 1 - Aβ + a₂ * (Ca / (Ca + σ₁)) - u₁ * Aβ
+    dx[2] = 1 + b₂ * Aβ - k₂ * Ca - u₂ * Ca
+    dx[3] = 1 + c₂ * Aβ + c₃ * (Ca / (Ca + σ₂)) - k₃ * τ - u₃ * τ
+    dx[4] = 1 + d₂ * τ - k₄ * N
+    dx[5] = 1 + e₂ * N + e₃ * τ - k₅ * C
+end
+
+function costate_rhs_nd!(dλ, λ, p, t)
+    x = p.state_sol(t)
+
+    Ca = x[2]
+
+    u₁ = p.u₁(t)
+    u₂ = p.u₂(t)
+    u₃ = p.u₃(t)
+
+    a₂ = p.a₂
+    b₂, c₂, c₃ = p.b₂, p.c₂, p.c₃
+    d₂ = p.d₂
+    e₂, e₃ = p.e₂, p.e₃
+    k₂, k₃, k₄, k₅ = p.k₂, p.k₃, p.k₄, p.k₅
+    σ₁, σ₂ = p.σ₁, p.σ₂
+    w₁, w₂ = p.w₁, p.w₂
+
+    λ₁, λ₂, λ₃, λ₄, λ₅ = λ
+
+    dλ[1] = (1 + u₁) * λ₁ - b₂ * λ₂ - c₂ * λ₃
+    dλ[2] = -((a₂ * σ₁ * λ₁) / (Ca + σ₁)^2) + (k₂ + u₂) * λ₂ - ((c₃ * σ₂ * λ₃) / (Ca + σ₂)^2)
+    dλ[3] = (k₃ + u₃) * λ₃ - d₂ * λ₄ - e₃ * λ₅
+    dλ[4] = -w₁ + k₄ * λ₄ - e₂ * λ₅
     dλ[5] = -w₂ + k₅ * λ₅
 end
 

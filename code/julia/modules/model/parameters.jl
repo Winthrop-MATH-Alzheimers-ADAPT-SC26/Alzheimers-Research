@@ -1,6 +1,6 @@
 module Parameters
 
-export build_param_vector
+export build_param_vector, DEFAULT_PARAMS
 
 using ..Model: sys
 
@@ -16,7 +16,7 @@ const DEFAULT_PARAMS = (
     b₂=6311385.2,
     c₁=52.2958,
     c₂=1.78367,
-    c₃=0.1,
+    c₃=1.5778463,
     d₁=0.07176,
     d₂=0.398406,
     e₁=0.01463,
@@ -35,10 +35,10 @@ const DEFAULT_PARAMS = (
     u₃=0.0,
 )
 
-function build_param_vector(; kwargs...)
+function build_param_vector(; ND=false, kwargs...)
     p = merge(DEFAULT_PARAMS, (; kwargs...))
 
-    return [
+    return !ND ? [
         sys.a₁ => p.a₁,
         sys.a₂ => p.a₂,
         sys.b₁ => p.b₁,
@@ -67,6 +67,28 @@ function build_param_vector(; kwargs...)
         sys.τ => p.τ,
         sys.N => p.N,
         sys.C => p.C
+    ] : [
+        sys.a₂ => p.a₂ / p.a₁,
+        sys.b₂ => p.b₂ * p.a₁ / (p.b₁ * p.k₁),
+        sys.c₂ => p.c₂ * p.a₁ / (p.c₁ * p.k₁),
+        sys.c₃ => p.c₃ / p.c₁,
+        sys.d₂ => p.d₂ * p.c₁ / (p.d₁ * p.k₁),
+        sys.e₂ => p.e₂ * p.d₁ / (p.e₁ * p.k₁),
+        sys.e₃ => p.e₃ * p.c₁ / (p.e₁ * p.k₁),
+        sys.k₂ => p.k₂ / p.k₁,
+        sys.k₃ => p.k₃ / p.k₁,
+        sys.k₄ => p.k₄ / p.k₁,
+        sys.k₅ => p.k₅ / p.k₁,
+        sys.σ₁ => p.σ₁ * p.k₁ / p.b₁,
+        sys.σ₂ => p.σ₂ * p.k₁ / p.b₁,
+        sys.u₁ => p.u₁,
+        sys.u₂ => p.u₂,
+        sys.u₃ => p.u₃,
+        sys.Aβ => p.Aβ * p.k₁ / p.a₁,
+        sys.Ca => p.Ca * p.k₁ / p.b₁,
+        sys.τ => p.τ * p.k₁ / p.c₁,
+        sys.N => p.N * p.k₁ / p.d₁,
+        sys.C => p.C * p.k₁ / p.e₁
     ]
 end
 
