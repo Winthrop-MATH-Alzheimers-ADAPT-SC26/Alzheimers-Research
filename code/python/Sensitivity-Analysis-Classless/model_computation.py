@@ -1,6 +1,8 @@
 import numpy as np
-from numba import cfunc, carray, njit, prange
+from numba import cfunc, carray, njit, prange, types
 from numbalsoda import lsoda_sig, lsoda
+
+
 
 @cfunc(lsoda_sig)
 def alzheimers_ode_numba(t, u, du, p):
@@ -11,11 +13,15 @@ def alzheimers_ode_numba(t, u, du, p):
 
     Ab, Ca, Tau, N, C = y[0], y[1], y[2], y[3], y[4]
     
-    dydt[0] = params[0] + params[1] * (Ca / (Ca + params[17])) - params[12] * Ab
-    dydt[1] = params[2] + params[3] * Ab - params[13] * Ca
-    dydt[2] = params[4] + params[5] * Ab + params[6] * (Ca / (Ca + params[18])) - params[14] * Tau
-    dydt[3] = params[7] + params[8] * Tau - params[15] * N
-    dydt[4] = params[9] + params[10] * N + params[11] * Tau - params[16] * C
+    a1, a2, b1, b2, c1, c2, c3, d1, d2, e1, e2, e3, k1, k2, k3, k4, k5, sig1, sig2 = params
+
+    dydt[0] = a1 + a2 * (Ca / (Ca + sig1)) - k1 * Ab 
+    dydt[1] = b1 + b2 * Ab - k2 * Ca 
+    dydt[2] = c1 + c2 * Ab + c3 * (Ca / (Ca + sig2)) - k3 * Tau 
+    dydt[3] = d1 + d2 * Tau - k4 * N
+    dydt[4] = e1 + e2 * N + e3 * Tau - k5 * C
+
+
 
 @njit(parallel = True)
 def run_batch(funcptr, param_matrix, u0, t_eval):
