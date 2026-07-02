@@ -1,12 +1,12 @@
 from model_computation import run_batch, alzheimers_ode_numba
 import numpy as np
 import pandas as pd
-from SALib.sample import sobol as sobol_sample
-from SALib.analyze import sobol
 import os
 import time
+from HPSALib import saltelli_sample, fast_sobol_analyze
 
 if __name__ == '__main__':
+    start_runtime = time.perf_counter()
     params = (65641/10000, 15778.463/10000, 315569260, 6311385.2, 52.2958, 1.78467, 15778.463/10000, 0.07176, 0.398406, 146.308032/10000, 86.84/10000, 199.16/10000, 3035.98/10000, 3155692.6, 10.9999/6, 0.3588, 0.8684/10, 100, 100)
 
     # get plus/minus 15% bounds for parameters
@@ -23,11 +23,13 @@ if __name__ == '__main__':
     }
 
     # log_2 (n) sample size
-    sample_size = 2**18
+    sample_size = 2**20
 
     # create args batch and convert to jnp array
     print("...sampling parameter values...")
-    param_values = sobol_sample.sample(problem, sample_size, calc_second_order = False)
+
+    # generate scaled sobol sequence
+    param_values = saltelli_sample(problem, sample_size)
     param_values = np.ascontiguousarray(param_values, dtype = np.float64)
 
     u0 = np.array([0.0, 100.0, 0.0, 0.0, 0.0], dtype = np.float64)
@@ -49,12 +51,7 @@ if __name__ == '__main__':
 
     # analyze results from simulations
     print("...analyzing...")
-    sobol_analysis = sobol.analyze(
-        problem, 
-        model_out, 
-        calc_second_order = False,
-        n_processors = num_cores,
-        print_to_console = False)
+    sobol_analysis = fast_sobol_analyze(problem = problem, Y = model_out)
     
     # analysis output
     total = sobol_analysis['ST']
@@ -71,3 +68,7 @@ if __name__ == '__main__':
 
     print("\n ...Sobol Analysis Table...")
     print(df.to_string(index=False))
+
+    end_runtime = time.perf_counter()
+    total_runtime = end_runtime - start_runtime
+    print(f"Simulation time: {total_time:.2f} seconds\nTotal runtime: {total_runtime:.2f} seconds")
